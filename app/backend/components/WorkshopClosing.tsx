@@ -8,10 +8,13 @@ export default function WorkshopClosing() {
         className="font-light leading-tight tracking-tight text-zinc-900"
         style={{ fontSize: "clamp(20px, 2.5vw, 32px)" }}
       >
-        &ldquo;Frameworks and languages will keep changing.
+        &ldquo;A perfect backend is one nobody talks about.
         <br />
-        This thinking won&apos;t.&rdquo;
+        Your goal is to be forgotten.&rdquo;
       </blockquote>
+      <p className="mt-6 text-base text-zinc-500 leading-relaxed max-w-2xl">
+        The best infrastructure is invisible. Nobody praises the plumbing until it breaks. Build something so reliable it earns the right to be ignored.
+      </p>
       <div className="mt-10 flex items-center gap-6">
         <a
           href="/"

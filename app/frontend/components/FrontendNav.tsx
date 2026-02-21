@@ -9,6 +9,7 @@ export default function FrontendNav() {
       </a>
       <div className="flex items-center gap-6 text-sm text-zinc-500">
         <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+        <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
         <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
         <span className="text-zinc-900 font-medium">Frontend</span>
         <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>

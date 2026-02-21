@@ -170,7 +170,7 @@ export const gatekeepersCode = `Request: POST /orders  { item: "laptop", qty: 1 
     Token present? Valid? Not expired?
     If no  →  401 Unauthorized. Stop.
 
-→ [Authz Middleware]        Are you allowed?
+→ [Auth Middleware]        Are you allowed?
     Role = "customer"? Access granted for /orders?
     If no  →  403 Forbidden. Stop.
 

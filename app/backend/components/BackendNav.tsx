@@ -14,6 +14,12 @@ export default function BackendNav() {
         >
           Intro
         </a>
+        <a
+          href="/bridge"
+          className="hover:text-zinc-900 transition-colors duration-200"
+        >
+          The Bridge
+        </a>
         <span className="text-zinc-900 font-medium">Backend</span>
         <a
           href="/frontend"

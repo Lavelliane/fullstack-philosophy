@@ -41,6 +41,8 @@ export default function IntroPage() {
           The Human Behind the Endpoint
         </a>
         <div className="flex items-center gap-8 text-sm text-zinc-500">
+          <span className="text-zinc-900 font-medium">Intro</span>
+          <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
           <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
           <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
           <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
@@ -355,22 +357,22 @@ export default function IntroPage() {
           className="font-light leading-tight tracking-tight text-zinc-900 mb-4"
           style={{ fontSize: "clamp(32px, 5vw, 64px)" }}
         >
-          Most of the web
+          Two sides.
           <br />
-          is invisible.
+          One system.
         </h2>
         <p className="text-sm text-zinc-500 leading-[1.85] max-w-md mb-2">
-          No interface. No animations. Just systems quietly deciding
-          whether your request lives or dies.
+          Every app you love has two lives.
+          One you see and one you never do.
         </p>
-        <p className="text-sm text-zinc-400 leading-[1.85] max-w-md mb-10 italic">
-          The Quiet Side of Software.
+        <p className="text-sm text-zinc-400 leading-[1.85] max-w-md mb-10">
+          Together they turn logic into trust and interaction into memory.
         </p>
         <a
-          href="/backend"
+          href="/bridge"
           className="inline-flex items-center gap-3 text-sm font-medium border border-zinc-900 px-6 py-3 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors duration-200"
         >
-          Enter the backend
+          See how they connect
           <ArrowRight className="w-4 h-4" />
         </a>
       </section>

@@ -66,18 +66,10 @@ export default function AboutPage() {
           The Human Behind the Endpoint
         </a>
         <div className="flex items-center gap-8 text-sm text-zinc-500">
-          <a
-            href="/backend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Backend
-          </a>
-          <a
-            href="/frontend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Frontend
-          </a>
+          <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+          <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
+          <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
+          <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
           <span className="text-zinc-900 font-medium">About</span>
         </div>
       </nav>
