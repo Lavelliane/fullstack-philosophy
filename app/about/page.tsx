@@ -179,7 +179,7 @@ export default function AboutPage() {
             </div>
           </PersonCard>
 
-          {/* Vince Abella */}
+          {/* Vince Abella  - Frontend*/}
           <PersonCard
             name="Vince Abella"
             title="Creator"
