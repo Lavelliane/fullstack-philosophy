@@ -78,6 +78,7 @@ export default function RevealStepper({ steps, prompt }: RevealStepperProps) {
                     <div
                       className="mt-2 overflow-x-auto rounded-none border border-zinc-200 bg-[#f6f8fa] [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-4 [&_pre]:!text-xs [&_pre]:!leading-[1.75] [&_pre]:!font-mono [&_pre]:!whitespace-pre"
                       dangerouslySetInnerHTML={{ __html: step.codeHtml }}
+                      suppressHydrationWarning
                     />
                   ) : (
                     <pre className="mt-2 bg-zinc-50 border border-zinc-200 px-4 py-3 text-xs font-mono text-zinc-600 leading-[1.75] overflow-x-auto whitespace-pre">

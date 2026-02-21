@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 type Pair = {
   left: string;
@@ -12,18 +12,22 @@ type MatchPairsProps = {
   prompt: string;
 };
 
-function shuffleArray<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
 export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
   const leftItems = useMemo(() => pairs.map((p) => p.left), [pairs]);
-  const rightItems = useMemo(() => shuffleArray(pairs.map((p) => p.right)), [pairs]);
+
+  // Start unshuffled (matches server render), shuffle after mount to avoid hydration mismatch
+  const [rightItems, setRightItems] = useState<string[]>(() =>
+    pairs.map((p) => p.right)
+  );
+
+  useEffect(() => {
+    const a = pairs.map((p) => p.right);
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    setRightItems(a);
+  }, [pairs]);
 
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
   const [connections, setConnections] = useState<Record<string, string>>({});
@@ -84,6 +88,21 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
     return connections[leftForRight] === correctRight ? "correct" : "wrong";
   }
 
+  const PAIR_COLORS = [
+    "bg-blue-500",
+    "bg-amber-500",
+    "bg-emerald-500",
+    "bg-violet-500",
+    "bg-rose-500",
+    "bg-cyan-500",
+    "bg-orange-500",
+    "bg-teal-500",
+  ];
+
+  function getRightPairIndex(right: string): number {
+    return pairs.findIndex((p) => p.right === right);
+  }
+
   function itemClasses(status: string, isActive: boolean) {
     const base = "px-4 py-3 text-xs border text-left transition-all duration-150 w-full";
     if (status === "correct") return `${base} border-emerald-500 bg-emerald-50 text-emerald-700`;
@@ -105,10 +124,11 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
-          {leftItems.map((left) => {
+          {leftItems.map((left, idx) => {
             const status = getPairStatus(left);
             const isActive = selectedLeft === left;
             const isConnected = connectedLeft.has(left);
+            const dotColor = PAIR_COLORS[idx % PAIR_COLORS.length];
             return (
               <button
                 key={left}
@@ -117,9 +137,15 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
                 className={itemClasses(status, isActive)}
               >
                 <span className="flex items-center gap-2">
-                  {isConnected && !checked && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0" />
+                  {isConnected ? (
+                    <span
+                      className={`w-2 h-2 rounded-full shrink-0 ${dotColor}`}
+                      aria-hidden
+                    />
+                  ) : (
+                    <span className="w-2 shrink-0" aria-hidden />
                   )}
+                  <span className="font-mono text-zinc-500 mr-1">{idx + 1}.</span>
                   {left}
                 </span>
               </button>
@@ -128,9 +154,13 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
         </div>
 
         <div className="flex flex-col gap-2">
-          {rightItems.map((right) => {
+          {rightItems.map((right, idx) => {
             const status = getRightStatus(right);
             const isConnected = connectedRight.has(right);
+            const connectedLeftKey = Object.keys(connections).find((k) => connections[k] === right);
+            const leftIdx = connectedLeftKey != null ? leftItems.indexOf(connectedLeftKey) : -1;
+            const dotColor = leftIdx >= 0 ? PAIR_COLORS[leftIdx % PAIR_COLORS.length] : "";
+            const letter = String.fromCharCode(65 + idx);
             return (
               <button
                 key={right}
@@ -139,9 +169,15 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
                 className={itemClasses(status, false)}
               >
                 <span className="flex items-center gap-2">
-                  {isConnected && !checked && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0" />
+                  {isConnected ? (
+                    <span
+                      className={`w-2 h-2 rounded-full shrink-0 ${dotColor}`}
+                      aria-hidden
+                    />
+                  ) : (
+                    <span className="w-2 shrink-0" aria-hidden />
                   )}
+                  <span className="font-mono text-zinc-500 mr-1">{letter}.</span>
                   {right}
                 </span>
               </button>

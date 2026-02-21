@@ -13,8 +13,9 @@ async function HighlightedPre({ code, lang = "typescript" }: { code: string; lan
 
   return (
     <div
-      className="overflow-x-auto rounded-none border border-zinc-200 bg-[#f6f8fa] [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-5 [&_pre]:!text-xs [&_pre]:!leading-[1.85] [&_pre]:!font-mono [&_pre]:!whitespace-pre"
+      className="w-full overflow-x-auto rounded-none border border-zinc-200 bg-[#f6f8fa] [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-5 [&_pre]:!text-xs [&_pre]:!leading-[1.85] [&_pre]:!font-mono [&_pre]:!whitespace-pre"
       dangerouslySetInnerHTML={{ __html: html }}
+      suppressHydrationWarning
     />
   );
 }
