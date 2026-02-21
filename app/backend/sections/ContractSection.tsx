@@ -3,6 +3,7 @@ import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import DragSort from "../../components/DragSort";
 import ValidatorSim from "../../components/ValidatorSim";
+import RequestAnatomy from "../../components/RequestAnatomy";
 import SectionHeader from "../components/SectionHeader";
 import Prose from "../components/Prose";
 import ChallengeLabel from "../components/ChallengeLabel";
@@ -74,6 +75,15 @@ export default function ContractSection() {
       <BackendChallengeSection>
         <ChallengeLabel>HTTP methods: the five verbs</ChallengeLabel>
         <CodeBlock code={httpMethodsCode} lang="plaintext" />
+      </BackendChallengeSection>
+
+      {/* ── Request anatomy ─────────────────────────────────────────────── */}
+      <BackendChallengeSection wide>
+        <ChallengeLabel>Anatomy of an HTTP request</ChallengeLabel>
+        <p className="text-sm text-zinc-500 leading-[1.85] max-w-2xl mb-6">
+          Every request has four parts. Click each one to see what it does and why it matters.
+        </p>
+        <RequestAnatomy />
       </BackendChallengeSection>
 
       {/* ── DTOs: two syntaxes ──────────────────────────────────────────── */}
