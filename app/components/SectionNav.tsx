@@ -43,24 +43,17 @@ export default function SectionNav({ sections }: SectionNavProps) {
 
   return (
     <>
-      {/* Desktop: fixed left sidebar */}
-      <nav className="hidden xl:flex fixed left-6 top-1/2 -translate-y-1/2 flex-col gap-5 z-40">
+      {/* Desktop: fixed right sidebar */}
+      <nav className="hidden xl:flex fixed right-6 top-1/2 -translate-y-1/2 flex-col items-end gap-5 z-40">
         {sections.map((s) => {
           const isActive = active === s.id;
           return (
             <button
               key={s.id}
               onClick={() => scrollTo(s.id)}
-              className="flex items-center gap-3 group text-left"
+              className="flex items-center gap-3 group"
               title={s.label}
             >
-              <span
-                className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200 ${
-                  isActive
-                    ? "bg-zinc-900 scale-125"
-                    : "bg-zinc-300 group-hover:bg-zinc-500"
-                }`}
-              />
               <span
                 className={`text-[10px] font-mono transition-all duration-200 whitespace-nowrap ${
                   isActive
@@ -70,6 +63,13 @@ export default function SectionNav({ sections }: SectionNavProps) {
               >
                 {s.number}. {s.label}
               </span>
+              <span
+                className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200 ${
+                  isActive
+                    ? "bg-zinc-900 scale-125"
+                    : "bg-zinc-300 group-hover:bg-zinc-500"
+                }`}
+              />
             </button>
           );
         })}

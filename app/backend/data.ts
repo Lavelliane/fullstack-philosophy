@@ -553,6 +553,110 @@ async save(order) {
   // Swap Postgres → Mongo here. Service doesn't notice.
 }`;
 
+export const sandpackBulkPricingFiles = {
+  "/index.ts": `// ── Strategy Pattern: Live Coding ────────────────────────────────────
+// Two strategies are already implemented below.
+// Your task: implement BulkPricing.
+//
+// Rule: if qty > 10, apply a 10% discount. Otherwise, charge full price.
+// Then run the sandbox to see if your output is correct.
+
+interface PriceResult {
+  total: number;
+  breakdown: string;
+}
+
+interface OrderDto {
+  productId: string;
+  qty: number;
+  unitPrice: number;
+}
+
+interface PricingStrategy {
+  calculate(dto: OrderDto): PriceResult;
+}
+
+// ✅ Already implemented
+class StandardPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    const total = dto.qty * dto.unitPrice;
+    return {
+      total,
+      breakdown: \`\${dto.qty} × $\${dto.unitPrice} = $\${total}\`,
+    };
+  }
+}
+
+// ✅ Already implemented
+class BlackFridayPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    const total = dto.qty * dto.unitPrice * 0.7;
+    return {
+      total: parseFloat(total.toFixed(2)),
+      breakdown: \`30% off → $\${total.toFixed(2)}\`,
+    };
+  }
+}
+
+// 🎯 YOUR TASK: implement BulkPricing
+// Rule: qty > 10 → 10% discount. Otherwise → full price.
+class BulkPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    // Write your code here
+
+  }
+}
+
+// ── Test runner (don't change this) ──────────────────────────────────
+const order: OrderDto = { productId: "LAPTOP-PRO", qty: 15, unitPrice: 100 };
+
+function check(label: string, got: number, expected: number) {
+  const pass = Math.abs(got - expected) < 0.01;
+  if (pass) {
+    console.log(\`  ✅ \${label} → $\${got}\`);
+  } else {
+    console.log(\`  ❌ \${label} → got $\${got}, expected $\${expected}\`);
+  }
+}
+
+console.log("── Reference strategies ─────────────────────────────");
+try {
+  const s = new StandardPricing().calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  console.log(\`  StandardPricing   : \${s.breakdown}\`);
+  const b = new BlackFridayPricing().calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  console.log(\`  BlackFridayPricing: \${b.breakdown}\`);
+} catch (e) {
+  console.log(\`  ❌ Reference error: \${(e as Error).message}\`);
+}
+
+console.log("\\n── BulkPricing tests ────────────────────────────────");
+try {
+  const bulk = new BulkPricing();
+
+  // Case 1: qty > 10 → 10% discount should apply
+  const r1 = bulk.calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  check("qty=15, unitPrice=100 (discount applies)", r1.total, 1350);
+
+  // Case 2: qty === 10 → boundary, no discount
+  const r2 = bulk.calculate({ productId: "X", qty: 10, unitPrice: 100 });
+  check("qty=10, unitPrice=100 (boundary, no discount)", r2.total, 1000);
+
+  // Case 3: qty < 10 → no discount
+  const r3 = bulk.calculate({ productId: "X", qty: 5, unitPrice: 200 });
+  check("qty=5,  unitPrice=200 (no discount)        ", r3.total, 1000);
+
+  // Case 4: breakdown field must exist
+  if (!r1.breakdown) {
+    console.log("  ❌ breakdown field is missing or empty");
+  } else {
+    console.log(\`  ✅ breakdown present: "\${r1.breakdown}"\`);
+  }
+} catch (e) {
+  console.log(\`  ❌ BulkPricing threw: \${(e as Error).message}\`);
+}
+`,
+};
+
 export const lifecycleBucketItems = [
   { id: "b1", label: "Checks if the JWT token is valid" },
   { id: "b2", label: "Calculates order total with discounts" },
@@ -664,31 +768,105 @@ export const lettingGoCodeGood = `class OrderService {
 // Production:  new OrderService(postgres, sendgrid, datadog)
 // In tests:    new OrderService(fakeDb, fakeMailer, fakeLogger)`;
 
-export const lettingGoPairs = [
-  { left: "Singleton", right: "One DB connection pool shared by the whole app" },
-  { left: "Strategy", right: "Swap pricing logic without changing the service" },
-  { left: "Repository", right: "Your service says what, not how, to store data" },
-  { left: "Circuit Breaker", right: "Stop calling a failing dependency temporarily" },
-  { left: "Pub/Sub", right: "Emit an event; let listeners react independently" },
-];
-
-export const lettingGoQuiz = {
-  question:
-    "An 'order.created' event is emitted. Which services should subscribe to it?",
+export const diSpotCouplingQuiz = {
+  question: "Which class is actually testable without a real database?",
   options: [
-    { id: "a", label: "Only the OrderService: it owns the event." },
+    {
+      id: "a",
+      label: `class ReportService {
+  // Tightly coupled: creates its own DB
+  private db = new PostgresDatabase();
+
+  generate() {
+    return this.db.query("SELECT * FROM reports");
+  }
+}`,
+    },
     {
       id: "b",
-      label:
-        "NotificationService, InventoryService, and AnalyticsService: all independently.",
+      label: `class ReportService {
+  // Dependency injected: receives DB from outside
+  constructor(private db: Database) {}
+
+  generate() {
+    return this.db.query("SELECT * FROM reports");
+  }
+}`,
     },
-    { id: "c", label: "The Controller: it coordinates everything after creation." },
-    { id: "d", label: "No services should react: events are only for logging." },
+    {
+      id: "c",
+      label: `class ReportService {
+  generate() {
+    // Creates DB inside method: still coupled
+    const db = new PostgresDatabase();
+    return db.query("SELECT * FROM reports");
+  }
+}`,
+    },
   ],
   correctId: "b",
   explanation:
-    "That's exactly the point of Pub/Sub. Each service subscribes independently, reacts independently, and fails independently. The OrderService doesn't know or care who's listening. That's the decoupling.",
+    "Option B receives its database through the constructor. In tests you pass a MockDB — no real Postgres needed. Options A and C hardcode 'new PostgresDatabase()' which means you can't swap them out.",
 };
+
+export const diFillSegments = [
+  "class OrderService {\n  constructor(\n    private db: ",
+  {
+    blank: "db-type",
+    options: ["PostgresDatabase", "IDatabase", "Database", "any"],
+    correct: "IDatabase",
+  },
+  "\n  ) {}\n\n  async create(dto) {\n    return ",
+  {
+    blank: "db-call",
+    options: ["new PostgresDatabase().save(dto)", "this.db.save(dto)", "db.save(dto)", "IDatabase.save(dto)"],
+    correct: "this.db.save(dto)",
+  },
+  ";\n  }\n}",
+];
+
+export const diTrueFalseQuizzes = [
+  {
+    question: "DI means your class creates its own dependencies with `new`.",
+    options: [
+      { id: "t", label: "True" },
+      { id: "f", label: "False" },
+    ],
+    correctId: "f",
+    explanation:
+      "False. DI is the opposite — the class receives its dependencies from outside. It never calls 'new' on them internally.",
+  },
+  {
+    question: "With DI, you can unit test OrderService without a real database running.",
+    options: [
+      { id: "t", label: "True" },
+      { id: "f", label: "False" },
+    ],
+    correctId: "t",
+    explanation:
+      "True. You pass a MockDB or InMemoryDB into the constructor. The service doesn't know or care — it just calls the interface methods.",
+  },
+  {
+    question: "Dependency Injection requires a framework like NestJS or Spring to work.",
+    options: [
+      { id: "t", label: "True" },
+      { id: "f", label: "False" },
+    ],
+    correctId: "f",
+    explanation:
+      "False. DI is just a pattern — passing dependencies through the constructor. Frameworks automate it, but you can do it manually with zero libraries.",
+  },
+  {
+    question: "Constructor injection is the most common form of DI.",
+    options: [
+      { id: "t", label: "True" },
+      { id: "f", label: "False" },
+    ],
+    correctId: "t",
+    explanation:
+      "True. Constructor injection makes dependencies explicit and required. The class can't be created without them — which is exactly what you want.",
+  },
+];
 
 // ─── Section 6: The Checklist ──────────────────────────────────────────────
 

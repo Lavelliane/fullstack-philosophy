@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import SectionNav from "../components/SectionNav";
 import BackendNav from "./components/BackendNav";
 import BackendHero from "./components/BackendHero";
-import SectionDivider from "./components/SectionDivider";
-import SectionReveal from "./components/SectionReveal";
 import ContractSection from "./sections/ContractSection";
 import GatekeepersSection from "./sections/GatekeepersSection";
 import RequestLifecycleSection from "./sections/RequestLifecycleSection";
@@ -18,26 +16,23 @@ export const metadata: Metadata = {
     "A 30-minute philosophical deep-dive into backend architecture. No syntax. All thinking.",
 };
 
-const SECTION_LABELS = NAV_SECTIONS.map((s) => s.label);
-
 export default function BackendPage() {
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
-      <SectionNav sections={NAV_SECTIONS} />
+    <div className="h-screen bg-white text-zinc-900 flex flex-col overflow-hidden">
       <BackendNav />
-      <BackendHero />
-
-      <div className="max-w-screen-lg mx-auto px-8 py-12 flex flex-col gap-0">
-        <SectionDivider />
-        <SectionReveal sectionLabels={SECTION_LABELS}>
-          <ContractSection />
-          <GatekeepersSection />
-          <RequestLifecycleSection />
-          <MemoryFailureSection />
-          <LettingGoSection />
-          <ChecklistSection />
-        </SectionReveal>
-      </div>
+      <SectionNav sections={NAV_SECTIONS} />
+      <main
+        className="flex-1 overflow-y-auto"
+        style={{ scrollSnapType: "y mandatory" }}
+      >
+        <BackendHero />
+        <ContractSection />
+        <GatekeepersSection />
+        <RequestLifecycleSection />
+        <MemoryFailureSection />
+        <LettingGoSection />
+        <ChecklistSection />
+      </main>
     </div>
   );
 }
