@@ -16,17 +16,17 @@ const CONCEPTS: Record<
 > = {
   html: {
     title: "The skeleton",
-    desc: "Declares what exists — buttons, headings, forms. No style. No behavior.",
+    desc: "Declares what exists: buttons, headings, forms. No style. No behavior.",
     strong: "what exists",
   },
   css: {
     title: "The skin",
-    desc: "Controls how it looks — layout, color, spacing. No structure. No behavior.",
+    desc: "Controls how it looks: layout, color, spacing. No structure. No behavior.",
     strong: "how it looks",
   },
   js: {
     title: "The nervous system",
-    desc: "Controls what it does — events, updates, logic. No structure. No style.",
+    desc: "Controls what it does: events, updates, logic. No structure. No style.",
     strong: "what it does",
   },
 };
@@ -66,7 +66,7 @@ export default function ThreeRolesHeroContent({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-screen-xl relative z-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10">
       {/* Left: concepts with highlight */}
       <div>
         <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">

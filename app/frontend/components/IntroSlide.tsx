@@ -170,7 +170,7 @@ export default function IntroSlide() {
                 </p>
                 <p className="mt-8 text-sm text-zinc-500 max-w-md">
                   In the next 30 minutes we&apos;ll unpack how frontends build that
-                  connection — structure, state, and data flow. No framework
+                  connection: structure, state, and data flow. No framework
                   required.
                 </p>
               </motion.div>

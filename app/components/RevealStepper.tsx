@@ -7,6 +7,8 @@ type Step = {
   content: string;
   code?: string;
   codeHtml?: string;
+  /** Renders the frontend output of the code (what it looks like) */
+  visual?: React.ReactNode;
 };
 
 type RevealStepperProps = {
@@ -85,6 +87,11 @@ export default function RevealStepper({ steps, prompt }: RevealStepperProps) {
                       {step.code}
                     </pre>
                   )
+                )}
+                {step.visual && (
+                  <div className="mt-3 border border-zinc-200 rounded-lg bg-white p-3 flex flex-col items-center justify-center">
+                    {step.visual}
+                  </div>
                 )}
               </div>
             </div>

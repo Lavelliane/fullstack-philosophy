@@ -1,9 +1,12 @@
-import CodeBlock from "../../components/CodeBlock";
+import CodeBlock from "../components/CodeBlock";
+import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import DragSort from "../../components/DragSort";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
+import { InteractiveCounterVisual, InteractiveLiftStateVisual } from "../components/CodeVisuals";
+import StateOwnershipFlow from "../components/StateOwnershipFlow";
 import {
   localStateCode,
   liftStateCode,
@@ -50,7 +53,7 @@ export default function StateSection() {
           03
         </span>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-screen-xl relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10">
 
           {/* Left: concept */}
           <div>
@@ -66,7 +69,7 @@ export default function StateSection() {
               remembers.
             </h2>
 
-            {/* The core loop — visual emphasis */}
+            {/* The core loop: visual emphasis */}
             <div className="flex items-center gap-2 mb-8 flex-wrap">
               {[
                 { label: "User acts", color: "bg-zinc-100 text-zinc-700 border border-zinc-200" },
@@ -108,8 +111,8 @@ export default function StateSection() {
                 </span>
                 <p className="text-base text-zinc-600 leading-relaxed">
                   <strong className="text-zinc-900">Shared across the app.</strong>{" "}
-                  Who&apos;s logged in. A shopping cart. Multiple components
-                  need the same data.
+                  Who&apos;s logged in. A student&apos;s enrolled courses. Multiple
+                  components need the same data.
                 </p>
               </div>
 
@@ -119,7 +122,7 @@ export default function StateSection() {
                 </span>
                 <p className="text-base text-zinc-600 leading-relaxed">
                   <strong className="text-zinc-900">Computed from existing state.</strong>{" "}
-                  Never store what you can calculate — it drifts out of sync.
+                  Never store what you can calculate; it drifts out of sync.
                 </p>
               </div>
             </div>
@@ -137,7 +140,10 @@ export default function StateSection() {
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               The core loop in code
             </p>
-            <CodeBlock code={stateSlideCode} lang="jsx" />
+            <div className="flex flex-col gap-4">
+              <CodeBlock code={stateSlideCode} lang="jsx" />
+              <CodeVisual><InteractiveCounterVisual /></CodeVisual>
+            </div>
           </div>
         </div>
 
@@ -157,7 +163,7 @@ export default function StateSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Challenges — Section 03
+              Challenges: Section 03
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
               State is what makes a UI dynamic. Without state, your app is a
@@ -169,12 +175,35 @@ export default function StateSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Local state</ChallengeLabel>
-          <CodeBlock code={localStateCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={localStateCode} lang="jsx" />
+            <CodeVisual><InteractiveCounterVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
-        <ChallengeSection>
+        {/* Lifting state: code + ownership diagram */}
+        <ChallengeSection wide>
           <ChallengeLabel>Lifting state up</ChallengeLabel>
-          <CodeBlock code={liftStateCode} lang="jsx" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="flex flex-col gap-4">
+              <CodeBlock code={liftStateCode} lang="jsx" />
+              <CodeVisual><InteractiveLiftStateVisual /></CodeVisual>
+            </div>
+
+            {/* State ownership diagram */}
+            <div className="flex flex-col justify-center">
+              <p className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-4">
+                State ownership: who owns, who reads
+              </p>
+
+              <StateOwnershipFlow />
+
+              <p className="text-[10px] text-zinc-400 mt-4 text-center leading-relaxed">
+                State lives in the parent. All three children receive it as props.<br />
+                One update in the parent re-renders all three simultaneously.
+              </p>
+            </div>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>

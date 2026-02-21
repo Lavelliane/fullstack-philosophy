@@ -1,9 +1,11 @@
-import CodeBlock from "../../components/CodeBlock";
+import CodeBlock from "../components/CodeBlock";
+import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import DragSort from "../../components/DragSort";
 import MatchPairs from "../../components/MatchPairs";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
+import { FetchStatesVisual, FetchStatesFlowVisual } from "../components/CodeVisuals";
 import {
   fetchComponentCode,
   fetchStateBadCode,
@@ -14,21 +16,21 @@ import {
   fetchDragSortCorrectOrder,
 } from "../data";
 
-const fetchSlideCode = `function UserProfile({ userId }) {
-  const [user, setUser]     = useState(null);
+const fetchSlideCode = `function StudentProfile({ studentId }) {
+  const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError]   = useState(null);
+  const [error, setError]     = useState(null);
 
   useEffect(() => {
-    fetch(\`/api/users/\${userId}\`)
+    fetch(\`/api/students/\${studentId}\`)
       .then(res => res.json())
-      .then(data => { setUser(data); setLoading(false); })
-      .catch(err => { setError(err);  setLoading(false); });
-  }, [userId]);
+      .then(data => { setStudent(data); setLoading(false); })
+      .catch(err => { setError(err);    setLoading(false); });
+  }, [studentId]);
 
-  if (loading) return <Skeleton />;     // ← must handle
-  if (error)   return <ErrorMessage />; // ← must handle
-  return <UserCard user={user} />;      // ← happy path
+  if (loading) return <Skeleton />;           // must handle
+  if (error)   return <ErrorMessage />;       // must handle
+  return <StudentCard student={student} />;   // happy path
 }`;
 
 export default function FetchingSection() {
@@ -49,7 +51,7 @@ export default function FetchingSection() {
           04
         </span>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-screen-xl relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10">
 
           {/* Left: concept */}
           <div>
@@ -65,56 +67,65 @@ export default function FetchingSection() {
               three states.
             </h2>
 
-            {/* Three state cards */}
+            {/* Three state statements (no design examples—shown in code block visual) */}
             <div className="space-y-3 mb-8">
-              <div className="flex items-start gap-4 border border-amber-200 bg-amber-50 px-4 py-3">
-                <span className="font-mono text-xs text-amber-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
-                  Loading
-                </span>
-                <p className="text-sm text-amber-800 leading-relaxed">
-                  Data is in transit.{" "}
-                  <strong>Show a skeleton or spinner.</strong> Never leave the
-                  user staring at blank space.
-                </p>
+              <div className="border border-amber-200 bg-amber-50 px-4 py-3">
+                <div className="flex items-start gap-4">
+                  <span className="font-mono text-xs text-amber-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider w-14">
+                    Loading
+                  </span>
+                  <p className="text-sm text-amber-800 leading-relaxed">
+                    Data is in transit.{" "}
+                    <strong>Show a skeleton or spinner.</strong> Never leave the
+                    user staring at blank space.
+                  </p>
+                </div>
               </div>
 
-              <div className="flex items-start gap-4 border border-emerald-200 bg-emerald-50 px-4 py-3">
-                <span className="font-mono text-xs text-emerald-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
-                  Success
-                </span>
-                <p className="text-sm text-emerald-800 leading-relaxed">
-                  Data arrived.{" "}
-                  <strong>Render the real content.</strong> Pass data down as
-                  props.
-                </p>
+              <div className="border border-emerald-200 bg-emerald-50 px-4 py-3">
+                <div className="flex items-start gap-4">
+                  <span className="font-mono text-xs text-emerald-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider w-14">
+                    Success
+                  </span>
+                  <p className="text-sm text-emerald-800 leading-relaxed">
+                    Data arrived.{" "}
+                    <strong>Render the real content.</strong> Pass data down as
+                    props.
+                  </p>
+                </div>
               </div>
 
-              <div className="flex items-start gap-4 border border-red-200 bg-red-50 px-4 py-3">
-                <span className="font-mono text-xs text-red-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
-                  Error
-                </span>
-                <p className="text-sm text-red-800 leading-relaxed">
-                  Something failed.{" "}
-                  <strong>Show a clear message and a retry option.</strong>{" "}
-                  Never fail silently.
-                </p>
+              <div className="border border-red-200 bg-red-50 px-4 py-3">
+                <div className="flex items-start gap-4">
+                  <span className="font-mono text-xs text-red-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider w-14">
+                    Error
+                  </span>
+                  <p className="text-sm text-red-800 leading-relaxed">
+                    Something failed.{" "}
+                    <strong>Show a clear message and a retry option.</strong>{" "}
+                    Never fail silently.
+                  </p>
+                </div>
               </div>
             </div>
 
             <div className="border-l-2 border-zinc-900 pl-6 py-1">
               <p className="text-lg font-light text-zinc-900 leading-snug italic">
                 &ldquo;The blank screen is never acceptable. Design for all
-                three states — not just the happy path.&rdquo;
+                three states, not just the happy path.&rdquo;
               </p>
             </div>
           </div>
 
           {/* Right: code (desktop only) */}
-          <div className="hidden lg:flex flex-col gap-3">
+          <div className="hidden lg:flex flex-col gap-3 min-w-0">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Modelling all three states
             </p>
-            <CodeBlock code={fetchSlideCode} lang="jsx" />
+            <div className="flex flex-col gap-4">
+              <CodeBlock code={fetchSlideCode} lang="jsx" />
+              <CodeVisual><FetchStatesVisual /></CodeVisual>
+            </div>
           </div>
         </div>
 
@@ -134,7 +145,7 @@ export default function FetchingSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Challenges — Section 04
+              Challenges: Section 04
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
               Fetching is async. The app keeps rendering while the network
@@ -146,17 +157,24 @@ export default function FetchingSection() {
 
         <ChallengeSection wide>
           <ChallengeLabel>The happy path trap</ChallengeLabel>
-          <CodeBlock
-            mode="split"
-            code={fetchStateBadCode}
-            splitCode={fetchStateGoodCode}
-            labels={["Bad: only handles success", "Good: handles all three states"]}
-          />
+          <div className="flex flex-col gap-4">
+            <CodeBlock
+              mode="split"
+              code={fetchStateBadCode}
+              splitCode={fetchStateGoodCode}
+              labels={["Bad: only handles success", "Good: handles all three states"]}
+              lang="jsx"
+            />
+            <CodeVisual><FetchStatesVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
           <ChallengeLabel>Full fetch component</ChallengeLabel>
-          <CodeBlock code={fetchComponentCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={fetchComponentCode} lang="jsx" />
+            <CodeVisual><FetchStatesFlowVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
@@ -165,7 +183,7 @@ export default function FetchingSection() {
         </ChallengeSection>
 
         <ChallengeSection>
-          <ChallengeLabel>Challenge B: state → UI response</ChallengeLabel>
+          <ChallengeLabel>Challenge B: state to UI response</ChallengeLabel>
           <MatchPairs
             pairs={fetchStatesMatchPairs}
             prompt="Match each fetch state to the correct UI response."

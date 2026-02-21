@@ -1,4 +1,5 @@
-import CodeBlock from "../../components/CodeBlock";
+import CodeBlock from "../components/CodeBlock";
+import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import MatchPairs from "../../components/MatchPairs";
@@ -6,6 +7,7 @@ import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ThreeRolesHeroContent from "../components/ThreeRolesHeroContent";
 import ScrollToPracticeButton from "../components/ScrollToPracticeButton";
 import ChallengeSection from "../components/ChallengeSection";
+import { ThreeRolesButtonVisual } from "../components/CodeVisuals";
 import { highlightCode } from "../../../lib/shiki";
 import {
   threeRolesHtmlCode,
@@ -64,7 +66,7 @@ export default async function ThreeRolesSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Challenges — Section 01
+              Challenges: Section 01
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
               Separation of concerns: when structure, appearance, and behavior
@@ -76,12 +78,15 @@ export default async function ThreeRolesSection() {
 
         <ChallengeSection wide>
           <ChallengeLabel>Code comparison: separated vs. mixed</ChallengeLabel>
-          <CodeBlock
-            mode="split"
-            code={threeRolesBadCode}
-            splitCode={threeRolesGoodCode}
-            labels={["Bad: mixed concerns", "Good: each role in its file"]}
-          />
+          <div className="flex flex-col gap-4">
+            <CodeBlock
+              mode="split"
+              code={threeRolesBadCode}
+              splitCode={threeRolesGoodCode}
+              labels={["Bad: mixed concerns", "Good: each role in its file"]}
+            />
+            <CodeVisual><ThreeRolesButtonVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>

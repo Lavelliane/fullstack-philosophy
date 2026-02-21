@@ -1,23 +1,26 @@
-import CodeBlock from "../../components/CodeBlock";
+import CodeBlock from "../components/CodeBlock";
+import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import MatchPairs from "../../components/MatchPairs";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
+import { RoutesVisual, UrlParamsVisual } from "../components/CodeVisuals";
+import RoutePreviewDemo from "../components/RoutePreviewDemo";
 import { routingCode, urlStateCode, routingQuiz, routingMatchPairs } from "../data";
 
-const routingSlideCode = `// Declare URL → Component mappings once
+const routingSlideCode = `// URL to Component, declared once
 <Routes>
-  <Route path="/"            element={<Home />} />
-  <Route path="/dashboard"   element={<Dashboard />} />
-  <Route path="/profile/:id" element={<ProfilePage />} />
-  <Route path="*"            element={<NotFound />} />
+  <Route path="/"             element={<Home />} />
+  <Route path="/students"     element={<StudentList />} />
+  <Route path="/students/:id" element={<StudentProfile />} />
+  <Route path="*"             element={<NotFound />} />
 </Routes>
 
-// Inside ProfilePage:
-const { id } = useParams(); // /profile/42 → "42"
+// Inside StudentProfile:
+const { id } = useParams(); // /students/42 → "42"
 
 // Navigate without reload:
-navigate('/dashboard');`;
+navigate('/students');`;
 
 export default function RoutingSection() {
   return (
@@ -37,7 +40,7 @@ export default function RoutingSection() {
           05
         </span>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-screen-xl relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10">
 
           {/* Left: concept */}
           <div>
@@ -61,7 +64,7 @@ export default function RoutingSection() {
                 <p className="text-base text-zinc-600 leading-relaxed">
                   One HTML file. JavaScript intercepts link clicks,{" "}
                   <strong className="text-zinc-900">swaps components</strong>{" "}
-                  based on the URL — no full page reload.
+                  based on the URL with no full page reload.
                 </p>
               </div>
 
@@ -74,7 +77,7 @@ export default function RoutingSection() {
                   <strong className="text-zinc-900">
                     the only state that survives a reload.
                   </strong>{" "}
-                  A user can share it, bookmark it, or hit back — and land
+                  A student can share it, bookmark it, or hit back and land
                   exactly where they left off.
                 </p>
               </div>
@@ -84,7 +87,7 @@ export default function RoutingSection() {
                   Declare
                 </span>
                 <p className="text-base text-zinc-600 leading-relaxed">
-                  Map URLs to components. The router handles the rest —
+                  Map URLs to components. The router handles the rest:
                   active link styling, param parsing, navigation history.
                 </p>
               </div>
@@ -103,7 +106,10 @@ export default function RoutingSection() {
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Declarative routing
             </p>
-            <CodeBlock code={routingSlideCode} lang="jsx" />
+            <div className="flex flex-col gap-4">
+              <CodeBlock code={routingSlideCode} lang="jsx" />
+              <CodeVisual><RoutesVisual /></CodeVisual>
+            </div>
           </div>
         </div>
 
@@ -123,24 +129,38 @@ export default function RoutingSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Challenges — Section 05
+              Challenges: Section 05
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
               If something in your app can be shared or linked to, it belongs
-              in the URL. The current tab, the selected filter, the open modal
-              — anything that represents a meaningful &ldquo;place.&rdquo;
+              in the URL. The current tab, the selected filter, the open modal,
+              anything that represents a meaningful place.
             </p>
           </div>
         </div>
 
-        <ChallengeSection>
+        {/* Route definitions + interactive preview */}
+        <ChallengeSection wide>
           <ChallengeLabel>Route definitions</ChallengeLabel>
-          <CodeBlock code={routingCode} lang="jsx" />
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 max-w-xl">
+              <CodeBlock code={routingCode} lang="jsx" />
+              <CodeVisual><RoutesVisual /></CodeVisual>
+            </div>
+
+            {/* Interactive: click a route → see the page it renders */}
+            <div>
+              <RoutePreviewDemo />
+            </div>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
           <ChallengeLabel>URL as state</ChallengeLabel>
-          <CodeBlock code={urlStateCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={urlStateCode} lang="jsx" />
+            <CodeVisual><UrlParamsVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>

@@ -19,7 +19,7 @@ export default function FrontendHero() {
       </h1>
       <p className="text-sm text-zinc-500 leading-relaxed max-w-lg mb-4">
         The backend handles logic. The frontend handles humans. Structure,
-        appearance, behavior — components, state, and data flow. This is
+        appearance, behavior: components, state, and data flow. This is
         where everything becomes visible.
       </p>
       <div className="flex items-center gap-6 text-xs text-zinc-400 font-mono">

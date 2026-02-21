@@ -11,12 +11,12 @@ export const NAV_SECTIONS = [
 
 // ─── Section 1: The Three Roles ──────────────────────────────────────────────
 
-export const threeRolesCode = `<!-- HTML: the skeleton — what exists -->
-<button class="btn-primary" id="subscribe-btn">
-  Subscribe
+export const threeRolesCode = `<!-- HTML: the skeleton (what exists) -->
+<button class="btn-primary" id="enroll-btn">
+  Enroll in Course
 </button>
 
-/* CSS: the skin — how it looks */
+/* CSS: the skin (how it looks) */
 .btn-primary {
   background: #0f172a;
   color: white;
@@ -24,18 +24,18 @@ export const threeRolesCode = `<!-- HTML: the skeleton — what exists -->
   border-radius: 4px;
 }
 
-// JavaScript: the nervous system — what it does
-document.getElementById('subscribe-btn')
+// JavaScript: the nervous system (what it does)
+document.getElementById('enroll-btn')
   .addEventListener('click', () => {
-    subscribe(currentUser.id);
+    enroll(student.id, courseId);
   });`;
 
-export const threeRolesHtmlCode = `<!-- HTML: the skeleton — what exists -->
-<button class="btn-primary" id="subscribe-btn">
-  Subscribe
+export const threeRolesHtmlCode = `<!-- HTML: the skeleton (what exists) -->
+<button class="btn-primary" id="enroll-btn">
+  Enroll in Course
 </button>`;
 
-export const threeRolesCssCode = `/* CSS: the skin — how it looks */
+export const threeRolesCssCode = `/* CSS: the skin (how it looks) */
 .btn-primary {
   background: #0f172a;
   color: white;
@@ -43,23 +43,23 @@ export const threeRolesCssCode = `/* CSS: the skin — how it looks */
   border-radius: 4px;
 }`;
 
-export const threeRolesJsCode = `// JavaScript: the nervous system — what it does
-document.getElementById('subscribe-btn')
+export const threeRolesJsCode = `// JavaScript: the nervous system (what it does)
+document.getElementById('enroll-btn')
   .addEventListener('click', () => {
-    subscribe(currentUser.id);
+    enroll(student.id, courseId);
   });`;
 
 export const threeRolesBadCode = `<!-- Bad: mixing all three concerns -->
 <button
   style="background:#0f172a; color:white; padding:8px 16px"
-  onclick="fetch('/subscribe?id='+userId)"
+  onclick="fetch('/api/students/'+studentId+'/enroll', { method: 'POST' })"
 >
-  Subscribe
+  Enroll in Course
 </button>`;
 
 export const threeRolesGoodCode = `<!-- Good: separation of concerns -->
-<button class="btn-primary" data-action="subscribe">
-  Subscribe
+<button class="btn-primary" data-action="enroll">
+  Enroll in Course
 </button>
 
 <!-- Behavior is in JS, appearance is in CSS -->
@@ -67,16 +67,16 @@ export const threeRolesGoodCode = `<!-- Good: separation of concerns -->
 
 export const threeRolesQuiz = {
   question:
-    "A designer wants to change the button color from black to blue. Which file should change?",
+    "The design team wants enrolled students' names to display in green. Which file should change?",
   options: [
-    { id: "a", label: "The HTML file — the button element is defined there" },
-    { id: "b", label: "The CSS file — appearance is CSS's responsibility" },
-    { id: "c", label: "The JavaScript file — the click handler lives there" },
+    { id: "a", label: "The HTML file (the student name element lives there)" },
+    { id: "b", label: "The CSS file (appearance is CSS's responsibility)" },
+    { id: "c", label: "The JavaScript file (enrollment status lives there)" },
     { id: "d", label: "All three files need to be updated" },
   ],
   correctId: "b",
   explanation:
-    "Appearance belongs to CSS. If each concern is properly separated, the designer only touches the CSS file — the HTML structure and JS behavior don't change at all. This is why separation of concerns matters.",
+    "Appearance belongs to CSS. If each concern is properly separated, the designer only touches the CSS file. The HTML structure and JS behavior don't change at all. This is why separation of concerns matters.",
 };
 
 export const rolesMatchPairs = [
@@ -89,12 +89,12 @@ export const rolesMatchPairs = [
 export const rolesBucketItems = [
   { id: "font-size", label: "font-size: 16px" },
   { id: "click-handler", label: "button.addEventListener('click', ...)" },
-  { id: "p-tag", label: "<p>Hello world</p>" },
+  { id: "p-tag", label: "<p>GPA: 3.8</p>" },
   { id: "display-flex", label: "display: flex" },
-  { id: "fetch-api", label: "fetch('/api/users')" },
-  { id: "h1-tag", label: "<h1>Welcome</h1>" },
+  { id: "fetch-api", label: "fetch('/api/students')" },
+  { id: "h1-tag", label: "<h1>Student Portal</h1>" },
   { id: "color", label: "color: #333" },
-  { id: "form-tag", label: "<form action='/submit'>" },
+  { id: "form-tag", label: "<form action='/enroll'>" },
 ];
 
 export const rolesBucketBuckets = [
@@ -118,41 +118,69 @@ export const rolesBucketMapping: Record<string, string> = {
 
 export const componentBadCode = `<!-- Bad: copy-pasting the same structure everywhere -->
 <div class="card">
-  <img src="/alice.jpg" />
-  <h3>Alice</h3>
-  <p>Designer</p>
+  <img src="/ana.jpg" />
+  <h3>Ana Reyes</h3>
+  <p>Year 3 · GPA 3.9</p>
 </div>
 <div class="card">
-  <img src="/bob.jpg" />
-  <h3>Bob</h3>
-  <p>Engineer</p>
+  <img src="/ben.jpg" />
+  <h3>Ben Cruz</h3>
+  <p>Year 2 · GPA 3.5</p>
 </div>
 <!-- If the card design changes, update every copy -->`;
 
 export const componentGoodCode = `// Good: one component, used everywhere
-function UserCard({ name, role, avatar }) {
+function StudentCard({ name, year, gpa, avatar }) {
   return (
     <div className="card">
       <img src={avatar} />
       <h3>{name}</h3>
-      <p>{role}</p>
+      <p>Year {year} · GPA {gpa}</p>
     </div>
   );
 }
 
 // If the card design changes, change it once
-<UserCard name="Alice" role="Designer" avatar="/alice.jpg" />
-<UserCard name="Bob"   role="Engineer" avatar="/bob.jpg"   />`;
+<StudentCard name="Ana Reyes" year={3} gpa={3.9} avatar="/ana.jpg" />
+<StudentCard name="Ben Cruz"  year={2} gpa={3.5} avatar="/ben.jpg"  />`;
+
+/** 50-student scenario for copy-paste vs reuse comparison */
+export const componentComparisonBadCode = `<!-- Bad: copy the same card 50 times -->
+<div class="card">
+  <img src="/ana.jpg" /><h3>Ana Reyes</h3><p>Year 3 · GPA 3.9</p>
+</div>
+<div class="card">
+  <img src="/ben.jpg" /><h3>Ben Cruz</h3><p>Year 2 · GPA 3.5</p>
+</div>
+<!-- ... 48 more identical blocks ... -->
+<div class="card">
+  <img src="/student50.jpg" /><h3>...</h3><p>...</p>
+</div>
+<!-- Change the card design? Update 50 places. -->`;
+
+export const componentComparisonGoodCode = `// Good: one component, students.map(...)
+function StudentCard({ name, year, gpa, avatar }) {
+  return (
+    <div className="card">
+      <img src={avatar} /><h3>{name}</h3><p>Year {year} · GPA {gpa}</p>
+    </div>
+  );
+}
+
+{students.map(s => (
+  <StudentCard key={s.id} name={s.name} year={s.year} gpa={s.gpa} avatar={s.avatar} />
+))}
+// 50 students? One loop. Change the card? Change it once.`;
 
 export const compositionCode = `// A page is just components all the way down
-function ProfilePage() {
+function StudentDashboard() {
   return (
     <Layout>
       <NavBar />
       <main>
-        <UserCard user={currentUser} />
-        <PostList posts={userPosts} />
-        <FollowerCount count={124} />
+        <StudentCard student={currentStudent} />
+        <CourseList courses={enrolledCourses} />
+        <GpaChart gpa={currentStudent.gpa} />
       </main>
       <Footer />
     </Layout>
@@ -173,53 +201,53 @@ function Button({ label, variant = "primary", onClick }) {
 
 export const propsFlowLoopCode = `// 1. Parent owns data
 function Parent() {
-  const [user, setUser] = useState(null);
-  useEffect(() => { fetch('/api/user').then(r => r.json()).then(setUser); }, []);
-  return <UserCard user={user} />;  // 2. Pass as props
+  const [student, setStudent] = useState(null);
+  useEffect(() => { fetch('/api/students/42').then(r => r.json()).then(setStudent); }, []);
+  return <StudentCard student={student} />;  // 2. Pass as props
 }
 
-function UserCard({ user }) {  // 3. Child receives, renders
-  return <div>{user?.name}</div>;
+function StudentCard({ student }) {  // 3. Child receives, renders
+  return <div>{student?.fullName}, GPA: {student?.gpa}</div>;
 }
 // Loop: state change → re-render → new props down`;
 
 export const propsSourcesCode = `// Props always come from the parent
 
 // 1. Parent state
-const [items, setItems] = useState([]);
-<ProductList items={items} />
+const [students, setStudents] = useState([]);
+<StudentList students={students} />
 
 // 2. Pass-through (parent's props)
-function Layout({ user }) {
-  return <Header user={user} />;
+function Layout({ student }) {
+  return <Header student={student} />;
 }
 
 // 3. Fetched (parent fetches, passes down)
-const [posts, setPosts] = useState([]);
-useEffect(() => fetch('/api/posts').then(r => r.json()).then(setPosts), []);
-<PostList posts={posts} />
+const [courses, setCourses] = useState([]);
+useEffect(() => fetch('/api/students/42/courses').then(r => r.json()).then(setCourses), []);
+<CourseList courses={courses} />
 
 // 4. Derived
-<UserCard name={user.firstName + ' ' + user.lastName} />
+<StudentCard name={student.firstName + ' ' + student.lastName} />
 
 // 5. Hardcoded
-<Button label="Submit" variant="primary" />`;
+<Button label="Enroll" variant="primary" />`;
 
-export const childrenCode = `// children = whatever goes between the opening and closing tags
-function Card({ children }) {
-  return <div className="card">{children}</div>;
+export const childrenCode = `// children = content between the tags (passed as children prop)
+function Badge({ children }) {
+  return <span className="badge">{children}</span>;
 }
 
-<Card>Hello</Card>           // children is "Hello"
-<Card><span>Hi</span></Card>  // children is <span>Hi</span>`;
+<Badge>Dean's List</Badge>           // children is "Dean's List"
+<Badge><strong>Honor Roll</strong></Badge>  // children is <strong>Honor Roll</strong>`;
 
 export const componentQuiz = {
   question:
-    "You build a ProductCard component and use it 50 times in your store. You need to add a 'sale badge' to every card. What do you change?",
+    "You build a StudentCard component and use it 50 times across the portal. You need to add a 'Dean's List' badge to every card. What do you change?",
   options: [
-    { id: "a", label: "Update all 50 usages of ProductCard across the codebase" },
-    { id: "b", label: "Update the ProductCard component once" },
-    { id: "c", label: "Create a new SaleProductCard and replace all 50 usages" },
+    { id: "a", label: "Update all 50 usages of StudentCard across the codebase" },
+    { id: "b", label: "Update the StudentCard component once" },
+    { id: "c", label: "Create a new DeansListStudentCard and replace all 50 usages" },
     { id: "d", label: "Add the badge with CSS only" },
   ],
   correctId: "b",
@@ -228,11 +256,11 @@ export const componentQuiz = {
 };
 
 export const componentDragSortItems = [
-  { id: "define", label: "Define the component: function UserCard({ name, avatar })" },
-  { id: "markup", label: "Return JSX: <div><img src={avatar} /><h3>{name}</h3></div>" },
-  { id: "export", label: "Export the component: export default UserCard" },
-  { id: "import", label: "Import it where needed: import UserCard from './UserCard'" },
-  { id: "use", label: "Use it with props: <UserCard name='Alice' avatar='/alice.jpg' />" },
+  { id: "define", label: "Define the component: function StudentCard({ name, year, gpa })" },
+  { id: "markup", label: "Return JSX: <div><h3>{name}</h3><p>Year {year} · GPA {gpa}</p></div>" },
+  { id: "export", label: "Export the component: export default StudentCard" },
+  { id: "import", label: "Import it where needed: import StudentCard from './StudentCard'" },
+  { id: "use", label: "Use it with props: <StudentCard name='Ana Reyes' year={3} gpa={3.9} />" },
 ];
 
 export const componentDragSortCorrectOrder = [
@@ -250,7 +278,7 @@ export const propsMatchPairs = [
   },
   {
     left: "Component",
-    right: "A reusable UI block (e.g. Button, UserCard). Define once, use everywhere—change it once, it updates everywhere.",
+    right: "A reusable UI block (e.g. StudentCard, Button). Define once, use everywhere. Change it once, it updates everywhere.",
   },
   {
     left: "One-way flow",
@@ -286,46 +314,47 @@ function Counter() {
 // The core loop: action → state change → UI update`;
 
 export const liftStateCode = `// Lift state up when multiple components need the same data
-function ShoppingCart() {
-  const [items, setItems] = useState([]);   // lifted up
+function EnrollmentPanel() {
+  const [enrolled, setEnrolled] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div>
-      <ProductList onAdd={(item) => setItems([...items, item])} />
-      <CartSummary items={items} />          {/* needs items */}
-      <CheckoutButton disabled={items.length === 0} />
+      <CourseList onEnroll={(c) => setEnrolled([...enrolled, c])} />
+      <EnrolledSummary courses={enrolled} />
+      {submitted ? <Submitted onReset={() => { setEnrolled([]); setSubmitted(false); }} />
+        : <SubmitButton disabled={!enrolled.length} onClick={() => setSubmitted(true)} />}
     </div>
   );
 }
 
-// ProductList, CartSummary, and CheckoutButton
-// all respond to the same state — owned by their parent`;
+// Parent owns enrolled + submitted. All children react.`;
 
 export const derivedStateCode = `// Derived state: compute from existing state, don't duplicate it
-function Cart({ items }) {
-  // Don't do this: const [total, setTotal] = useState(0)
+function StudentGrades({ grades }) {
+  // Don't do this: const [average, setAverage] = useState(0)
   // Keeping two pieces of state in sync is a source of bugs
 
-  const total = items.reduce((sum, item) => sum + item.price, 0);
-  const itemCount = items.length;
-  const isEmpty = items.length === 0;
+  const average = grades.reduce((sum, g) => sum + g.score, 0) / grades.length;
+  const gradeCount = grades.length;
+  const isHonors = average >= 3.5;
 
-  // total, itemCount, isEmpty are derived — they update automatically
-  // when items changes. No extra state needed.
+  // average, gradeCount, isHonors are derived; they update automatically
+  // when grades changes. No extra state needed.
 }`;
 
 export const stateQuiz = {
   question:
     "A dropdown menu needs to track whether it's open or closed. Where should this state live?",
   options: [
-    { id: "a", label: "In a global state store — other components might need it" },
-    { id: "b", label: "In the Dropdown component itself — only it needs to know" },
+    { id: "a", label: "In a global state store (other components might need it)" },
+    { id: "b", label: "In the Dropdown component itself (only it needs to know)" },
     { id: "c", label: "In the parent page component that renders the dropdown" },
     { id: "d", label: "In a URL query parameter so the state persists" },
   ],
   correctId: "b",
   explanation:
-    "Keep state as close to where it's used as possible. Whether a dropdown is open is local UI state — no other component cares. Putting it in global state would be over-engineering. Lift state up only when multiple siblings need it.",
+    "Keep state as close to where it's used as possible. Whether a dropdown is open is local UI state. No other component needs it. Putting it in global state would be over-engineering. Lift state up only when multiple siblings need it.",
 };
 
 export const stateLoopDragItems = [
@@ -346,13 +375,13 @@ export const stateLoopCorrectOrder = [
 
 export const stateBucketItems = [
   { id: "toggle", label: "Modal open/closed" },
-  { id: "cart", label: "Shopping cart contents" },
-  { id: "input", label: "Search input value" },
-  { id: "user", label: "Logged-in user info" },
-  { id: "tab", label: "Active tab in a tab bar" },
+  { id: "enrolled", label: "Enrolled courses list" },
+  { id: "input", label: "Student search input value" },
+  { id: "user", label: "Logged-in student/admin info" },
+  { id: "tab", label: "Active tab in student profile" },
   { id: "theme", label: "Light / dark mode preference" },
   { id: "hover", label: "Whether a button is hovered" },
-  { id: "form", label: "Form field values" },
+  { id: "form", label: "Enrollment form field values" },
 ];
 
 export const stateBucketBuckets = [
@@ -362,7 +391,7 @@ export const stateBucketBuckets = [
 
 export const stateBucketMapping: Record<string, string> = {
   toggle: "local",
-  cart: "global",
+  enrolled: "global",
   input: "local",
   user: "global",
   tab: "local",
@@ -374,9 +403,9 @@ export const stateBucketMapping: Record<string, string> = {
 // ─── Section 4: Fetching Data ─────────────────────────────────────────────────
 
 export const fetchBasicCode = `// Every fetch has three states you must handle
-async function loadUser(id) {
+async function loadStudent(id) {
   try {
-    const response = await fetch(\`/api/users/\${id}\`);
+    const response = await fetch(\`/api/students/\${id}\`);
 
     if (!response.ok) {
       throw new Error(\`HTTP \${response.status}\`);
@@ -389,46 +418,46 @@ async function loadUser(id) {
 }`;
 
 export const fetchComponentCode = `// In React: model all three states in your component
-function UserProfile({ userId }) {
-  const [user, setUser] = useState(null);
+function StudentProfile({ studentId }) {
+  const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(\`/api/users/\${userId}\`)
+    fetch(\`/api/students/\${studentId}\`)
       .then(res => res.json())
       .then(data => {
-        setUser(data);
+        setStudent(data);
         setLoading(false);
       })
       .catch(err => {
         setError(err.message);
         setLoading(false);
       });
-  }, [userId]);
+  }, [studentId]);
 
-  if (loading) return <Skeleton />;        // loading state
-  if (error)   return <ErrorMessage />;    // error state
-  return <UserCard user={user} />;         // success state
+  if (loading) return <Skeleton />;           // loading state
+  if (error)   return <ErrorMessage />;       // error state
+  return <StudentCard student={student} />;   // success state
 }`;
 
 export const fetchStateBadCode = `// Bad: only handling the happy path
-function UserProfile({ userId }) {
-  const [user, setUser] = useState(null);
+function StudentProfile({ studentId }) {
+  const [student, setStudent] = useState(null);
 
   useEffect(() => {
-    fetch(\`/api/users/\${userId}\`)
+    fetch(\`/api/students/\${studentId}\`)
       .then(res => res.json())
-      .then(setUser);
+      .then(setStudent);
     // No loading state → blank screen while fetching
     // No error handling → silent failure
-  }, [userId]);
+  }, [studentId]);
 
-  return <UserCard user={user} />; // crashes if user is null
+  return <StudentCard student={student} />; // crashes if student is null
 }`;
 
 export const fetchStateGoodCode = `// Good: all three states handled explicitly
-function UserProfile({ userId }) {
+function StudentProfile({ studentId }) {
   const [state, setState] = useState({
     data: null,
     loading: true,
@@ -437,20 +466,20 @@ function UserProfile({ userId }) {
 
   useEffect(() => {
     setState({ data: null, loading: true, error: null });
-    fetch(\`/api/users/\${userId}\`)
+    fetch(\`/api/students/\${studentId}\`)
       .then(r => r.ok ? r.json() : Promise.reject(r.status))
       .then(data => setState({ data, loading: false, error: null }))
       .catch(err => setState({ data: null, loading: false, error: err }));
-  }, [userId]);
+  }, [studentId]);
 
   if (state.loading) return <Skeleton />;
   if (state.error)   return <ErrorMessage error={state.error} />;
-  return <UserCard user={state.data} />;
+  return <StudentCard student={state.data} />;
 }`;
 
 export const fetchQuiz = {
   question:
-    "Your fetch call succeeds and returns data, but the component crashes on render. What's the most likely cause?",
+    "Your fetch to GET /students/42 succeeds and returns data, but the component crashes on render. What's the most likely cause?",
   options: [
     { id: "a", label: "The network request was too slow" },
     { id: "b", label: "The component tried to render before data arrived, and state was null" },
@@ -459,24 +488,24 @@ export const fetchQuiz = {
   ],
   correctId: "b",
   explanation:
-    "Without a loading state, the component renders immediately with null data. Accessing null.name or null.avatar throws an error. Always initialize state to a safe value and show a loader until the data arrives.",
+    "Without a loading state, the component renders immediately with null data. Accessing null.fullName or null.gpa throws an error. Always initialize state to a safe value and show a loader until the data arrives.",
 };
 
 export const fetchStatesMatchPairs = [
   { left: "loading: true", right: "Show a skeleton or spinner" },
-  { left: "error: 'Not found'", right: "Show an error message with retry" },
-  { left: "data: { name: 'Alice' }", right: "Render the actual content" },
+  { left: "error: 'Student not found'", right: "Show an error message with retry" },
+  { left: "data: { fullName: 'Ana Reyes', gpa: 3.9 }", right: "Render the actual content" },
   { left: "stale data + re-fetching", right: "Show old content with a subtle refresh indicator" },
 ];
 
 export const fetchDragSortItems = [
-  { id: "trigger", label: "Component mounts or userId changes" },
+  { id: "trigger", label: "Component mounts or studentId changes" },
   { id: "set-loading", label: "Set loading: true, clear previous error" },
-  { id: "fetch", label: "fetch('/api/users/id') is called" },
+  { id: "fetch", label: "fetch('/api/students/id') is called" },
   { id: "await", label: "Await the response from the server" },
   { id: "parse", label: "Parse the JSON response body" },
   { id: "set-data", label: "Set data in state, set loading: false" },
-  { id: "render", label: "Component re-renders with the real user data" },
+  { id: "render", label: "Component re-renders with the real student data" },
 ];
 
 export const fetchDragSortCorrectOrder = [
@@ -493,24 +522,24 @@ export const fetchDragSortCorrectOrder = [
 
 export const routingCode = `// Declarative routing: URL → Component
 // When the URL is /dashboard, show <Dashboard />
-// When the URL is /profile/:id, show <ProfilePage />
+// When the URL is /students/:id, show <StudentProfile />
 
 // React Router example
 <Routes>
-  <Route path="/"            element={<Home />} />
-  <Route path="/dashboard"   element={<Dashboard />} />
-  <Route path="/profile/:id" element={<ProfilePage />} />
-  <Route path="/settings"    element={<Settings />} />
-  <Route path="*"            element={<NotFound />} />
+  <Route path="/"              element={<Home />} />
+  <Route path="/dashboard"     element={<Dashboard />} />
+  <Route path="/students"      element={<StudentList />} />
+  <Route path="/students/:id"  element={<StudentProfile />} />
+  <Route path="*"              element={<NotFound />} />
 </Routes>
 
 // The browser URL changes, but the page never fully reloads
 // JavaScript swaps out which component is shown`;
 
-export const urlStateCode = `// The URL is state — treat it as the source of truth
-function ProfilePage() {
-  const { id } = useParams();       // /profile/42 → id = "42"
-  const [tab] = useSearchParams();  // /profile/42?tab=posts
+export const urlStateCode = `// The URL is state: treat it as the source of truth
+function StudentProfile() {
+  const { id } = useParams();       // /students/42 → id = "42"
+  const [tab] = useSearchParams();  // /students/42?tab=grades
 
   // If the user refreshes, shares the link, or hits back:
   // the URL preserves exactly where they were
@@ -518,25 +547,25 @@ function ProfilePage() {
 
 // Navigating programmatically
 const navigate = useNavigate();
-navigate('/dashboard');           // pushes to history
-navigate('/login', { replace: true }); // replaces (no back)`;
+navigate('/students');                    // pushes to history
+navigate('/login', { replace: true });    // replaces (no back)`;
 
 export const routingQuiz = {
   question:
-    "A user fills out a multi-step form and accidentally refreshes the browser. The form resets to step 1. What's the root cause?",
+    "A student fills out a multi-step enrollment form and accidentally refreshes the browser. The form resets to step 1. What's the root cause?",
   options: [
     { id: "a", label: "The form was using local component state, not the URL" },
-    { id: "b", label: "The browser always clears state on refresh — nothing can prevent this" },
+    { id: "b", label: "The browser always clears state on refresh (nothing can prevent this)" },
     { id: "c", label: "The CSS was not cached properly" },
     { id: "d", label: "The fetch request failed and the form reset itself" },
   ],
   correctId: "a",
   explanation:
-    "Local state lives in memory and disappears on refresh. If the current step were in the URL (/checkout/step-2), a refresh would restore the user to the correct step. The URL is the only state that survives a page reload.",
+    "Local state lives in memory and disappears on refresh. If the current step were in the URL (/enroll/step-2), a refresh would restore the student to the correct step. The URL is the only state that survives a page reload.",
 };
 
 export const routingMatchPairs = [
-  { left: "/profile/:id", right: "Dynamic route — id changes per user" },
+  { left: "/students/:id", right: "Dynamic route: id changes per student" },
   { left: "useNavigate()", right: "Programmatically move to a different route" },
   { left: "404 route (*)", right: "Catch-all for unmatched URLs" },
   { left: "replace: true", right: "Navigate without adding to browser history" },
@@ -546,10 +575,10 @@ export const routingBucketItems = [
   { id: "spa-nav", label: "Clicking a <Link> without page reload" },
   { id: "full-reload", label: "Pressing F5 / browser refresh" },
   { id: "back-btn", label: "Browser back button" },
-  { id: "anchor-tag", label: "Plain <a href='/page'> navigates with reload" },
-  { id: "url-params", label: "Reading :id from the URL" },
-  { id: "query-string", label: "?tab=posts in the URL" },
-  { id: "history-push", label: "navigate('/dashboard') in JavaScript" },
+  { id: "anchor-tag", label: "Plain <a href='/students'> navigates with reload" },
+  { id: "url-params", label: "Reading :id from /students/:id" },
+  { id: "query-string", label: "?tab=grades in /students/42?tab=grades" },
+  { id: "history-push", label: "navigate('/students') in JavaScript" },
   { id: "redirect", label: "navigate('/login', { replace: true })" },
 ];
 
@@ -573,24 +602,24 @@ export const routingBucketMapping: Record<string, string> = {
 
 export const checklistSteps = [
   {
-    title: "Route /profile/:id renders <ProfilePage />",
+    title: "Route /students/:id renders <StudentProfile />",
     content:
       "The router matches the URL and mounts the correct component. The :id param is available via useParams().",
     code: `// Router config
-<Route path="/profile/:id" element={<ProfilePage />} />
+<Route path="/students/:id" element={<StudentProfile />} />
 
-// Inside ProfilePage
+// Inside StudentProfile
 const { id } = useParams(); // "42"`,
   },
   {
-    title: "Component mounts → fetch fires for user data",
+    title: "Component mounts → fetch fires for student data",
     content:
       "useEffect with [id] as dependency runs after the first render. The fetch begins, loading state is true.",
     code: `useEffect(() => {
   setLoading(true);
-  fetch(\`/api/users/\${id}\`)
+  fetch(\`/api/students/\${id}\`)
     .then(r => r.json())
-    .then(setUser)
+    .then(setStudent)
     .catch(setError)
     .finally(() => setLoading(false));
 }, [id]);`,
@@ -598,7 +627,7 @@ const { id } = useParams(); // "42"`,
   {
     title: "While fetching → show a <Skeleton /> loader",
     content:
-      "The loading state is true, so the component renders a skeleton. The user sees immediate feedback — not a blank screen.",
+      "The loading state is true, so the component renders a skeleton. The user sees immediate feedback with no blank screen.",
     code: `if (loading) return (
   <div className="space-y-4">
     <Skeleton className="h-12 w-12 rounded-full" />
@@ -610,52 +639,53 @@ const { id } = useParams(); // "42"`,
   {
     title: "On success → pass data as props to child components",
     content:
-      "User data arrives, state updates, component re-renders. The data flows down as props to UserCard and PostList.",
+      "Student data arrives, state updates, component re-renders. The data flows down as props to StudentCard and CourseList.",
     code: `return (
   <div>
-    <UserCard
-      name={user.name}
-      avatar={user.avatar}
-      role={user.role}
+    <StudentCard
+      name={student.fullName}
+      gpa={student.gpa}
+      status={student.enrollment_status}
     />
-    <PostList posts={user.posts} />
+    <CourseList courses={student.courses} />
   </div>
 );`,
   },
   {
     title: "On error → show <ErrorMessage /> with retry",
     content:
-      "If the fetch fails, the error state is set. The user sees a meaningful message and a way to try again.",
+      "If the fetch fails (e.g. student not found → 404), the error state is set. The user sees a meaningful message and a way to try again.",
     code: `if (error) return (
   <ErrorMessage
-    message="Couldn't load this profile."
+    message="Couldn't load this student's profile."
     onRetry={() => setRetryKey(k => k + 1)}
   />
 );`,
   },
   {
-    title: "User clicks 'Edit' → local state toggles to edit mode",
+    title: "User clicks 'Edit GPA' → local state toggles to edit mode",
     content:
-      "A boolean isEditing state switches the rendered view. No new fetch — just a state change causing a re-render.",
+      "A boolean isEditing state switches the rendered view. No new fetch, just a state change causing a re-render.",
     code: `const [isEditing, setIsEditing] = useState(false);
 
 // In JSX:
 {isEditing
-  ? <EditForm user={user} onSave={handleSave} />
-  : <UserCard user={user} onEdit={() => setIsEditing(true)} />
+  ? <GpaEditForm student={student} onSave={handleSave} />
+  : <StudentCard student={student} onEdit={() => setIsEditing(true)} />
 }`,
   },
   {
-    title: "On save → POST to backend → update state",
+    title: "On save → PATCH /students/:id/gpa → update state",
     content:
-      "The edit form submits. A POST fires to the API. On success, local state updates with the new data — no full page reload needed.",
-    code: `async function handleSave(updatedData) {
-  const res = await fetch(\`/api/users/\${id}\`, {
-    method: 'POST',
-    body: JSON.stringify(updatedData),
+      "The edit form submits. A PATCH fires to the backend, matching the backend's PATCH /students/:id/gpa endpoint. On success, local state updates with the new GPA with no full page reload.",
+    code: `async function handleSave({ gpa }) {
+  const res = await fetch(\`/api/students/\${id}/gpa\`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ gpa }),
   });
   const updated = await res.json();
-  setUser(updated);       // update state with fresh data
+  setStudent(updated);    // update state with fresh data
   setIsEditing(false);    // return to view mode
 }`,
   },
@@ -664,11 +694,11 @@ const { id } = useParams(); // "42"`,
 export const finalQuizzes = [
   {
     question:
-      "Which language is responsible for making a button change color when hovered?",
+      "Which language is responsible for making the 'Enroll' button change color when hovered?",
     options: [
-      { id: "a", label: "HTML — the button is defined there" },
-      { id: "b", label: "JavaScript — hover is an event" },
-      { id: "c", label: "CSS — appearance and state styling belong to CSS" },
+      { id: "a", label: "HTML (the button is defined there)" },
+      { id: "b", label: "JavaScript (hover is an event)" },
+      { id: "c", label: "CSS (appearance and state styling belong to CSS)" },
       { id: "d", label: "All three equally" },
     ],
     correctId: "c",
@@ -677,20 +707,20 @@ export const finalQuizzes = [
   },
   {
     question:
-      "You have a <Notification /> component that should appear in both the header and a sidebar. Where should the notification count state live?",
+      "An unread-message badge should appear in both the top NavBar and the student sidebar. Where should the unread count state live?",
     options: [
-      { id: "a", label: "Inside <Header /> — it rendered first" },
-      { id: "b", label: "Inside <Sidebar /> — it's more visible there" },
-      { id: "c", label: "In a common parent or global state — both components need it" },
-      { id: "d", label: "In the <Notification /> component itself" },
+      { id: "a", label: "Inside <NavBar /> (it rendered first)" },
+      { id: "b", label: "Inside <Sidebar /> (it's more visible there)" },
+      { id: "c", label: "In a common parent or global state (both components need it)" },
+      { id: "d", label: "In the badge component itself" },
     ],
     correctId: "c",
     explanation:
-      "When two components need the same state, lift it to their closest common ancestor — or use global state. Local state is invisible to siblings. This is the 'lift state up' principle.",
+      "When two components need the same state, lift it to their closest common ancestor, or use global state. Local state is invisible to siblings. This is the 'lift state up' principle.",
   },
   {
     question:
-      "A user visits /orders/99 and gets a blank screen with no error message. The network request for order 99 returned a 404. What went wrong?",
+      "A user visits /students/99 and gets a blank screen with no error message. GET /students/99 returned a 404. What went wrong?",
     options: [
       { id: "a", label: "The router did not match the URL" },
       { id: "b", label: "The developer only handled the success state, not the error state" },
@@ -703,15 +733,15 @@ export const finalQuizzes = [
   },
   {
     question:
-      "A user fills a 3-step form, refreshes on step 2, and is sent back to step 1. What would prevent this?",
+      "A student fills a 3-step enrollment form, refreshes on step 2, and is sent back to step 1. What would prevent this?",
     options: [
-      { id: "a", label: "Storing the current step in the URL (e.g., /checkout?step=2)" },
+      { id: "a", label: "Storing the current step in the URL (e.g., /enroll?step=2)" },
       { id: "b", label: "Using a larger React state object" },
       { id: "c", label: "Disabling the browser refresh button" },
       { id: "d", label: "Caching the component with localStorage" },
     ],
     correctId: "a",
     explanation:
-      "The URL is the only state that survives a page reload. If the current step is encoded in the URL, a refresh restores the user to exactly where they were. localStorage also works, but the URL is the canonical answer for navigation state.",
+      "The URL is the only state that survives a page reload. If the current step is encoded in the URL, a refresh restores the student to exactly where they were. localStorage also works, but the URL is the canonical answer for navigation state.",
   },
 ];

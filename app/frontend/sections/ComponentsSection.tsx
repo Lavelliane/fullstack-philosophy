@@ -1,4 +1,5 @@
-import CodeBlock from "../../components/CodeBlock";
+import CodeBlock from "../components/CodeBlock";
+import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import DragSort from "../../components/DragSort";
 import MatchPairs from "../../components/MatchPairs";
@@ -6,7 +7,16 @@ import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
 import ComponentsVisual from "../components/ComponentsVisual";
 import {
-  componentGoodCode,
+  ComponentCardsVisual,
+  ComponentComparisonVisual,
+  PropsButtonsVisual,
+  PropsFlowVisual,
+  ChildrenBadgeVisual,
+  ComposeLayoutVisual,
+} from "../components/CodeVisuals";
+import {
+  componentComparisonBadCode,
+  componentComparisonGoodCode,
   propsCode,
   propsFlowLoopCode,
   propsSourcesCode,
@@ -18,18 +28,19 @@ import {
 } from "../data";
 
 const compositionSlideCode = `// Parent owns data, passes as props
-function ProfilePage() {
-  const [users, setUsers] = useState([]);
+function StudentDashboard() {
+  const [students, setStudents] = useState([]);
   useEffect(() => {
-    fetch('/api/users').then(r => r.json()).then(setUsers);
+    fetch('/api/students').then(r => r.json()).then(setStudents);
   }, []);
 
   return (
     <Layout>
       <NavBar />
-      {users.map(u => (
-        <UserCard key={u.id} user={u} />  {/* one component, many uses */}
+      {students.map(s => (
+        <StudentCard key={s.id} student={s} />  {/* one component, many uses */}
       ))}
+      <Badge>Dean&apos;s List</Badge>   {/* children: content between tags */}
       <Footer />
     </Layout>
   );
@@ -40,7 +51,7 @@ export default function ComponentsSection() {
     <section id="s2" style={{ scrollSnapAlign: "start" }}>
 
       {/* ── Slide ─────────────────────────────────────────────────────── */}
-      <div
+        <div
         className="relative flex flex-col justify-center px-8 md:px-16 overflow-y-auto py-6"
         style={{ height: "calc(100vh - var(--nav-height, 61px))" }}
       >
@@ -48,21 +59,21 @@ export default function ComponentsSection() {
         <span
           aria-hidden
           className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
-          style={{ fontSize: "clamp(120px, 24vw, 200px)", lineHeight: 1 }}
+          style={{ fontSize: "clamp(140px, 28vw, 260px)", lineHeight: 1 }}
         >
           02
         </span>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10 w-full max-w-screen-xl relative z-10 shrink-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10 shrink-0">
 
           {/* Left: concept & discussion */}
           <div className="min-w-0">
-            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-2 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">
               Section 02 · 5 min
             </p>
             <h2
-              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-4"
-              style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
+              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-8"
+              style={{ fontSize: "clamp(36px, 5vw, 60px)" }}
             >
               Stop copying.
               <br />
@@ -70,7 +81,7 @@ export default function ComponentsSection() {
             </h2>
 
             <p className="text-sm text-zinc-600 leading-relaxed mb-4">
-              Break UI into <strong className="text-zinc-900">self-contained units</strong> — Button, UserCard, NavBar.
+              Break UI into <strong className="text-zinc-900">self-contained units</strong>: Button, StudentCard, NavBar.
             </p>
 
             <div className="space-y-3">
@@ -97,7 +108,7 @@ export default function ComponentsSection() {
                   Children
                 </span>
                 <p className="text-sm text-zinc-600 leading-relaxed">
-                  Content between tags. <strong className="text-zinc-900">&lt;Card&gt;...&lt;/Card&gt;</strong> — whatever goes inside becomes the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
+                  Content between tags. <strong className="text-zinc-900">&lt;Card&gt;...&lt;/Card&gt;</strong>, whatever goes inside becomes the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
                 </p>
               </div>
 
@@ -121,8 +132,8 @@ export default function ComponentsSection() {
             </div>
           </div>
 
-          {/* Right: code */}
-          <div className="flex flex-col gap-2 min-w-0">
+          {/* Right: code (desktop only) */}
+          <div className="hidden lg:flex flex-col gap-3 min-w-0">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               In code
             </p>
@@ -132,14 +143,11 @@ export default function ComponentsSection() {
 
         {/* Visual: full width, directly below */}
         <div className="w-full px-0 pt-4 shrink-0">
-          <p className="text-xs text-zinc-400 uppercase tracking-[0.15em] mb-1.5">
-            What it looks like
-          </p>
           <ComponentsVisual />
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-4 left-8 md:left-16 text-zinc-300">
+        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
           </span>
@@ -154,7 +162,7 @@ export default function ComponentsSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Challenges — Section 02
+              Challenges: Section 02
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
               Copy-paste vs reuse. Where props come from. The flow loop. Same ideas, hands-on.
@@ -164,28 +172,24 @@ export default function ComponentsSection() {
 
         <ChallengeSection wide>
           <ChallengeLabel>Code comparison: copy-paste vs. reuse</ChallengeLabel>
-          <CodeBlock
-            mode="split"
-            code={`<!-- Bad: copy the same card three times -->
-<div class="card">
-  <img src="/alice.jpg" />
-  <h3>Alice</h3>
-  <p>Designer</p>
-</div>
-<div class="card">
-  <img src="/bob.jpg" />
-  <h3>Bob</h3>
-  <p>Engineer</p>
-</div>
-<!-- 50 users? Copy 50 times. Change the card? Change 50 places. -->`}
-            splitCode={componentGoodCode}
-            labels={["Bad: copy-paste everywhere", "Good: one component, used everywhere"]}
-          />
+          <div className="flex flex-col gap-4">
+            <CodeBlock
+              mode="split"
+              code={componentComparisonBadCode}
+              splitCode={componentComparisonGoodCode}
+              labels={["Bad: 50 students = 50 copies", "Good: 50 students = one loop"]}
+              lang="jsx"
+            />
+            <CodeVisual><ComponentComparisonVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
           <ChallengeLabel>Props: same component, different inputs</ChallengeLabel>
-          <CodeBlock code={propsCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={propsCode} lang="jsx" />
+            <CodeVisual><PropsButtonsVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
@@ -193,7 +197,10 @@ export default function ComponentsSection() {
           <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Parent owns data</strong> → passes props → <strong>child renders</strong>. State change → re-render → new props.
           </p>
-          <CodeBlock code={propsFlowLoopCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={propsFlowLoopCode} lang="jsx" />
+            <CodeVisual><PropsFlowVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
@@ -201,7 +208,10 @@ export default function ComponentsSection() {
           <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Always the parent.</strong> From state, fetch, or pass-through.
           </p>
-          <CodeBlock code={propsSourcesCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={propsSourcesCode} lang="jsx" />
+            <CodeVisual><ComponentCardsVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
@@ -209,7 +219,10 @@ export default function ComponentsSection() {
           <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Whatever goes inside the tags</strong> is passed as the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
           </p>
-          <CodeBlock code={childrenCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={childrenCode} lang="jsx" />
+            <CodeVisual><ChildrenBadgeVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
 
         <ChallengeSection>
@@ -239,7 +252,10 @@ export default function ComponentsSection() {
           <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Nest components.</strong> A page is Layout with NavBar, content, and Footer inside. Components all the way down.
           </p>
-          <CodeBlock code={compositionSlideCode} lang="jsx" />
+          <div className="flex flex-col gap-4">
+            <CodeBlock code={compositionSlideCode} lang="jsx" />
+            <CodeVisual><ComposeLayoutVisual /></CodeVisual>
+          </div>
         </ChallengeSection>
       </div>
     </section>

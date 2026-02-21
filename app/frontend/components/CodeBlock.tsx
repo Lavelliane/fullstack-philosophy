@@ -1,4 +1,4 @@
-import { highlightCode } from "../../lib/shiki";
+import { highlightCode } from "../../../lib/shiki";
 
 type CodeBlockProps = {
   code: string;
@@ -6,8 +6,6 @@ type CodeBlockProps = {
   splitCode?: string;
   labels?: [string, string];
   lang?: string;
-  /** Renders the frontend output of the code (what it looks like) */
-  visual?: React.ReactNode;
 };
 
 async function HighlightedPre({ code, lang = "typescript" }: { code: string; lang?: string }) {
@@ -28,10 +26,9 @@ export default async function CodeBlock({
   splitCode,
   labels = ["Before", "After"],
   lang = "typescript",
-  visual,
 }: CodeBlockProps) {
-  const codeContent =
-    mode === "split" && splitCode ? (
+  if (mode === "split" && splitCode) {
+    return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <span className="inline-block text-xs text-red-400 uppercase tracking-[0.15em] mb-2">
@@ -46,22 +43,8 @@ export default async function CodeBlock({
           <HighlightedPre code={splitCode} lang={lang} />
         </div>
       </div>
-    ) : (
-      <HighlightedPre code={code} lang={lang} />
-    );
-
-  if (visual) {
-    return (
-      <div className="flex flex-col gap-4">
-        <div className="min-w-0">{codeContent}</div>
-        <div className="min-w-0">
-          <div className="border border-zinc-200 rounded-lg bg-white p-4 flex flex-col items-center justify-center">
-            {visual}
-          </div>
-        </div>
-      </div>
     );
   }
 
-  return codeContent;
+  return <HighlightedPre code={code} lang={lang} />;
 }

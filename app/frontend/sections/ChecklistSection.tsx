@@ -2,14 +2,31 @@ import Quiz from "../../components/Quiz";
 import RevealStepper from "../../components/RevealStepper";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
+import {
+  ChecklistSkeletonVisual,
+  ChecklistStudentCardVisual,
+  ChecklistErrorVisual,
+  ChecklistEditToggleVisual,
+  UrlParamsVisual,
+} from "../components/CodeVisuals";
 import { highlightCode } from "../../../lib/shiki";
 import { checklistSteps, finalQuizzes } from "../data";
 
+const CHECKLIST_STEP_VISUALS: Record<number, React.ReactNode> = {
+  0: <UrlParamsVisual />,
+  2: <ChecklistSkeletonVisual />,
+  3: <ChecklistStudentCardVisual />,
+  4: <ChecklistErrorVisual />,
+  5: <ChecklistEditToggleVisual mode="view" />,
+  6: <ChecklistStudentCardVisual />, // Result after PATCH: updated card
+};
+
 export default async function ChecklistSection() {
   const stepsWithHighlight = await Promise.all(
-    checklistSteps.map(async (step) => ({
+    checklistSteps.map(async (step, index) => ({
       ...step,
       codeHtml: step.code ? await highlightCode(step.code) : undefined,
+      visual: CHECKLIST_STEP_VISUALS[index],
     }))
   );
 
@@ -30,7 +47,7 @@ export default async function ChecklistSection() {
           06
         </span>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-screen-xl relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10">
 
           {/* Left: overview */}
           <div>
@@ -41,20 +58,20 @@ export default async function ChecklistSection() {
               className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-10"
               style={{ fontSize: "clamp(36px, 5vw, 60px)" }}
             >
-              A profile page:
+              A student page:
               <br />
               end to end.
             </h2>
 
             <div className="space-y-3 mb-10">
               {[
-                "Route /profile/:id renders <ProfilePage />",
-                "Component mounts → fetch fires",
-                "Loading → show a skeleton",
-                "Success → render <UserCard /> and <PostList />",
-                "Error → show message + retry",
-                "Edit button → local state toggles view",
-                "Save → POST → update state",
+                "Route /students/:id renders <StudentProfile />",
+                "Component mounts, fetch /api/students/:id fires",
+                "Loading: show a skeleton",
+                "Success: render <StudentCard /> and <CourseList />",
+                "Error: show message and retry",
+                "Edit GPA button: local state toggles view",
+                "Save: PATCH /students/:id/gpa, update state",
               ].map((step, i) => (
                 <div key={i} className="flex items-start gap-4">
                   <span className="font-mono text-xs text-zinc-300 w-5 shrink-0 mt-0.5 text-right">
@@ -112,12 +129,12 @@ export default async function ChecklistSection() {
         >
           <div className="max-w-2xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
-              Walkthrough + Final Quiz — Section 06
+              Walkthrough + Final Quiz: Section 06
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
-              Step through a full User Profile Page — route to render,
-              fetch to display, edit to save. Every concept from this session
-              connects here.
+              Step through a full Student Profile Page: route to render,
+              fetch to display, edit GPA and save. Every concept from this
+              session connects here.
             </p>
           </div>
         </div>
@@ -126,7 +143,7 @@ export default async function ChecklistSection() {
           <ChallengeLabel>Walkthrough: step through the lifecycle</ChallengeLabel>
           <RevealStepper
             steps={stepsWithHighlight}
-            prompt="A user navigates to /profile/42. Step through what happens."
+            prompt="A user navigates to /students/42. Step through what happens."
           />
         </ChallengeSection>
 
