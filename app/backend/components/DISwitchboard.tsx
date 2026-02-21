@@ -83,10 +83,10 @@ export default function DISwitchboard() {
 
   return (
     <div className="font-mono text-xs">
-      <p className="text-zinc-500 text-[11px] mb-6 leading-relaxed">
-        <strong className="text-zinc-700">OrderService</strong> has a dependency slot for a database.
+      <p className="text-zinc-500 dark:text-zinc-400 text-[11px] mb-6 leading-relaxed">
+        <strong className="text-zinc-700 dark:text-zinc-300">OrderService</strong> has a dependency slot for a database.
         Click an implementation to plug it in, then call{" "}
-        <code className="bg-zinc-100 px-1">create()</code> to see what happens.
+        <code className="bg-zinc-100 dark:bg-zinc-700 px-1">create()</code> to see what happens.
         The service code never changes.
       </p>
 
@@ -94,7 +94,7 @@ export default function DISwitchboard() {
 
         {/* ── Left: implementations ───────────────────────────────────── */}
         <div className="flex flex-col gap-3 shrink-0">
-          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 mb-1">
+          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1">
             Pick an implementation
           </p>
           {implementations.map((i) => (
@@ -104,38 +104,38 @@ export default function DISwitchboard() {
               className={`border px-4 py-3 text-left transition-all duration-150 w-48 ${
                 selected === i.id
                   ? i.color + " ring-2 ring-offset-1 ring-zinc-400"
-                  : "border-zinc-200 bg-white text-zinc-600 hover:border-zinc-400"
+                  : "border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:border-zinc-400 dark:hover:border-zinc-500"
               }`}
             >
               <div className="font-semibold text-[11px]">{i.name}</div>
-              <div className="text-[9px] text-zinc-400 mt-0.5">{i.sub}</div>
+              <div className="text-[9px] text-zinc-400 dark:text-zinc-500 mt-0.5">{i.sub}</div>
             </button>
           ))}
         </div>
 
         {/* ── Center: OrderService ─────────────────────────────────────── */}
         <div className="flex flex-col items-center gap-2 flex-1">
-          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 mb-1">
+          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-1">
             OrderService
           </p>
-          <div className="border-2 border-zinc-800 bg-white w-full max-w-xs">
-            <div className="bg-zinc-100 border-b border-zinc-800 px-4 py-2 text-center">
-              <div className="font-semibold text-zinc-900 text-[11px]">OrderService</div>
+          <div className="border-2 border-zinc-800 dark:border-zinc-500 bg-white dark:bg-zinc-800 w-full max-w-xs">
+            <div className="bg-zinc-100 dark:bg-zinc-700 border-b border-zinc-800 dark:border-zinc-600 px-4 py-2 text-center">
+              <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-[11px]">OrderService</div>
             </div>
             <div className="px-4 py-3 space-y-1.5">
-              <div className="text-zinc-500">
+              <div className="text-zinc-500 dark:text-zinc-400">
                 - db:{" "}
                 {impl ? (
                   <span className={`px-1.5 py-0.5 text-[10px] border ${impl.color}`}>
                     {impl.name}
                   </span>
                 ) : (
-                  <span className="border border-dashed border-zinc-300 px-2 py-0.5 text-zinc-300">
+                  <span className="border border-dashed border-zinc-300 dark:border-zinc-600 px-2 py-0.5 text-zinc-300 dark:text-zinc-600">
                     IDatabase ← plug in
                   </span>
                 )}
               </div>
-              <div className="text-zinc-400 border-t border-zinc-100 pt-2 mt-1">
+              <div className="text-zinc-400 dark:text-zinc-500 border-t border-zinc-100 dark:border-zinc-700 pt-2 mt-1">
                 + create(dto): OrderDTO
               </div>
             </div>
@@ -147,8 +147,8 @@ export default function DISwitchboard() {
             disabled={!selected}
             className={`mt-2 w-full max-w-xs px-4 py-2 text-[11px] font-semibold transition-all duration-150 ${
               selected
-                ? "bg-zinc-900 text-white hover:bg-zinc-700"
-                : "bg-zinc-100 text-zinc-300 cursor-not-allowed"
+                ? "bg-zinc-900 dark:bg-zinc-700 text-white hover:bg-zinc-700 dark:hover:bg-zinc-600"
+                : "bg-zinc-100 dark:bg-zinc-800 text-zinc-300 dark:text-zinc-600 cursor-not-allowed"
             }`}
           >
             Call create(dto) →
@@ -157,32 +157,32 @@ export default function DISwitchboard() {
 
         {/* ── Right: output ───────────────────────────────────────────── */}
         <div className="flex-1 w-full">
-          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 mb-2">
+          <p className="text-[9px] uppercase tracking-[0.15em] text-zinc-400 dark:text-zinc-500 mb-2">
             What happens inside
           </p>
           {ran && impl ? (
             <div className="space-y-3">
               <div>
-                <div className="text-[9px] text-zinc-400 uppercase tracking-[0.12em] mb-1">
+                <div className="text-[9px] text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.12em] mb-1">
                   {impl.name}.save()
                 </div>
-                <div className="border border-zinc-200">
+                <div className="border border-zinc-200 dark:border-zinc-700">
                   <CodeBlock code={impl.internal} />
                 </div>
               </div>
-              <div className="border border-zinc-200 px-4 py-3">
-                <div className="text-[9px] text-zinc-400 uppercase tracking-[0.12em] mb-1">Response</div>
-                <div className="border border-zinc-100">
+              <div className="border border-zinc-200 dark:border-zinc-700 px-4 py-3">
+                <div className="text-[9px] text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.12em] mb-1">Response</div>
+                <div className="border border-zinc-100 dark:border-zinc-700">
                   <CodeBlock code={impl.result} />
                 </div>
               </div>
-              <div className="border-l-2 border-zinc-200 pl-3 text-zinc-400 text-[10px] leading-relaxed">
-                Same <code className="bg-zinc-100 px-1">OrderService.create()</code> code ran.
+              <div className="border-l-2 border-zinc-200 dark:border-zinc-700 pl-3 text-zinc-400 dark:text-zinc-500 text-[10px] leading-relaxed">
+                Same <code className="bg-zinc-100 dark:bg-zinc-700 px-1">OrderService.create()</code> code ran.
                 Only the database implementation changed.
               </div>
             </div>
           ) : (
-            <div className="border border-dashed border-zinc-200 px-4 py-8 text-center text-zinc-300 text-[10px]">
+            <div className="border border-dashed border-zinc-200 dark:border-zinc-700 px-4 py-8 text-center text-zinc-300 dark:text-zinc-600 text-[10px]">
               {selected ? "Hit 'Call create(dto) →' to run" : "Select an implementation first"}
             </div>
           )}

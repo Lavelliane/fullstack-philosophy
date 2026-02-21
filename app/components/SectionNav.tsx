@@ -57,8 +57,8 @@ export default function SectionNav({ sections }: SectionNavProps) {
               <span
                 className={`text-[10px] font-mono transition-all duration-200 whitespace-nowrap ${
                   isActive
-                    ? "text-zinc-900 opacity-100"
-                    : "text-zinc-400 opacity-0 group-hover:opacity-100"
+                    ? "text-zinc-900 dark:text-zinc-100 opacity-100"
+                    : "text-zinc-400 dark:text-zinc-500 opacity-0 group-hover:opacity-100"
                 }`}
               >
                 {s.number}. {s.label}
@@ -66,8 +66,8 @@ export default function SectionNav({ sections }: SectionNavProps) {
               <span
                 className={`w-1.5 h-1.5 rounded-full shrink-0 transition-all duration-200 ${
                   isActive
-                    ? "bg-zinc-900 scale-125"
-                    : "bg-zinc-300 group-hover:bg-zinc-500"
+                    ? "bg-zinc-900 dark:bg-zinc-100 scale-125"
+                    : "bg-zinc-300 dark:bg-zinc-600 group-hover:bg-zinc-500 dark:group-hover:bg-zinc-400"
                 }`}
               />
             </button>
@@ -76,7 +76,7 @@ export default function SectionNav({ sections }: SectionNavProps) {
       </nav>
 
       {/* Mobile: sticky top progress bar */}
-      <div className="xl:hidden sticky top-0 z-40 bg-white border-b border-zinc-100 overflow-x-auto">
+      <div className="xl:hidden sticky top-0 z-40 bg-white dark:bg-zinc-950 border-b border-zinc-100 dark:border-zinc-800 overflow-x-auto">
         <div className="flex items-center gap-1 px-4 py-3 min-w-max">
           {sections.map((s) => {
             const isActive = active === s.id;
@@ -86,8 +86,8 @@ export default function SectionNav({ sections }: SectionNavProps) {
                 onClick={() => scrollTo(s.id)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono whitespace-nowrap transition-all duration-200 ${
                   isActive
-                    ? "bg-zinc-900 text-white"
-                    : "text-zinc-400 hover:text-zinc-700"
+                    ? "bg-zinc-900 dark:bg-zinc-700 text-white"
+                    : "text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                 }`}
               >
                 <span>{s.number}</span>

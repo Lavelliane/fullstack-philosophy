@@ -19,12 +19,12 @@ function HighlightedCode({ code }: { code: string }) {
   const [html, setHtml] = useState<string>("");
 
   useEffect(() => {
-    codeToHtml(code, { lang: "typescript", theme: "github-light" }).then(setHtml);
+    codeToHtml(code, { lang: "typescript", themes: { light: "github-light", dark: "github-dark" }, defaultColor: false }).then(setHtml);
   }, [code]);
 
   if (!html) {
     return (
-      <pre className="text-xs font-mono leading-relaxed text-zinc-600 whitespace-pre overflow-x-auto p-4 bg-zinc-50">
+      <pre className="text-xs font-mono leading-relaxed text-zinc-600 dark:text-zinc-300 whitespace-pre overflow-x-auto p-4 bg-zinc-50 dark:bg-zinc-800">
         {code}
       </pre>
     );
@@ -32,7 +32,7 @@ function HighlightedCode({ code }: { code: string }) {
 
   return (
     <div
-      className="w-full overflow-x-auto [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-4 [&_pre]:!text-xs [&_pre]:!leading-[1.85] [&_pre]:!font-mono [&_pre]:!whitespace-pre"
+      className="shiki-no-bg w-full overflow-x-auto [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!p-4 [&_pre]:!text-xs [&_pre]:!leading-[1.85] [&_pre]:!font-mono [&_pre]:!whitespace-pre"
       dangerouslySetInnerHTML={{ __html: html }}
       suppressHydrationWarning
     />
@@ -54,8 +54,8 @@ export default function CodeQuiz({
   }
 
   return (
-    <div className="border border-zinc-200 p-6 flex flex-col gap-5">
-      <p className="text-sm font-medium leading-relaxed text-zinc-900">{question}</p>
+    <div className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 flex flex-col gap-5">
+      <p className="text-sm font-medium leading-relaxed text-zinc-900 dark:text-zinc-100">{question}</p>
 
       <div className="flex flex-col gap-3">
         {options.map((opt) => {
@@ -66,18 +66,18 @@ export default function CodeQuiz({
           let labelColor = "text-zinc-400";
           if (revealed) {
             if (isCorrect) {
-              borderClass = "border-emerald-400 bg-emerald-50";
-              labelColor = "text-emerald-600";
+              borderClass = "border-emerald-400 bg-emerald-50 dark:bg-emerald-950/40";
+              labelColor = "text-emerald-600 dark:text-emerald-400";
             } else if (isSelected && !isCorrect) {
-              borderClass = "border-red-300 bg-red-50";
+              borderClass = "border-red-300 bg-red-50 dark:bg-red-950/40";
               labelColor = "text-red-400";
             } else {
-              borderClass = "border-zinc-100";
-              labelColor = "text-zinc-300";
+              borderClass = "border-zinc-100 dark:border-zinc-800";
+              labelColor = "text-zinc-300 dark:text-zinc-600";
             }
           } else {
-            borderClass = "border-zinc-200 hover:border-zinc-400 cursor-pointer";
-            labelColor = "text-zinc-400";
+            borderClass = "border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-500 cursor-pointer";
+            labelColor = "text-zinc-400 dark:text-zinc-500";
           }
 
           return (
@@ -99,8 +99,8 @@ export default function CodeQuiz({
       </div>
 
       {revealed && (
-        <div className="border-l-2 border-zinc-300 pl-4">
-          <p className="text-xs text-zinc-500 leading-relaxed">{explanation}</p>
+        <div className="border-l-2 border-zinc-300 dark:border-zinc-600 pl-4">
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">{explanation}</p>
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   ReactFlow,
   Handle,
@@ -20,11 +21,11 @@ type BoxData = {
 
 function BoxNode({ data }: NodeProps<Node<BoxData>>) {
   const variantStyles: Record<string, string> = {
-    service: "border-zinc-800 bg-white",
-    impl: "border-zinc-400 bg-white",
-    interface: "border-dashed border-2 border-zinc-700 bg-zinc-50",
-    client: "border-zinc-300 bg-zinc-50",
-    bad: "border-red-300 bg-red-50",
+    service: "border-zinc-800 dark:border-zinc-400 bg-white dark:bg-zinc-800",
+    impl: "border-zinc-400 dark:border-zinc-600 bg-white dark:bg-zinc-800",
+    interface: "border-dashed border-2 border-zinc-700 dark:border-zinc-400 bg-zinc-50 dark:bg-zinc-900",
+    client: "border-zinc-300 dark:border-zinc-600 bg-zinc-50 dark:bg-zinc-800",
+    bad: "border-red-300 bg-red-50 dark:bg-red-950/40",
   };
   const v = data.variant ?? "impl";
 
@@ -37,11 +38,11 @@ function BoxNode({ data }: NodeProps<Node<BoxData>>) {
         <Handle type="target" position={Position.Left} id="left" style={{ opacity: 0 }} />
         <Handle type="source" position={Position.Bottom} id="bottom" style={{ opacity: 0 }} />
         <Handle type="target" position={Position.Top} id="top" style={{ opacity: 0 }} />
-        <div className="font-semibold text-zinc-900">{data.label}</div>
-        {data.sub && <div className="text-[9px] text-zinc-400 mt-0.5">{data.sub}</div>}
+        <div className="font-semibold text-zinc-900 dark:text-zinc-100">{data.label}</div>
+        {data.sub && <div className="text-[9px] text-zinc-400 dark:text-zinc-500 mt-0.5">{data.sub}</div>}
       </div>
       {data.annotation && (
-        <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-mono text-zinc-400 italic">
+        <div className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[9px] font-mono text-zinc-400 dark:text-zinc-500 italic">
           {data.annotation}
         </div>
       )}
@@ -178,13 +179,37 @@ const injectedEdges: Edge[] = [
 type Props = { mode: "coupled" | "injected" };
 
 export default function DIFlowDiagram({ mode }: Props) {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsDark(document.documentElement.classList.contains("dark"));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const labelBg = isDark ? "#18181b" : "white";
+  const labelFill = isDark ? "#a1a1aa" : "#a1a1aa";
+
+  const themedCoupledEdges: Edge[] = coupledEdges.map((e) => ({
+    ...e,
+    labelBgStyle: { fill: labelBg, fillOpacity: 1 },
+  }));
+
+  const themedInjectedEdges: Edge[] = injectedEdges.map((e) => ({
+    ...e,
+    labelStyle: { ...(e.labelStyle as object), fill: labelFill },
+    labelBgStyle: { fill: labelBg, fillOpacity: 1 },
+  }));
+
   const nodes = mode === "coupled" ? coupledNodes : injectedNodes;
-  const edges = mode === "coupled" ? coupledEdges : injectedEdges;
+  const edges = mode === "coupled" ? themedCoupledEdges : themedInjectedEdges;
   const height = mode === "coupled" ? 200 : 260;
 
   return (
     <div
-      className="w-full border border-zinc-100 bg-zinc-50"
+      className="w-full border border-zinc-100 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900"
       style={{ height }}
     >
       <ReactFlow

@@ -41,14 +41,14 @@ export default function FillBlank({ segments, prompt }: FillBlankProps) {
   const allCorrect = blanks.every((b) => selections[b.blank] === b.correct);
 
   return (
-    <div className="border border-zinc-200 p-6 flex flex-col gap-5">
-      <p className="text-sm font-medium text-zinc-900">{prompt}</p>
+    <div className="border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-6 flex flex-col gap-5">
+      <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100">{prompt}</p>
 
-      <div className="bg-zinc-50 border border-zinc-200 p-5 font-mono text-xs leading-[2] overflow-x-auto">
+      <div className="bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-5 font-mono text-xs leading-[2] overflow-x-auto">
         {segments.map((segment, i) => {
           if (typeof segment === "string") {
             return (
-              <span key={i} className="text-zinc-700 whitespace-pre">
+              <span key={i} className="text-zinc-700 dark:text-zinc-300 whitespace-pre">
                 {segment}
               </span>
             );
@@ -64,7 +64,7 @@ export default function FillBlank({ segments, prompt }: FillBlankProps) {
                 ? " border-emerald-500 text-emerald-700"
                 : " border-red-400 text-red-600";
           } else {
-            selectClass += " border-zinc-400 text-zinc-700 hover:border-zinc-700";
+            selectClass += " border-zinc-400 dark:border-zinc-500 text-zinc-700 dark:text-zinc-300 hover:border-zinc-700 dark:hover:border-zinc-300 dark:bg-zinc-800";
           }
 
           return (
@@ -102,13 +102,13 @@ export default function FillBlank({ segments, prompt }: FillBlankProps) {
         <button
           onClick={handleCheck}
           disabled={!allFilled}
-          className="text-xs font-medium border border-zinc-900 px-4 py-2 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
+          className="text-xs font-medium border border-zinc-900 dark:border-zinc-400 px-4 py-2 text-zinc-900 dark:text-zinc-200 hover:bg-zinc-900 dark:hover:bg-zinc-700 hover:text-white transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
         >
           {allFilled ? "Check answers" : "Fill all blanks first"}
         </button>
         <button
           onClick={handleReset}
-          className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors duration-200"
+          className="text-xs text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors duration-200"
         >
           Reset
         </button>

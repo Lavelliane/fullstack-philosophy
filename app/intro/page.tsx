@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ArrowRight } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "Before We Begin | The Human Behind the Endpoint",
@@ -40,10 +41,14 @@ export default function IntroPage() {
         >
           The Human Behind the Endpoint
         </a>
-        <div className="flex items-center gap-8 text-sm text-zinc-500">
-          <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
-          <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
-          <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
+        <div className="flex items-center gap-4 text-sm text-zinc-500">
+          <div className="flex items-center gap-8">
+            <span className="text-zinc-900 font-medium">Intro</span>
+            <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
+            <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
+            <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
+          </div>
+          <ThemeToggle />
         </div>
       </nav>
 

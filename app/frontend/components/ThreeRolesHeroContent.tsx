@@ -38,7 +38,7 @@ type ThreeRolesHeroContentProps = {
 };
 
 const codeBlockClass =
-  "overflow-x-auto rounded-lg border bg-[#f6f8fa] [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-4 [&_pre]:!text-xs [&_pre]:!leading-[1.75] [&_pre]:!font-mono [&_pre]:!whitespace-pre";
+  "overflow-x-auto rounded-lg border bg-[#f6f8fa] dark:bg-[#0d1117] [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:!p-4 [&_pre]:!text-xs [&_pre]:!leading-[1.75] [&_pre]:!font-mono [&_pre]:!whitespace-pre";
 
 export default function ThreeRolesHeroContent({
   htmlCode,
@@ -91,8 +91,8 @@ export default function ThreeRolesHeroContent({
                 onClick={() => setStep(role.id)}
                 className={`text-left w-full flex items-start gap-4 p-4 -mx-4 rounded-xl border-2 transition-all duration-300 ${
                   isActive
-                    ? "border-zinc-900 bg-zinc-50 shadow-sm"
-                    : "border-transparent hover:border-zinc-200 hover:bg-zinc-50/50"
+                    ? "border-zinc-900 dark:border-zinc-500 bg-zinc-50 dark:bg-zinc-800/50 shadow-sm"
+                    : "border-transparent hover:border-zinc-200 dark:hover:border-zinc-700 hover:bg-zinc-50/50 dark:hover:bg-zinc-800/30"
                 }`}
               >
                 <span
@@ -136,16 +136,16 @@ export default function ThreeRolesHeroContent({
                 onClick={() => setStep(role.id)}
                 className={`cursor-pointer rounded-lg border-2 transition-all duration-300 ${
                   isActive
-                    ? "border-zinc-900 ring-2 ring-zinc-900/10 shadow-md"
-                    : "border-zinc-200 opacity-50 hover:opacity-75"
+                    ? "border-zinc-900 dark:border-zinc-400 ring-2 ring-zinc-900/10 dark:ring-zinc-400/10 shadow-md"
+                    : "border-zinc-200 dark:border-zinc-700 opacity-50 hover:opacity-75"
                 }`}
               >
-                <div className="px-3 py-1.5 border-b border-zinc-200 bg-zinc-100/80 flex items-center justify-between">
-                  <span className="font-mono text-[10px] text-zinc-500 uppercase tracking-wider">
+                <div className="px-3 py-1.5 border-b border-zinc-200 dark:border-zinc-700 bg-zinc-100/80 dark:bg-zinc-800/80 flex items-center justify-between">
+                  <span className="font-mono text-[10px] text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
                     {role.label}
                   </span>
                   {isActive && (
-                    <span className="w-2 h-2 rounded-full bg-zinc-900" />
+                    <span className="w-2 h-2 rounded-full bg-zinc-900 dark:bg-zinc-100" />
                   )}
                 </div>
                 <div

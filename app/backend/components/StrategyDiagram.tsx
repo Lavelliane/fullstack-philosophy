@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import {
   ReactFlow,
   Handle,
@@ -22,10 +23,10 @@ type ClassData = {
 function ClassNode({ data }: NodeProps<Node<ClassData>>) {
   return (
     <div
-      className={`font-mono text-[10px] bg-white min-w-[170px] shadow-sm ${
+      className={`font-mono text-[10px] min-w-[170px] shadow-sm ${
         data.isInterface
-          ? "border-2 border-dashed border-zinc-700"
-          : "border border-zinc-800"
+          ? "border-2 border-dashed border-zinc-700 dark:border-zinc-400 bg-white dark:bg-zinc-900"
+          : "border border-zinc-800 dark:border-zinc-500 bg-white dark:bg-zinc-800"
       }`}
     >
       <Handle type="source" position={Position.Top} id="top-src" style={{ opacity: 0 }} />
@@ -37,19 +38,21 @@ function ClassNode({ data }: NodeProps<Node<ClassData>>) {
 
       <div
         className={`px-3 py-2 text-center border-b ${
-          data.isInterface ? "bg-zinc-50 border-zinc-300" : "bg-zinc-100 border-zinc-800"
+          data.isInterface
+            ? "bg-zinc-50 dark:bg-zinc-800 border-zinc-300 dark:border-zinc-600"
+            : "bg-zinc-100 dark:bg-zinc-700 border-zinc-800 dark:border-zinc-600"
         }`}
       >
         {data.stereotype && (
-          <div className="text-zinc-400 text-[9px] italic leading-tight">{data.stereotype}</div>
+          <div className="text-zinc-400 dark:text-zinc-500 text-[9px] italic leading-tight">{data.stereotype}</div>
         )}
-        <div className="font-semibold text-zinc-900 text-[11px]">{data.name}</div>
+        <div className="font-semibold text-zinc-900 dark:text-zinc-100 text-[11px]">{data.name}</div>
       </div>
 
       {data.fields && data.fields.length > 0 && (
-        <div className="px-3 py-2 border-b border-zinc-200 space-y-0.5">
+        <div className="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 space-y-0.5">
           {data.fields.map((f, i) => (
-            <div key={i} className="text-zinc-500">{f}</div>
+            <div key={i} className="text-zinc-500 dark:text-zinc-400">{f}</div>
           ))}
         </div>
       )}
@@ -58,7 +61,7 @@ function ClassNode({ data }: NodeProps<Node<ClassData>>) {
         {data.methods.map((m, i) => (
           <div
             key={i}
-            className={m.startsWith("//") ? "text-zinc-400 italic" : "text-zinc-600"}
+            className={m.startsWith("//") ? "text-zinc-400 dark:text-zinc-500 italic" : "text-zinc-600 dark:text-zinc-300"}
           >
             {m}
           </div>
@@ -190,12 +193,41 @@ const edges: Edge[] = [
 ];
 
 export default function StrategyDiagram() {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const update = () => setIsDark(document.documentElement.classList.contains("dark"));
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const labelBg = isDark ? "#18181b" : "white";
+  const labelFill = isDark ? "#a1a1aa" : "#a1a1aa";
+  const arrowDark = isDark ? "#a1a1aa" : "#18181b";
+
+  const themedEdges: Edge[] = edges.map((e) => ({
+    ...e,
+    style: {
+      ...e.style,
+      stroke: e.id === "uses" || e.id === "creates"
+        ? (isDark ? "#71717a" : (e.style?.stroke as string))
+        : (isDark ? "#a1a1aa" : (e.style?.stroke as string)),
+    },
+    markerEnd: typeof e.markerEnd === "object"
+      ? { ...e.markerEnd, color: e.id === "uses" || e.id === "creates" ? "#71717a" : arrowDark }
+      : e.markerEnd,
+    labelStyle: { ...(e.labelStyle as object), fill: labelFill },
+    labelBgStyle: { fill: labelBg, fillOpacity: 1 },
+  }));
+
   return (
     <div className="flex flex-col gap-4">
-      <div className="w-full h-[480px] border border-zinc-100 bg-zinc-50">
+      <div className="w-full h-[480px] border border-zinc-100 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900">
         <ReactFlow
           nodes={nodes}
-          edges={edges}
+          edges={themedEdges}
           nodeTypes={nodeTypes}
           fitView
           fitViewOptions={{ padding: 0.2 }}
@@ -208,7 +240,7 @@ export default function StrategyDiagram() {
         />
       </div>
 
-      <div className="flex items-center gap-6 text-[11px] font-mono text-zinc-400">
+      <div className="flex items-center gap-6 text-[11px] font-mono text-zinc-400 dark:text-zinc-500">
         <span className="flex items-center gap-2">
           <svg width="36" height="10" viewBox="0 0 36 10"><line x1="0" y1="5" x2="28" y2="5" stroke="#18181b" strokeWidth="2" /><polygon points="28,1 36,5 28,9" fill="none" stroke="#18181b" strokeWidth="2" /></svg>
           implements
@@ -219,13 +251,13 @@ export default function StrategyDiagram() {
         </span>
       </div>
 
-      <div className="border border-zinc-200 bg-zinc-50 px-4 py-3 flex gap-3 items-start">
-        <span className="text-zinc-400 text-xs mt-0.5 shrink-0">→</span>
-        <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-          <strong className="text-zinc-700">OrderService</strong> depends only on{" "}
-          <strong className="text-zinc-700">PricingStrategy</strong>, not any concrete class.
-          Swap <code className="bg-zinc-100 px-1">StandardPricing</code> for{" "}
-          <code className="bg-zinc-100 px-1">BlackFridayPricing</code> at runtime — the service never changes.
+      <div className="border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-4 py-3 flex gap-3 items-start">
+        <span className="text-zinc-400 dark:text-zinc-500 text-xs mt-0.5 shrink-0">→</span>
+        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-mono">
+          <strong className="text-zinc-700 dark:text-zinc-300">OrderService</strong> depends only on{" "}
+          <strong className="text-zinc-700 dark:text-zinc-300">PricingStrategy</strong>, not any concrete class.
+          Swap <code className="bg-zinc-100 dark:bg-zinc-700 px-1">StandardPricing</code> for{" "}
+          <code className="bg-zinc-100 dark:bg-zinc-700 px-1">BlackFridayPricing</code> at runtime — the service never changes.
         </p>
       </div>
     </div>

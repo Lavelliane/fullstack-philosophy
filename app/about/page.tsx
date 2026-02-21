@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import ThemeToggle from "../components/ThemeToggle";
 
 export const metadata: Metadata = {
   title: "About | The Human Behind the Endpoint",
@@ -65,20 +66,24 @@ export default function AboutPage() {
         >
           The Human Behind the Endpoint
         </a>
-        <div className="flex items-center gap-8 text-sm text-zinc-500">
-          <a
-            href="/backend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Backend
-          </a>
-          <a
-            href="/frontend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Frontend
-          </a>
-          <span className="text-zinc-900 font-medium">About</span>
+        <div className="flex items-center gap-4 text-sm text-zinc-500">
+          <div className="flex items-center gap-8">
+            <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+            <a
+              href="/backend"
+              className="hover:text-zinc-900 transition-colors duration-200"
+            >
+              Backend
+            </a>
+            <a
+              href="/frontend"
+              className="hover:text-zinc-900 transition-colors duration-200"
+            >
+              Frontend
+            </a>
+            <span className="text-zinc-900 font-medium">About</span>
+          </div>
+          <ThemeToggle />
         </div>
       </nav>
 
