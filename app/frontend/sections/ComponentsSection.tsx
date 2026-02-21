@@ -177,7 +177,7 @@ export default function ComponentsSection() {
               mode="split"
               code={componentComparisonBadCode}
               splitCode={componentComparisonGoodCode}
-              labels={["Bad: 50 students = 50 copies", "Good: 50 students = one loop"]}
+              labels={["Bad: 12 students = 12 copies", "Good: 12 students = one loop"]}
               lang="jsx"
             />
             <CodeVisual><ComponentComparisonVisual /></CodeVisual>

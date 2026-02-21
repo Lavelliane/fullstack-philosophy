@@ -169,10 +169,12 @@ export default function FetchingSection() {
           </div>
         </ChallengeSection>
 
-        <ChallengeSection>
+        <ChallengeSection wide>
           <ChallengeLabel>Full fetch component</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={fetchComponentCode} lang="jsx" />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <CodeBlock code={fetchComponentCode} lang="jsx" />
+            </div>
             <CodeVisual><FetchStatesFlowVisual /></CodeVisual>
           </div>
         </ChallengeSection>

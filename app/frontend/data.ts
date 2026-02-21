@@ -144,19 +144,19 @@ function StudentCard({ name, year, gpa, avatar }) {
 <StudentCard name="Ana Reyes" year={3} gpa={3.9} avatar="/ana.jpg" />
 <StudentCard name="Ben Cruz"  year={2} gpa={3.5} avatar="/ben.jpg"  />`;
 
-/** 50-student scenario for copy-paste vs reuse comparison */
-export const componentComparisonBadCode = `<!-- Bad: copy the same card 50 times -->
+/** 12-student scenario for copy-paste vs reuse comparison */
+export const componentComparisonBadCode = `<!-- Bad: copy the same card 12 times -->
 <div class="card">
   <img src="/ana.jpg" /><h3>Ana Reyes</h3><p>Year 3 · GPA 3.9</p>
 </div>
 <div class="card">
   <img src="/ben.jpg" /><h3>Ben Cruz</h3><p>Year 2 · GPA 3.5</p>
 </div>
-<!-- ... 48 more identical blocks ... -->
+<!-- ... 10 more identical blocks ... -->
 <div class="card">
-  <img src="/student50.jpg" /><h3>...</h3><p>...</p>
+  <img src="/student12.jpg" /><h3>...</h3><p>...</p>
 </div>
-<!-- Change the card design? Update 50 places. -->`;
+<!-- Change the card design? Update 12 places. -->`;
 
 export const componentComparisonGoodCode = `// Good: one component, students.map(...)
 function StudentCard({ name, year, gpa, avatar }) {
@@ -170,7 +170,7 @@ function StudentCard({ name, year, gpa, avatar }) {
 {students.map(s => (
   <StudentCard key={s.id} name={s.name} year={s.year} gpa={s.gpa} avatar={s.avatar} />
 ))}
-// 50 students? One loop. Change the card? Change it once.`;
+// 12 students? One loop. Change the card? Change it once.`;
 
 export const compositionCode = `// A page is just components all the way down
 function StudentDashboard() {

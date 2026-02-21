@@ -19,21 +19,21 @@ function HomePage({ onNavigate }: { onNavigate: (url: RouteUrl) => void }) {
   return (
     <div className="space-y-3 p-4">
       <h1 className="text-base font-semibold text-zinc-900">Student Portal</h1>
-      <p className="text-xs text-zinc-600 leading-relaxed">
+      <p className="text-sm text-zinc-600 leading-relaxed">
         Welcome! Browse students or view your dashboard.
       </p>
       <div className="flex gap-2">
         <button
           type="button"
           onClick={() => onNavigate("/students")}
-          className="text-xs text-blue-600 hover:underline font-medium cursor-pointer"
+          className="text-sm text-blue-600 hover:underline font-medium cursor-pointer"
         >
           Students →
         </button>
         <button
           type="button"
           onClick={() => onNavigate("/")}
-          className="text-xs text-zinc-500 hover:underline cursor-pointer"
+          className="text-sm text-zinc-500 hover:underline cursor-pointer"
         >
           Dashboard
         </button>
@@ -60,11 +60,11 @@ function StudentListPage({ onSelect }: { onSelect: (id: number) => void }) {
               onClick={() => onSelect(s.id)}
               className="flex w-full items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-100 text-left transition-colors cursor-pointer"
             >
-              <span className="w-6 h-6 rounded-full bg-zinc-200 flex items-center justify-center text-[10px] font-mono shrink-0">
+              <span className="w-6 h-6 rounded-full bg-zinc-200 flex items-center justify-center text-xs font-mono shrink-0">
                 {s.name[0]}
               </span>
-              <span className="text-xs font-medium text-zinc-800">{s.name}</span>
-              <span className="text-[10px] text-zinc-400 ml-auto">GPA {s.gpa}</span>
+              <span className="text-sm font-medium text-zinc-800">{s.name}</span>
+              <span className="text-xs text-zinc-400 ml-auto">GPA {s.gpa}</span>
             </button>
           </li>
         ))}
@@ -80,11 +80,11 @@ function StudentProfilePage({ id, onBack }: { id: string; onBack: () => void }) 
     return (
       <div className="p-4 space-y-2">
         <h1 className="text-base font-semibold text-zinc-900">Student #{id}</h1>
-        <p className="text-xs text-red-600">Student not found.</p>
+        <p className="text-sm text-red-600">Student not found.</p>
         <button
           type="button"
           onClick={onBack}
-          className="text-[10px] border border-red-200 px-2 py-1 rounded text-red-500 hover:bg-red-50 cursor-pointer"
+          className="text-xs border border-red-200 px-2 py-1 rounded text-red-500 hover:bg-red-50 cursor-pointer"
         >
           Back to list
         </button>
@@ -99,15 +99,15 @@ function StudentProfilePage({ id, onBack }: { id: string; onBack: () => void }) 
         </div>
         <div>
           <h1 className="text-base font-semibold text-zinc-900">{student.name}</h1>
-          <p className="text-[10px] text-zinc-500">Year {student.year} · GPA {student.gpa}</p>
+          <p className="text-xs text-zinc-500">Year {student.year} · GPA {student.gpa}</p>
         </div>
       </div>
       <div className="border-t border-zinc-100 pt-2 space-y-1">
-        <p className="text-[10px] text-zinc-500">Courses: Intro to React, Data Structures</p>
+        <p className="text-xs text-zinc-500">Courses: Intro to React, Data Structures</p>
         <button
           type="button"
           onClick={onBack}
-          className="text-[10px] border border-zinc-200 px-2 py-0.5 rounded text-zinc-600 hover:bg-zinc-50 cursor-pointer"
+          className="text-xs border border-zinc-200 px-2 py-0.5 rounded text-zinc-600 hover:bg-zinc-50 cursor-pointer"
         >
           ← Back to list
         </button>
@@ -121,13 +121,13 @@ function NotFoundPage({ onHome }: { onHome: () => void }) {
     <div className="p-4 space-y-3 text-center">
       <p className="text-2xl font-light text-zinc-400">404</p>
       <h1 className="text-base font-semibold text-zinc-900">Page not found</h1>
-      <p className="text-xs text-zinc-500">
+      <p className="text-sm text-zinc-500">
         The URL you requested doesn&apos;t match any route.
       </p>
       <button
         type="button"
         onClick={onHome}
-        className="text-[10px] border border-zinc-200 px-2 py-1 rounded text-zinc-600 hover:bg-zinc-50 cursor-pointer"
+        className="text-xs border border-zinc-200 px-2 py-1 rounded text-zinc-600 hover:bg-zinc-50 cursor-pointer"
       >
         Go home
       </button>
@@ -137,14 +137,12 @@ function NotFoundPage({ onHome }: { onHome: () => void }) {
 
 // ─── Main component ────────────────────────────────────────────────────────
 
-export default function RoutePreviewDemo() {
+type Layout = "row" | "stacked";
+
+export default function RoutePreviewDemo({ layout = "row" }: { layout?: Layout }) {
   const [selectedUrl, setSelectedUrl] = useState<RouteUrl>("/students/42");
 
-  const urlForPreview = selectedUrl.startsWith("/students/")
-    ? selectedUrl
-    : selectedUrl === "/"
-      ? "/"
-      : selectedUrl;
+  const urlForPreview = `https://www.portal.edu.ph${selectedUrl}`;
 
   function renderPage() {
     if (selectedUrl === "/") return <HomePage onNavigate={setSelectedUrl} />;
@@ -162,11 +160,13 @@ export default function RoutePreviewDemo() {
     return <NotFoundPage onHome={() => setSelectedUrl("/")} />;
   }
 
+  const stacked = layout === "stacked";
+
   return (
-    <div className="flex flex-col lg:flex-row gap-4 w-full">
+    <div className={`flex gap-4 w-full ${stacked ? "flex-col" : "flex-col lg:flex-row min-h-0 flex-1"}`}>
       {/* Route list - clickable */}
       <div className="flex flex-col gap-1 shrink-0">
-        <p className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 mb-1">
+        <p className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-1">
           Click a route to preview
         </p>
         {ROUTES.map(({ url, component, note }) => (
@@ -174,7 +174,7 @@ export default function RoutePreviewDemo() {
             key={url}
             type="button"
             onClick={() => setSelectedUrl(url)}
-            className={`flex items-start gap-3 px-3 py-2.5 border text-left text-xs font-mono rounded transition-colors cursor-pointer hover:border-zinc-400 ${
+            className={`flex items-start gap-3 px-3 py-2.5 border text-left text-sm font-mono rounded transition-colors cursor-pointer hover:border-zinc-400 ${
               selectedUrl === url
                 ? "border-zinc-900 bg-zinc-900 text-white"
                 : "border-zinc-200 bg-white text-zinc-500"
@@ -185,7 +185,7 @@ export default function RoutePreviewDemo() {
             <span className={`shrink-0 ${selectedUrl === url ? "text-white font-medium" : "text-zinc-600"}`}>
               {component}
             </span>
-            <span className={`text-[10px] not-italic ${selectedUrl === url ? "text-zinc-400" : "text-zinc-400"}`}>
+            <span className={`text-xs not-italic ${selectedUrl === url ? "text-zinc-400" : "text-zinc-400"}`}>
               {note}
             </span>
           </button>
@@ -193,18 +193,18 @@ export default function RoutePreviewDemo() {
       </div>
 
       {/* Mini browser preview */}
-      <div className="flex-1 min-w-0 flex flex-col border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm">
-        <div className="px-3 py-2 border-b border-zinc-100 bg-zinc-50 flex items-center gap-2">
+      <div className={`flex flex-col border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm shrink-0 ${stacked ? "" : "flex-1 min-w-0"}`}>
+        <div className="px-3 py-2 border-b border-zinc-100 bg-zinc-50 flex items-center gap-2 shrink-0">
           <div className="flex gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-red-200" />
             <span className="w-2.5 h-2.5 rounded-full bg-amber-200" />
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-200" />
           </div>
-          <div className="flex-1 mx-2 px-3 py-1 bg-white rounded border border-zinc-200 text-[10px] font-mono text-zinc-500 truncate">
+          <div className="flex-1 mx-2 px-3 py-1.5 bg-white rounded border border-zinc-200 text-xs font-mono text-zinc-500 truncate">
             {urlForPreview}
           </div>
         </div>
-        <div className="min-h-[180px] bg-white">
+        <div className="min-h-[240px] bg-white flex flex-col items-center justify-center p-4 shrink-0">
           <AnimatePresence mode="wait">
             <motion.div
               key={selectedUrl}

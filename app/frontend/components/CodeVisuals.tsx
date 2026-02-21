@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, useAnimate } from "motion/react";
-import { MousePointerClick, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { MousePointerClick, ArrowRight, Send } from "lucide-react";
+import StepBrowserFrame from "./StepBrowserFrame";
 
 /**
  * Visual previews for code - what the code looks like when rendered.
@@ -48,7 +49,7 @@ const STUDENTS_PREVIEW = [
   { name: "Ben Cruz", year: 2, gpa: 3.5, initial: "B" },
 ];
 
-/** More students for the 1→many comparison animation */
+/** 12 students for the 1→many comparison animation */
 const STUDENTS_COMPARISON = [
   { name: "Ana Reyes", year: 3, gpa: 3.9, initial: "A" },
   { name: "Ben Cruz", year: 2, gpa: 3.5, initial: "B" },
@@ -56,18 +57,23 @@ const STUDENTS_COMPARISON = [
   { name: "Davi Kim", year: 1, gpa: 3.6, initial: "D" },
   { name: "Evan Park", year: 2, gpa: 3.7, initial: "E" },
   { name: "Faye Chen", year: 3, gpa: 3.9, initial: "F" },
-  { name: "Gia Torres", year: 2, gpa: 3.4, initial: "G" }
+  { name: "Gia Torres", year: 2, gpa: 3.4, initial: "G" },
+  { name: "Hugo Wells", year: 4, gpa: 3.2, initial: "H" },
+  { name: "Ivy Santos", year: 1, gpa: 3.8, initial: "I" },
+  { name: "Jake Moore", year: 3, gpa: 3.5, initial: "J" },
+  { name: "Kira Young", year: 2, gpa: 3.9, initial: "K" },
+  { name: "Leo Zhang", year: 4, gpa: 3.6, initial: "L" },
 ];
 
 function StudentCardPreview({ name, year, gpa, initial }: { name: string; year: number; gpa: number; initial: string }) {
   return (
     <div className="flex items-center gap-2 border border-zinc-200 rounded-lg p-2 bg-white">
       <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center shrink-0">
-        <span className="text-[10px] font-mono font-semibold text-zinc-500">{initial}</span>
+        <span className="text-xs font-mono font-semibold text-zinc-500">{initial}</span>
       </div>
       <div>
-        <p className="text-xs font-semibold text-zinc-800">{name}</p>
-        <p className="text-[10px] text-zinc-500">Year {year} · GPA {gpa}</p>
+        <p className="text-sm font-semibold text-zinc-800">{name}</p>
+        <p className="text-xs text-zinc-500">Year {year} · GPA {gpa}</p>
       </div>
     </div>
   );
@@ -420,6 +426,22 @@ export function InteractiveCounterVisual() {
 
 // ─── Fetching ──────────────────────────────────────────────────────────────
 
+export function FetchInFlightVisual() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-2 w-full min-h-[80px] py-2">
+      <motion.div
+        animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.05, 1] }}
+        transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+        className="flex items-center justify-center gap-1"
+      >
+        <Send className="w-5 h-5 text-zinc-500 shrink-0" />
+        <ArrowRight className="w-4 h-4 text-zinc-400 shrink-0" />
+      </motion.div>
+      <p className="text-xs font-mono text-zinc-500">Request sent — fetch() in flight</p>
+    </div>
+  );
+}
+
 export function FetchSkeletonVisual() {
   return (
     <div className="flex items-center gap-2 w-fit">
@@ -466,16 +488,13 @@ const FETCH_NODES = [
   { id: "error", label: "Error", sublabel: "Request failed" },
 ] as const;
 
-const NODE_WIDTH = 76;
-const NODE_GAP = 22; // arrow + margin
-const NODE_X_OFFSETS = [0, NODE_WIDTH + NODE_GAP, (NODE_WIDTH + NODE_GAP) * 2];
+const STEP_DELAY_MS = 750;
 
 /** Pipeline flow diagram: 3 buttons trigger animation to Loading/Success/Error; result on right */
 export function FetchStatesFlowVisual() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [outcome, setOutcome] = useState<"success" | "error">("success");
   const [isRunning, setIsRunning] = useState(false);
-  const [scope, animate] = useAnimate();
 
   async function runToState(target: "loading" | "success" | "error") {
     if (isRunning) return;
@@ -483,23 +502,19 @@ export function FetchStatesFlowVisual() {
     setActiveIndex(-1);
     setOutcome(target === "error" ? "error" : "success");
 
-    await animate("#fetch-packet", { x: 0, opacity: 1 }, { duration: 0.1 });
-
     const steps: number[] =
       target === "loading" ? [0, 1] : target === "success" ? [0, 1, 2] : [0, 1, 3];
 
     for (let i = 0; i < steps.length; i++) {
-      const step = steps[i];
-      setActiveIndex(step);
-      const targetX = NODE_X_OFFSETS[Math.min(step, 2)];
-      await animate("#fetch-packet", { x: targetX }, { duration: 0.35, ease: "easeInOut" });
+      setActiveIndex(steps[i]);
+      await new Promise((r) => setTimeout(r, STEP_DELAY_MS));
     }
 
     setIsRunning(false);
   }
 
   return (
-    <div ref={scope} className="flex flex-col gap-3 w-fit max-w-full">
+    <div className="flex flex-col gap-3 w-fit max-w-full">
       {/* 3 buttons: Loading | Success | Error */}
       <div className="flex gap-1.5 flex-wrap">
         {(["loading", "success", "error"] as const).map((s) => (
@@ -523,10 +538,10 @@ export function FetchStatesFlowVisual() {
         ))}
       </div>
 
-      {/* Pipeline + Result: pipeline left, result right */}
-      <div className="flex flex-row items-start justify-start gap-4 min-w-0">
+      {/* Pipeline + Result: pipeline on top, result below (matches ChecklistFlowVisual) */}
+      <div className="flex flex-col items-start gap-3 min-w-0">
         {/* Pipeline: fetch → Loading → Success | Error */}
-        <div className="relative overflow-x-auto shrink-0">
+        <div className="overflow-hidden shrink-0 p-1">
           <div className="flex items-center gap-0">
             {FETCH_NODES.map((node, i) => {
               const isSuccessNode = node.id === "success";
@@ -541,11 +556,11 @@ export function FetchStatesFlowVisual() {
 
               if (isHidden) return null;
 
-              const nodeClass = `relative flex flex-col items-center justify-center w-[76px] h-[44px] border rounded transition-colors duration-200 shrink-0 ${
+              const nodeClass = `relative flex flex-col items-center justify-center w-[84px] min-h-[52px] px-2 py-2 border rounded transition-all duration-300 shrink-0 ${
                 isActive
                   ? isErrorNode
-                    ? "border-red-300 bg-red-50"
-                    : "border-amber-400 bg-amber-50"
+                    ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
+                    : "border-amber-400 bg-amber-50 ring-2 ring-amber-200 ring-offset-1 shadow-sm"
                   : isPassed
                     ? isErrorNode
                       ? "border-red-200 bg-red-50/50"
@@ -555,7 +570,7 @@ export function FetchStatesFlowVisual() {
 
               return (
                 <div key={node.id} className="flex items-center shrink-0">
-                  <motion.div className={nodeClass}>
+                  <motion.div className={nodeClass} layout>
                     <span className="text-[10px] font-mono text-zinc-700 font-medium">
                       {node.label}
                     </span>
@@ -568,28 +583,31 @@ export function FetchStatesFlowVisual() {
               );
             })}
           </div>
-
-          <motion.div
-            id="fetch-packet"
-            className={`absolute top-0.5 left-0.5 w-1.5 h-1.5 rounded-full ${
-              activeIndex === 3 ? "bg-red-500" : "bg-zinc-800"
-            }`}
-            style={{ left: "6px" }}
-            initial={{ x: 0, opacity: 1 }}
-          />
         </div>
 
-        {/* Result: only show when we have Loading/Success/Error content */}
-        {activeIndex >= 1 && (
-          <div className="flex-none w-fit max-w-[200px] min-h-[50px] border border-zinc-200 rounded-md bg-white p-2.5 flex flex-col items-center justify-center">
+        {/* Result: show for fetch, Loading, Success, or Error */}
+        {activeIndex >= 0 && (
+          <div className="flex-none w-fit min-w-[140px] min-h-[120px] border border-zinc-200 rounded-md bg-white p-4 flex flex-col items-center justify-center">
             <AnimatePresence mode="wait">
+            {activeIndex === 0 && (
+              <motion.div
+                key="fetch"
+                initial={{ opacity: 0, x: 8 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -8 }}
+                transition={{ duration: 0.35 }}
+                className="flex flex-col items-center w-fit"
+              >
+                <FetchInFlightVisual />
+              </motion.div>
+            )}
             {activeIndex === 1 && (
               <motion.div
                 key="loading"
                 initial={{ opacity: 0, x: 8 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.35 }}
                 className="flex flex-col items-center w-fit"
               >
                 <FetchSkeletonVisual />
@@ -601,7 +619,7 @@ export function FetchStatesFlowVisual() {
                 initial={{ opacity: 0, x: 8 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.35 }}
                 className="flex flex-col items-center w-fit"
               >
                 <FetchStudentCardVisual />
@@ -613,7 +631,7 @@ export function FetchStatesFlowVisual() {
                 initial={{ opacity: 0, x: 8 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.35 }}
                 className="flex flex-col items-center w-fit"
               >
                 <FetchErrorVisual />
@@ -654,7 +672,7 @@ export function FetchStatesVisual() {
         ))}
       </div>
       {/* Content area with animation */}
-      <div className="w-fit min-h-[64px] border border-zinc-200 rounded-lg bg-white p-3">
+      <div className="w-fit min-h-[90px] border border-zinc-200 rounded-lg bg-white p-3 flex flex-col items-center justify-center">
         <AnimatePresence mode="wait">
           {state === "loading" && (
             <motion.div
@@ -739,17 +757,208 @@ export function UrlParamsVisual() {
   );
 }
 
+// ─── Checklist flow (animated pipeline, like FetchStatesFlowVisual) ─────────
+
+const CHECKLIST_NODES = [
+  { id: "route", label: "Route", sublabel: "mount" },
+  { id: "fetch", label: "fetch()", sublabel: "fires" },
+  { id: "loading", label: "Loading", sublabel: "skeleton" },
+  { id: "success", label: "Success", sublabel: "StudentCard" },
+  { id: "error", label: "Error", sublabel: "retry" },
+  { id: "edit", label: "Edit", sublabel: "toggle" },
+  { id: "save", label: "Save", sublabel: "PATCH" },
+] as const;
+
+const CHECKLIST_STEP_DELAY_MS = 950;
+
+export function ChecklistFlowVisual() {
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [outcome, setOutcome] = useState<"success" | "error">("success");
+  const [isRunning, setIsRunning] = useState(false);
+
+  async function runToState(target: "success" | "error") {
+    if (isRunning) return;
+    setIsRunning(true);
+    setActiveIndex(-1);
+    setOutcome(target);
+
+    const steps = target === "success" ? [0, 1, 2, 3, 5, 6] : [0, 1, 2, 4];
+    for (let i = 0; i < steps.length; i++) {
+      setActiveIndex(steps[i]);
+      await new Promise((r) => setTimeout(r, CHECKLIST_STEP_DELAY_MS));
+    }
+    setIsRunning(false);
+  }
+
+  return (
+    <div className="flex flex-col gap-3 w-full min-w-0">
+      <div className="flex gap-1.5 flex-wrap">
+        <button
+          type="button"
+          onClick={() => runToState("success")}
+          disabled={isRunning}
+          className={`px-3 py-1.5 rounded text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${
+            activeIndex >= 3 && outcome === "success"
+              ? "bg-emerald-200 text-emerald-900"
+              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+          }`}
+        >
+          Run (happy path)
+        </button>
+        <button
+          type="button"
+          onClick={() => runToState("error")}
+          disabled={isRunning}
+          className={`px-3 py-1.5 rounded text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${
+            activeIndex === 4 ? "bg-red-200 text-red-900" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+          }`}
+        >
+          Error path
+        </button>
+      </div>
+
+      <div className="flex flex-col items-start gap-3 min-w-0">
+        <div className="relative overflow-x-auto shrink-0 p-1">
+          <div className="flex items-center gap-0">
+            {CHECKLIST_NODES.map((node, i) => {
+              const isSuccessNode = node.id === "success";
+              const isErrorNode = node.id === "error";
+              const isEditOrSave = node.id === "edit" || node.id === "save";
+              const showNode =
+                (!isSuccessNode && !isErrorNode) ||
+                (isSuccessNode && outcome === "success") ||
+                (isErrorNode && outcome === "error");
+              const hideEditSave = outcome === "error" && isEditOrSave;
+              if (!showNode || hideEditSave) return null;
+
+              const visibleIndices = CHECKLIST_NODES.map((n, idx) => {
+                const s = n.id === "success";
+                const e = n.id === "error";
+                const es = n.id === "edit" || n.id === "save";
+                const show = (!s && !e) || (s && outcome === "success") || (e && outcome === "error");
+                const hide = outcome === "error" && es;
+                return show && !hide ? idx : -1;
+              }).filter((idx) => idx >= 0);
+              const posInVisible = visibleIndices.indexOf(i);
+              const hasNext = posInVisible >= 0 && posInVisible < visibleIndices.length - 1;
+
+              const isActive = activeIndex === i;
+              const isPassed = activeIndex > i;
+
+              const nodeClass = `relative flex flex-col items-center justify-center w-[72px] min-h-[48px] px-2 py-2 border rounded text-center transition-all duration-300 shrink-0 ${
+                isActive
+                  ? isErrorNode
+                    ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
+                    : "border-emerald-400 bg-emerald-50 ring-2 ring-emerald-200 ring-offset-1 shadow-sm"
+                  : isPassed
+                    ? "border-emerald-200 bg-emerald-50/50"
+                    : "border-zinc-200 bg-zinc-50/50"
+              }`;
+
+              return (
+                <div key={node.id} className="flex items-center shrink-0">
+                  <motion.div className={nodeClass} layout>
+                    <span className="text-[10px] font-mono text-zinc-700 font-medium block truncate w-full px-0.5">
+                      {node.label}
+                    </span>
+                    <span className="text-[9px] text-zinc-400 block">{node.sublabel}</span>
+                  </motion.div>
+                  {hasNext && <ArrowRight className="w-3 h-3 shrink-0 mx-0.5 text-zinc-300" />}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {activeIndex >= 0 && (
+          <div className="w-full self-stretch">
+            <StepBrowserFrame
+              initialId="42"
+              initialTab="grades"
+              interactive={false}
+              showProfileHeader={activeIndex === 3 || activeIndex === 5 || activeIndex === 6}
+              showUrlControls={true}
+              contentMode={
+                activeIndex === 0
+                  ? "route"
+                  : activeIndex === 3 || activeIndex === 6
+                    ? "tab"
+                    : "custom"
+              }
+            >
+              <AnimatePresence mode="wait">
+                {activeIndex === 1 && (
+                  <motion.div
+                    key="fetch"
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full flex justify-center"
+                  >
+                    <FetchInFlightVisual />
+                  </motion.div>
+                )}
+                {activeIndex === 2 && (
+                  <motion.div
+                    key="loading"
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full"
+                  >
+                    <ChecklistSkeletonVisual />
+                  </motion.div>
+                )}
+                {activeIndex === 4 && (
+                  <motion.div
+                    key="error"
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full"
+                  >
+                    <ChecklistErrorVisual />
+                  </motion.div>
+                )}
+                {activeIndex === 5 && (
+                  <motion.div
+                    key="edit"
+                    initial={{ opacity: 0, x: 8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -8 }}
+                    transition={{ duration: 0.35 }}
+                    className="w-full"
+                  >
+                    <ChecklistEditToggleVisual mode="edit" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </StepBrowserFrame>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Checklist steps ───────────────────────────────────────────────────────
 
 export function ChecklistSkeletonVisual() {
   return (
-    <div className="space-y-3 flex flex-col items-center">
+    <div className="flex flex-col gap-3 w-full">
       <div className="flex items-center gap-2">
-        <div className="w-10 h-10 rounded-full bg-zinc-200 animate-pulse shrink-0" />
-        <div className="flex-1 space-y-2">
+        <div className="w-8 h-8 rounded-full bg-zinc-200 animate-pulse shrink-0" />
+        <div className="flex-1 space-y-2 min-w-0">
           <div className="h-3 w-32 bg-zinc-200 rounded animate-pulse" />
           <div className="h-2 w-24 bg-zinc-100 rounded animate-pulse" />
         </div>
+      </div>
+      <div className="space-y-1.5 mt-1">
+        <div className="h-2.5 w-40 bg-zinc-200 rounded animate-pulse" />
+        <div className="h-2.5 w-36 bg-zinc-100 rounded animate-pulse" />
       </div>
     </div>
   );
@@ -757,18 +966,18 @@ export function ChecklistSkeletonVisual() {
 
 export function ChecklistStudentCardVisual() {
   return (
-    <div className="space-y-2 flex flex-col items-center">
+    <div className="space-y-2 flex flex-col w-full">
       <StudentCardPreview name="Ana Reyes" year={3} gpa={3.9} initial="A" />
-      <p className="text-[10px] text-zinc-400">+ CourseList</p>
+      <p className="text-xs text-zinc-400">+ CourseList</p>
     </div>
   );
 }
 
 export function ChecklistErrorVisual() {
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <p className="text-xs text-red-600">Couldn&apos;t load this student&apos;s profile.</p>
-      <span className="text-[10px] w-fit border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
+    <div className="flex flex-col gap-2 w-full min-h-[60px] py-2">
+      <p className="text-sm text-red-600">Couldn&apos;t load this student&apos;s profile.</p>
+      <span className="text-xs w-fit border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
         Retry
       </span>
     </div>
@@ -777,24 +986,30 @@ export function ChecklistErrorVisual() {
 
 export function ChecklistEditToggleVisual({ mode }: { mode: "view" | "edit" }) {
   return mode === "view" ? (
-    <div className="space-y-2 flex flex-col items-center">
+    <div className="space-y-2 flex flex-col w-full">
       <StudentCardPreview name="Ana Reyes" year={3} gpa={3.9} initial="A" />
-      <button type="button" className="text-[10px] text-zinc-500 underline" style={{ cursor: "default" }}>
+      <button type="button" className="text-xs text-zinc-500 underline w-fit" style={{ cursor: "default" }}>
         Edit GPA
       </button>
     </div>
   ) : (
-    <div className="border border-zinc-200 rounded-lg p-2 space-y-2 flex flex-col items-center">
-      <p className="text-[10px] text-zinc-500">GPA input</p>
-      <input
-        type="text"
-        value="3.9"
-        readOnly
-        className="w-16 border border-zinc-200 rounded px-2 py-1 text-xs"
-      />
-      <button type="button" className="text-[10px] text-zinc-600" style={{ cursor: "default" }}>
-        Save
-      </button>
+    <div className="border border-zinc-200 rounded-lg p-3 flex flex-col gap-2 w-full">
+      <p className="text-xs text-zinc-500 font-mono">GPA</p>
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          value="3.9"
+          readOnly
+          className="w-20 border border-zinc-200 rounded px-2 py-1 text-sm font-mono"
+        />
+        <button
+          type="button"
+          className="shrink-0 px-3 py-1.5 text-xs font-medium border border-zinc-300 bg-zinc-100 text-zinc-700 rounded transition-colors"
+          style={{ cursor: "default" }}
+        >
+          Save
+        </button>
+      </div>
     </div>
   );
 }

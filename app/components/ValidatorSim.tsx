@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useAnimate } from "motion/react";
+import { motion } from "motion/react";
 import { Send, CheckCircle2, XCircle, Database, FileCode, Shield, ArrowRight } from "lucide-react";
 import type { ValidatorSimPayload } from "../backend/data";
 
-const NODE_OFFSETS = [18, 142, 266, 390, 514];
+const STEP_DELAY_MS = 450;
 
 const NODES = [
   { id: "client", label: "Client", Icon: Send },
@@ -25,7 +25,6 @@ export default function ValidatorSim({ payloads }: ValidatorSimProps) {
   const [selectedId, setSelectedId] = useState<string>(payloads[0]?.id ?? "valid");
   const [simState, setSimState] = useState<SimState>("idle");
   const [activeNodeIndex, setActiveNodeIndex] = useState(-1);
-  const [scope, animate] = useAnimate();
 
   const selected = payloads.find((p) => p.id === selectedId) ?? payloads[0];
   const willFail = selected?.outcome === "fail";
@@ -35,15 +34,12 @@ export default function ValidatorSim({ payloads }: ValidatorSimProps) {
     setSimState("running");
     setActiveNodeIndex(-1);
 
-    await animate("#packet", { x: 0, opacity: 1 }, { duration: 0.1 });
-
-    for (let i = 0; i <= (willFail ? 1 : 4); i++) {
+    const maxIndex = willFail ? 1 : 4;
+    for (let i = 0; i <= maxIndex; i++) {
       setActiveNodeIndex(i);
-      await animate("#packet", { x: NODE_OFFSETS[i] }, { duration: 0.35 });
+      await new Promise((r) => setTimeout(r, STEP_DELAY_MS));
 
       if (i === 1 && willFail) {
-        await animate("#packet", { scale: [1, 1.3, 0.9, 1.1, 1] }, { duration: 0.25 });
-        await animate("#error-badge", { scale: [0.5, 1.1, 1], opacity: 1 }, { duration: 0.2 });
         setSimState("fail");
         return;
       }
@@ -53,7 +49,7 @@ export default function ValidatorSim({ payloads }: ValidatorSimProps) {
   }
 
   return (
-    <div ref={scope} className="border border-zinc-200 p-6 flex flex-col gap-6">
+    <div className="border border-zinc-200 p-6 flex flex-col gap-6">
       <div>
         <p className="text-sm font-medium text-zinc-900">DTO Validator Simulator</p>
         <p className="text-xs text-zinc-400 mt-1">
@@ -87,9 +83,9 @@ export default function ValidatorSim({ payloads }: ValidatorSimProps) {
             return (
               <div key={node.id} className="flex items-center gap-6">
                 <motion.div
-                  className={`flex flex-col items-center justify-center w-[100px] h-14 border rounded transition-all duration-200 ${
-                    isErrorSpot ? "border-red-300 bg-red-50" : "border-zinc-200 bg-zinc-50"
-                  } ${isActive ? "ring-2 ring-emerald-400 ring-offset-2 scale-105" : ""}`}
+                  className={`flex flex-col items-center justify-center w-[100px] h-14 border rounded transition-all duration-300 ${
+                    isErrorSpot ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-2" : "border-zinc-200 bg-zinc-50"
+                  } ${isActive && !isErrorSpot ? "ring-2 ring-emerald-400 ring-offset-2 shadow-sm" : ""}`}
                   animate={isActive && !isErrorSpot ? { scale: 1.05 } : { scale: 1 }}
                   transition={{ duration: 0.2 }}
                 >
@@ -104,23 +100,17 @@ export default function ValidatorSim({ payloads }: ValidatorSimProps) {
           })}
         </div>
 
-        {willFail && (
+        {willFail && simState === "fail" && (
           <motion.div
-            id="error-badge"
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }}
             className="absolute left-[110px] top-1/2 -translate-y-1/2 flex items-center gap-2 px-3 py-1.5 border border-red-300 bg-red-50 rounded z-10"
-            style={{ opacity: simState === "fail" ? 1 : 0 }}
           >
             <XCircle className="w-3.5 h-3.5 text-red-500 shrink-0" />
             <span className="text-[10px] font-mono text-red-600">400 ZodError</span>
           </motion.div>
         )}
-
-        <motion.div
-          id="packet"
-          className="absolute left-8 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-zinc-900 shadow-md"
-          initial={{ x: 0 }}
-        />
       </div>
 
       <div className="flex items-center gap-3">

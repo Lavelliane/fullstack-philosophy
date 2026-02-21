@@ -1,11 +1,11 @@
 import CodeBlock from "../components/CodeBlock";
-import CodeVisual from "../components/CodeVisual";
 import Quiz from "../../components/Quiz";
 import MatchPairs from "../../components/MatchPairs";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
-import { RoutesVisual, UrlParamsVisual } from "../components/CodeVisuals";
 import RoutePreviewDemo from "../components/RoutePreviewDemo";
+import UrlParamsDemo from "../components/UrlParamsDemo";
+import TraditionalVsSpaFlow from "../components/TraditionalVsSpaFlow";
 import { routingCode, urlStateCode, routingQuiz, routingMatchPairs } from "../data";
 
 const routingSlideCode = `// URL to Component, declared once
@@ -106,10 +106,7 @@ export default function RoutingSection() {
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Declarative routing
             </p>
-            <div className="flex flex-col gap-4">
-              <CodeBlock code={routingSlideCode} lang="jsx" />
-              <CodeVisual><RoutesVisual /></CodeVisual>
-            </div>
+            <CodeBlock code={routingSlideCode} lang="jsx" />
           </div>
         </div>
 
@@ -120,6 +117,66 @@ export default function RoutingSection() {
           </span>
         </div>
       </div>
+
+      {/* Traditional vs SPA comparison */}
+      <ChallengeSection wide>
+        <ChallengeLabel>Traditional pages vs SPA</ChallengeLabel>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+          <div className="border border-zinc-200 rounded-lg p-6 bg-white">
+            <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-3">Traditional (multi-page)</p>
+            <ul className="space-y-2 text-sm text-zinc-600">
+              <li className="flex items-start gap-2">
+                <span className="text-zinc-400 shrink-0">•</span>
+                <span>Every link click triggers a <strong className="text-zinc-800">full page reload</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-zinc-400 shrink-0">•</span>
+                <span>Server returns a new HTML document for each URL</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-zinc-400 shrink-0">•</span>
+                <span>Browser discards the old page and fetches everything again</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-zinc-400 shrink-0">•</span>
+                <span>Slower: full re-download, re-parse, re-render</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-zinc-400 shrink-0">•</span>
+                <span>Simple model: one URL = one server response</span>
+              </li>
+            </ul>
+          </div>
+          <div className="border border-emerald-200 rounded-lg p-6 bg-emerald-50/30">
+            <p className="text-xs font-mono uppercase tracking-wider text-emerald-700 mb-3">SPA (single-page)</p>
+            <ul className="space-y-2 text-sm text-zinc-600">
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-500 shrink-0">•</span>
+                <span>One HTML file. Link clicks are <strong className="text-zinc-800">intercepted by JavaScript</strong></span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-500 shrink-0">•</span>
+                <span>Router swaps components in-place based on URL</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-500 shrink-0">•</span>
+                <span>No full reload — app state persists, only the view changes</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-500 shrink-0">•</span>
+                <span>Faster: no document reload, smoother transitions</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-emerald-500 shrink-0">•</span>
+                <span>Same URL model for sharing, bookmarking, back button</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="mt-8">
+          <TraditionalVsSpaFlow />
+        </div>
+      </ChallengeSection>
 
       {/* ── Workshop ──────────────────────────────────────────────────── */}
       <div className="flex flex-col">
@@ -142,24 +199,26 @@ export default function RoutingSection() {
         {/* Route definitions + interactive preview */}
         <ChallengeSection wide>
           <ChallengeLabel>Route definitions</ChallengeLabel>
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4 max-w-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl items-start">
+            <div className="flex flex-col">
               <CodeBlock code={routingCode} lang="jsx" />
-              <CodeVisual><RoutesVisual /></CodeVisual>
             </div>
-
-            {/* Interactive: click a route → see the page it renders */}
-            <div>
-              <RoutePreviewDemo />
+            <div className="flex flex-col w-full">
+              <RoutePreviewDemo layout="stacked" />
             </div>
           </div>
         </ChallengeSection>
 
-        <ChallengeSection>
+        {/* URL as state */}
+        <ChallengeSection wide>
           <ChallengeLabel>URL as state</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={urlStateCode} lang="jsx" />
-            <CodeVisual><UrlParamsVisual /></CodeVisual>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl items-start">
+            <div className="flex flex-col">
+              <CodeBlock code={urlStateCode} lang="jsx" />
+            </div>
+            <div className="flex flex-col w-full border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm">
+              <UrlParamsDemo />
+            </div>
           </div>
         </ChallengeSection>
 

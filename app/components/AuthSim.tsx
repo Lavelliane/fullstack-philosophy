@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useAnimate } from "motion/react";
+import { motion } from "motion/react";
 import { Send, ShieldCheck, ShieldX, UserCheck, FileCode, CheckCircle2, XCircle, ArrowRight } from "lucide-react";
 import type { AuthSimScenario } from "../backend/data";
+
+const STEP_DELAY_MS = 450;
 
 type SimState = "idle" | "running" | "pass" | "fail";
 
@@ -23,8 +25,6 @@ const NODES: Node[] = [
   { id: "response",   label: "Response",     sublabel: "200 OK",                Icon: CheckCircle2, failKey: null },
 ];
 
-const NODE_X_OFFSETS = [0, 124, 248, 372, 496];
-
 type AuthSimProps = {
   scenarios: AuthSimScenario[];
 };
@@ -33,7 +33,6 @@ export default function AuthSim({ scenarios }: AuthSimProps) {
   const [selectedId, setSelectedId] = useState<string>(scenarios[0].id);
   const [simState, setSimState] = useState<SimState>("idle");
   const [activeNodeIndex, setActiveNodeIndex] = useState(-1);
-  const [scope, animate] = useAnimate();
 
   const selected = scenarios.find((s) => s.id === selectedId) ?? scenarios[0];
 
@@ -47,25 +46,13 @@ export default function AuthSim({ scenarios }: AuthSimProps) {
     setSimState("running");
     setActiveNodeIndex(-1);
 
-    await animate("#auth-packet", { x: 0, opacity: 1, scale: 1 }, { duration: 0.1 });
-
     const failIndex = getFailNodeIndex();
 
     for (let i = 0; i <= failIndex; i++) {
       setActiveNodeIndex(i);
-      await animate(
-        "#auth-packet",
-        { x: NODE_X_OFFSETS[i] },
-        { duration: 0.35, ease: "easeInOut" }
-      );
+      await new Promise((r) => setTimeout(r, STEP_DELAY_MS));
 
       if (selected.failsAt && NODES[i].failKey === selected.failsAt) {
-        await animate("#auth-packet", { scale: [1, 1.4, 0.8, 1.1, 1] }, { duration: 0.3 });
-        await animate(
-          "#auth-error-badge",
-          { scale: [0.5, 1.15, 1], opacity: 1 },
-          { duration: 0.25 }
-        );
         setSimState("fail");
         return;
       }
@@ -82,7 +69,7 @@ export default function AuthSim({ scenarios }: AuthSimProps) {
   const failNodeIndex = getFailNodeIndex();
 
   return (
-    <div ref={scope} className="border border-zinc-200 p-6 flex flex-col gap-6">
+    <div className="border border-zinc-200 p-6 flex flex-col gap-6">
       <div>
         <p className="text-sm font-medium text-zinc-900">Auth Middleware Simulator</p>
         <p className="text-xs text-zinc-400 mt-1">
@@ -187,15 +174,15 @@ export default function AuthSim({ scenarios }: AuthSimProps) {
         </div>
 
         {/* Error badge */}
-        {selected.failsAt && (
+        {selected.failsAt && simState === "fail" && (
           <motion.div
-            id="auth-error-badge"
-            initial={{ opacity: 0, scale: 0.5 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.25 }}
             style={{
               position: "absolute",
-              left: `${NODE_X_OFFSETS[failNodeIndex] + 8}px`,
+              left: `${failNodeIndex * 124 + 48}px`,
               top: "-8px",
-              opacity: simState === "fail" ? 1 : 0,
             }}
             className="flex items-center gap-1.5 px-2.5 py-1 border border-red-300 bg-red-50 z-10 pointer-events-none"
           >
@@ -205,16 +192,6 @@ export default function AuthSim({ scenarios }: AuthSimProps) {
             </span>
           </motion.div>
         )}
-
-        {/* Animated packet */}
-        <motion.div
-          id="auth-packet"
-          className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full shadow-md ${
-            simState === "fail" ? "bg-red-500" : "bg-zinc-900"
-          }`}
-          style={{ left: "10px" }}
-          initial={{ x: 0, opacity: 1, scale: 1 }}
-        />
       </div>
 
       {/* Action buttons */}

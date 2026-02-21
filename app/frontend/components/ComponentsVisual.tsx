@@ -37,11 +37,7 @@ function CardSkeleton() {
       transition={{ duration: 0.3 }}
     >
       <div className="flex items-center gap-2">
-        <motion.div
-          className="w-8 h-8 rounded-full bg-zinc-200 shrink-0"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        />
+        <div className="w-8 h-8 rounded-full bg-zinc-200 shrink-0" />
         <div className="flex-1 space-y-1">
           <div className="h-2.5 w-16 bg-zinc-200 rounded" />
           <div className="h-2 w-12 bg-zinc-100 rounded" />
@@ -190,12 +186,7 @@ export default function ComponentsVisual() {
         className="hidden md:flex shrink-0 items-center text-zinc-400 text-lg font-bold"
         variants={item}
       >
-        <motion.span
-          animate={{ x: [0, 3, 0], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          →
-        </motion.span>
+        <span>→</span>
       </motion.div>
 
       {/* Props */}
@@ -220,12 +211,7 @@ export default function ComponentsVisual() {
         className="hidden md:flex shrink-0 items-center text-zinc-400 text-lg font-bold"
         variants={item}
       >
-        <motion.span
-          animate={{ x: [0, 3, 0], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-        >
-          →
-        </motion.span>
+        <span>→</span>
       </motion.div>
 
       {/* Children */}
@@ -255,12 +241,7 @@ export default function ComponentsVisual() {
         className="hidden md:flex shrink-0 items-center text-zinc-400 text-lg font-bold"
         variants={item}
       >
-        <motion.span
-          animate={{ x: [0, 3, 0], opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-        >
-          →
-        </motion.span>
+        <span>→</span>
       </motion.div>
 
       {/* Compose */}
