@@ -9,53 +9,99 @@ export const NAV_SECTIONS = [
 
 // ─── Section 1: The Contract ─────────────────────────────────────────────────
 
+export const httpMethodsCode = `// School portal: students resource
+GET    /students           // List all students
+GET    /students/42        // Read one student
+POST   /students           // Create a new student
+PUT    /students/42        // Replace entire student
+PATCH  /students/42       // Update specific fields
+DELETE /students/42       // Remove a student`;
+
+export const zodDtoCode = `import { z } from "zod";
+
+const CreateStudentSchema = z.object({
+  fullName: z.string().min(1),
+  email: z.string().email(),
+  gpa: z.number().min(0).max(4),
+});
+
+type CreateStudentDto = z.infer<typeof CreateStudentSchema>;
+
+app.post("/students", (req, res) => {
+  const parsed = CreateStudentSchema.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json(parsed.error);
+  // parsed.data is typed and validated
+});`;
+
+export const csharpDtoCode = `[ApiController]
+[Route("students")]
+public class StudentController : ControllerBase
+{
+  [HttpPost]
+  public IActionResult Create([FromBody] CreateStudentDto dto)
+  {
+    if (!ModelState.IsValid) return BadRequest(ModelState);
+    // dto is validated by [Required], [EmailAddress], etc.
+  }
+}
+
+public class CreateStudentDto
+{
+  [Required] public string FullName { get; set; }
+  [Required, EmailAddress] public string Email { get; set; }
+  [Range(0, 4)] public double Gpa { get; set; }
+}`;
+
 export const contractCodeBad = `// Verbs in URLs, leaking implementation
-GET  /fetchUserById?id=5
-POST /createNewOrder
-PUT  /updateOrderStatus
+GET  /fetchStudentById?id=42
+POST /createNewStudent
+PUT  /updateStudentGpa
 
 // Response leaks raw DB schema
 {
-  "id": 5,
+  "id": 42,
   "password_hash": "a3f7...",
-  "internal_flag": true,
+  "ssn_hash": "x9b2...",
+  "internal_notes": "flagged",
   "created_at": "2024-01-01T..."
 }`;
 
 export const contractCodeGood = `// Resources as nouns, HTTP methods as verbs
-GET    /users/5
-POST   /orders
-PUT    /orders/12/status
+GET    /students/42
+POST   /students
+PATCH  /students/42/gpa
 
 // Response is a shaped DTO, only what the client needs
 {
-  "id": 5,
-  "name": "Ada Lovelace",
-  "email": "ada@example.com"
+  "id": 42,
+  "fullName": "Ada Lovelace",
+  "email": "ada@school.edu",
+  "gpa": 3.9
 }`;
 
 export const contractQuiz = {
-  question: "A client needs to create a new order. Which endpoint is correct?",
+  question: "A school portal needs to fetch a student's grades. Which endpoint is correct?",
   options: [
-    { id: "a", label: "GET /createOrder" },
-    { id: "b", label: "POST /orders" },
-    { id: "c", label: "POST /newOrder" },
-    { id: "d", label: "PUT /orders/create" },
+    { id: "a", label: "GET /getGrades?studentId=42" },
+    { id: "b", label: "GET /students/42/grades" },
+    { id: "c", label: "POST /grades/fetch" },
+    { id: "d", label: "GET /fetchStudentGrades/42" },
   ],
   correctId: "b",
   explanation:
-    "POST /orders is correct. POST = create. /orders = the resource (noun). The URL names the thing, the method names the action. The other options mix verbs into URLs or use the wrong method.",
+    "GET /students/42/grades is correct. GET = read. /students/42 = the student resource. /grades = nested resource. The URL names the thing, the method names the action. The other options mix verbs into URLs or use the wrong method.",
 };
 
 export const contractBucketItems = [
-  { id: "name", label: "name" },
+  { id: "full_name", label: "full_name" },
   { id: "email", label: "email" },
-  { id: "password_hash", label: "password_hash" },
+  { id: "gpa", label: "gpa" },
   { id: "id", label: "id" },
-  { id: "internal_flag", label: "internal_flag" },
-  { id: "avatar_url", label: "avatar_url" },
-  { id: "raw_session_token", label: "raw_session_token" },
-  { id: "role", label: "role" },
+  { id: "password_hash", label: "password_hash" },
+  { id: "ssn_hash", label: "ssn_hash" },
+  { id: "internal_notes", label: "internal_notes" },
+  { id: "enrollment_status", label: "enrollment_status" },
+  { id: "profile_picture_url", label: "profile_picture_url" },
 ];
 
 export const contractBucketBuckets = [
@@ -64,15 +110,57 @@ export const contractBucketBuckets = [
 ];
 
 export const contractBucketMapping: Record<string, string> = {
-  name: "expose",
+  full_name: "expose",
   email: "expose",
+  gpa: "expose",
   id: "expose",
-  avatar_url: "expose",
-  role: "expose",
+  enrollment_status: "expose",
+  profile_picture_url: "expose",
   password_hash: "hide",
-  internal_flag: "hide",
-  raw_session_token: "hide",
+  ssn_hash: "hide",
+  internal_notes: "hide",
 };
+
+export const contractDragSortItems = [
+  { id: "schema", label: "const schema = z.object({ fullName: z.string(), email: z.string().email(), gpa: z.number().min(0).max(4) });" },
+  { id: "parse", label: "const parsed = schema.safeParse(req.body);" },
+  { id: "validate", label: "if (!parsed.success) return res.status(400).json(parsed.error);" },
+  { id: "create", label: "const student = await studentService.create(parsed.data);" },
+  { id: "respond", label: "return res.status(201).json(student);" },
+];
+
+export const contractDragSortCorrectOrder = ["schema", "parse", "validate", "create", "respond"];
+
+export type ValidatorSimPayload = {
+  id: string;
+  label: string;
+  payload: Record<string, unknown>;
+  outcome: "pass" | "fail";
+  errorMessage?: string;
+};
+
+export const validatorSimPayloads: ValidatorSimPayload[] = [
+  {
+    id: "valid",
+    label: "Valid student",
+    payload: { fullName: "Ada Lovelace", email: "ada@school.edu", gpa: 3.9 },
+    outcome: "pass",
+  },
+  {
+    id: "missing",
+    label: "Missing field",
+    payload: { fullName: "Bob", email: "bob@school.edu" },
+    outcome: "fail",
+    errorMessage: "gpa: Required",
+  },
+  {
+    id: "forbidden",
+    label: "Forbidden field leak",
+    payload: { fullName: "Eve", email: "eve@school.edu", gpa: 2.5, password_hash: "leaked!" },
+    outcome: "fail",
+    errorMessage: "Unrecognized key(s): password_hash",
+  },
+];
 
 // ─── Section 2: The Gatekeepers ──────────────────────────────────────────────
 

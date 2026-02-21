@@ -1,16 +1,24 @@
 import CodeBlock from "../../components/CodeBlock";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
+import DragSort from "../../components/DragSort";
+import ValidatorSim from "../../components/ValidatorSim";
 import SectionHeader from "../components/SectionHeader";
 import Prose, { ProseBlock } from "../components/Prose";
 import ChallengeLabel from "../components/ChallengeLabel";
 import {
+  httpMethodsCode,
+  zodDtoCode,
+  csharpDtoCode,
   contractCodeBad,
   contractCodeGood,
   contractQuiz,
   contractBucketItems,
   contractBucketBuckets,
   contractBucketMapping,
+  contractDragSortItems,
+  contractDragSortCorrectOrder,
+  validatorSimPayloads,
 } from "../data";
 
 export default function ContractSection() {
@@ -20,7 +28,7 @@ export default function ContractSection() {
         number="01"
         label="The Contract"
         heading="Your backend is a promise."
-        time="5 min"
+        time="8 min"
       />
 
       <ProseBlock>
@@ -33,15 +41,15 @@ export default function ContractSection() {
           <strong>1. Resources as nouns, methods as verbs.</strong> The URL names
           the thing. The HTTP method names the action.{" "}
           <code className="font-mono text-zinc-700 bg-zinc-100 px-1">
-            GET /users/5
+            GET /students/42
           </code>{" "}
-          reads user 5.{" "}
+          reads student 42.{" "}
           <code className="font-mono text-zinc-700 bg-zinc-100 px-1">
-            POST /orders
+            POST /students
           </code>{" "}
-          creates an order. Avoid{" "}
+          creates a student. Avoid{" "}
           <code className="font-mono text-zinc-700 bg-zinc-100 px-1">
-            GET /fetchUserById
+            GET /fetchStudentById
           </code>
           : verbs in URLs leak implementation and make the API harder to reason
           about.
@@ -49,34 +57,72 @@ export default function ContractSection() {
         <Prose>
           <strong>2. DTOs: shape for the audience.</strong> Your database has
           columns like <code className="font-mono text-zinc-700 bg-zinc-100 px-1">password_hash</code> and{" "}
-          <code className="font-mono text-zinc-700 bg-zinc-100 px-1">internal_flag</code>.
+          <code className="font-mono text-zinc-700 bg-zinc-100 px-1">ssn_hash</code>.
           The client doesn&apos;t need those. A Data Transfer Object (DTO) is the
           response shape you choose to expose. The contract defines the shape,
           not your schema.
         </Prose>
       </ProseBlock>
 
-      <CodeBlock
-        mode="split"
-        code={contractCodeBad}
-        splitCode={contractCodeGood}
-        labels={["Bad: verbs in URLs, leaking schema", "Good: nouns, shaped DTO"]}
-      />
+      <div className="mb-8">
+        <p className="text-xs text-zinc-400 uppercase tracking-[0.15em] mb-3">
+          HTTP methods: the five verbs
+        </p>
+        <CodeBlock code={httpMethodsCode} lang="plaintext" />
+      </div>
+
+      <div className="mb-8">
+        <p className="text-xs text-zinc-400 uppercase tracking-[0.15em] mb-3">
+          DTOs: same idea, different syntax
+        </p>
+        <p className="text-sm text-zinc-500 leading-[1.85] max-w-2xl mb-4">
+          Functional (Zod) vs OOP (C# ASP.NET). Same contract: reject bad shapes before they touch your logic.
+        </p>
+        <CodeBlock
+          mode="split"
+          code={zodDtoCode}
+          splitCode={csharpDtoCode}
+          labels={["Zod (TypeScript)", "C# ASP.NET"]}
+        />
+      </div>
+
+      <div className="mb-8">
+        <CodeBlock
+          mode="split"
+          code={contractCodeBad}
+          splitCode={contractCodeGood}
+          labels={["Bad: verbs in URLs, leaking schema", "Good: nouns, shaped DTO"]}
+        />
+      </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <ChallengeLabel>Challenge: design the endpoint</ChallengeLabel>
+          <ChallengeLabel>Challenge A: design the endpoint</ChallengeLabel>
           <Quiz {...contractQuiz} />
         </div>
         <div>
-          <ChallengeLabel>Challenge: shape the DTO</ChallengeLabel>
+          <ChallengeLabel>Challenge B: shape the DTO</ChallengeLabel>
           <DragBucket
             items={contractBucketItems}
             buckets={contractBucketBuckets}
             correctMapping={contractBucketMapping}
-            prompt="Which user fields belong in the API response? Drag each field into the correct bucket."
+            prompt="Which student fields belong in the API response? Drag each field into the correct bucket."
           />
         </div>
+      </div>
+
+      <div className="mt-10">
+        <ChallengeLabel>Challenge C: assemble the route</ChallengeLabel>
+        <DragSort
+          items={contractDragSortItems}
+          correctOrder={contractDragSortCorrectOrder}
+          prompt="Drag the code pieces into the correct order for a Zod-validated POST route."
+        />
+      </div>
+
+      <div className="mt-10">
+        <ChallengeLabel>Challenge D: validator simulator</ChallengeLabel>
+        <ValidatorSim payloads={validatorSimPayloads} />
       </div>
     </section>
   );

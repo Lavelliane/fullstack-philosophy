@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        suppressHydrationWarning={true}
+        suppressHydrationWarning
         className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} antialiased`}
       >
         {children}

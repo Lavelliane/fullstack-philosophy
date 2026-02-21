@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type Item = {
   id: string;
@@ -23,10 +23,14 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export default function DragSort({ items, correctOrder, prompt }: DragSortProps) {
-  const [order, setOrder] = useState<Item[]>(() => shuffle(items));
+  const [order, setOrder] = useState<Item[]>(() => [...items]);
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState(false);
   const dragIndex = useRef<number | null>(null);
+
+  useEffect(() => {
+    setOrder(shuffle(items));
+  }, [items]);
 
   function handleDragStart(index: number) {
     dragIndex.current = index;
