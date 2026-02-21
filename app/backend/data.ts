@@ -553,6 +553,110 @@ async save(order) {
   // Swap Postgres → Mongo here. Service doesn't notice.
 }`;
 
+export const sandpackBulkPricingFiles = {
+  "/index.ts": `// ── Strategy Pattern: Live Coding ────────────────────────────────────
+// Two strategies are already implemented below.
+// Your task: implement BulkPricing.
+//
+// Rule: if qty > 10, apply a 10% discount. Otherwise, charge full price.
+// Then run the sandbox to see if your output is correct.
+
+interface PriceResult {
+  total: number;
+  breakdown: string;
+}
+
+interface OrderDto {
+  productId: string;
+  qty: number;
+  unitPrice: number;
+}
+
+interface PricingStrategy {
+  calculate(dto: OrderDto): PriceResult;
+}
+
+// ✅ Already implemented
+class StandardPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    const total = dto.qty * dto.unitPrice;
+    return {
+      total,
+      breakdown: \`\${dto.qty} × $\${dto.unitPrice} = $\${total}\`,
+    };
+  }
+}
+
+// ✅ Already implemented
+class BlackFridayPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    const total = dto.qty * dto.unitPrice * 0.7;
+    return {
+      total: parseFloat(total.toFixed(2)),
+      breakdown: \`30% off → $\${total.toFixed(2)}\`,
+    };
+  }
+}
+
+// 🎯 YOUR TASK: implement BulkPricing
+// Rule: qty > 10 → 10% discount. Otherwise → full price.
+class BulkPricing implements PricingStrategy {
+  calculate(dto: OrderDto): PriceResult {
+    // Write your code here
+
+  }
+}
+
+// ── Test runner (don't change this) ──────────────────────────────────
+const order: OrderDto = { productId: "LAPTOP-PRO", qty: 15, unitPrice: 100 };
+
+function check(label: string, got: number, expected: number) {
+  const pass = Math.abs(got - expected) < 0.01;
+  if (pass) {
+    console.log(\`  ✅ \${label} → $\${got}\`);
+  } else {
+    console.log(\`  ❌ \${label} → got $\${got}, expected $\${expected}\`);
+  }
+}
+
+console.log("── Reference strategies ─────────────────────────────");
+try {
+  const s = new StandardPricing().calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  console.log(\`  StandardPricing   : \${s.breakdown}\`);
+  const b = new BlackFridayPricing().calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  console.log(\`  BlackFridayPricing: \${b.breakdown}\`);
+} catch (e) {
+  console.log(\`  ❌ Reference error: \${(e as Error).message}\`);
+}
+
+console.log("\\n── BulkPricing tests ────────────────────────────────");
+try {
+  const bulk = new BulkPricing();
+
+  // Case 1: qty > 10 → 10% discount should apply
+  const r1 = bulk.calculate({ productId: "X", qty: 15, unitPrice: 100 });
+  check("qty=15, unitPrice=100 (discount applies)", r1.total, 1350);
+
+  // Case 2: qty === 10 → boundary, no discount
+  const r2 = bulk.calculate({ productId: "X", qty: 10, unitPrice: 100 });
+  check("qty=10, unitPrice=100 (boundary, no discount)", r2.total, 1000);
+
+  // Case 3: qty < 10 → no discount
+  const r3 = bulk.calculate({ productId: "X", qty: 5, unitPrice: 200 });
+  check("qty=5,  unitPrice=200 (no discount)        ", r3.total, 1000);
+
+  // Case 4: breakdown field must exist
+  if (!r1.breakdown) {
+    console.log("  ❌ breakdown field is missing or empty");
+  } else {
+    console.log(\`  ✅ breakdown present: "\${r1.breakdown}"\`);
+  }
+} catch (e) {
+  console.log(\`  ❌ BulkPricing threw: \${(e as Error).message}\`);
+}
+`,
+};
+
 export const lifecycleBucketItems = [
   { id: "b1", label: "Checks if the JWT token is valid" },
   { id: "b2", label: "Calculates order total with discounts" },

@@ -1,6 +1,6 @@
-import CodeBlock from "../../components/CodeBlock";
 import DragBucket from "../../components/DragBucket";
 import FillBlank from "../../components/FillBlank";
+import SandpackEditor from "../../components/SandpackEditor";
 import SectionHeader from "../components/SectionHeader";
 import Prose from "../components/Prose";
 import ChallengeLabel from "../components/ChallengeLabel";
@@ -9,12 +9,12 @@ import LayerDiagram from "../components/LayerDiagram";
 import StrategyDiagram from "../components/StrategyDiagram";
 import ConceptComparison from "../components/ConceptComparison";
 import {
-  lifecycleCode,
   lifecycleLayerComparison,
   lifecycleBucketItems,
   lifecycleBucketBuckets,
   lifecycleBucketMapping,
   lifecycleFillSegments,
+  sandpackBulkPricingFiles,
 } from "../data";
 
 export default function RequestLifecycleSection() {
@@ -88,10 +88,22 @@ export default function RequestLifecycleSection() {
         <StrategyDiagram />
       </BackendChallengeSection>
 
-      {/* ── Strategy pattern: code ───────────────────────────────────────── */}
+      {/* ── Strategy pattern: live coding ─────────────────────────────────── */}
       <BackendChallengeSection wide>
-        <ChallengeLabel>Strategy pattern — the code</ChallengeLabel>
-        <CodeBlock code={lifecycleCode} />
+        <ChallengeLabel>Challenge: implement BulkPricing</ChallengeLabel>
+        <Prose>
+          Two strategies are already written:{" "}
+          <code className="font-mono text-zinc-700 bg-zinc-100 px-1">StandardPricing</code> and{" "}
+          <code className="font-mono text-zinc-700 bg-zinc-100 px-1">BlackFridayPricing</code>.
+          Your job: implement{" "}
+          <code className="font-mono text-zinc-700 bg-zinc-100 px-1">BulkPricing</code> — the same
+          interface, a different algorithm. Hit Run to check your output.
+        </Prose>
+        <SandpackEditor
+          files={sandpackBulkPricingFiles}
+          activeFile="/index.ts"
+          hint="If qty > 10, apply a 10% discount. Otherwise charge full price. Implement the calculate() method and hit Run."
+        />
       </BackendChallengeSection>
 
       {/* ── Challenge: sort into layers ─────────────────────────────────── */}
