@@ -126,18 +126,19 @@ export default function AboutPage() {
                 <ul className="space-y-3 text-sm text-zinc-600">
                   <li>
                     <strong className="text-zinc-900">Cybersecurity Researcher</strong> @ MobiSec Lab, Kookmin University
-                    <span className="text-zinc-400"> (Sep 2024 – Present)</span>
+                    <span className="text-zinc-400"> · Seoul, South Korea (Sep 2024 – Present)</span>
                   </li>
                   <li>
                     <strong className="text-zinc-900">Lead Software Engineer</strong> @ Tax Maverick Software
-                    <span className="text-zinc-400"> (Aug 2024 – Present)</span>
+                    <span className="text-zinc-400"> · Texas, United States (Aug 2024 – Present)</span>
                   </li>
                   <li>
                     <strong className="text-zinc-900">Software Development Engineer</strong> @ Lanex Corporation
-                    <span className="text-zinc-400"> (Sep 2023 – Jun 2024)</span>
+                    <span className="text-zinc-400"> · Metro Cebu, Philippines (Sep 2023 – Jun 2024)</span>
                   </li>
                   <li>
                     <strong className="text-zinc-900">Full Stack Developer</strong> @ Purple Cow, WebriQ Technologies
+                    <span className="text-zinc-400"> · Metro Cebu, Philippines</span>
                   </li>
                 </ul>
               </div>
@@ -209,18 +210,18 @@ export default function AboutPage() {
                 <ul className="space-y-3 text-sm text-zinc-600">
                   <li>
                     <strong className="text-zinc-900">Cybersecurity Researcher</strong> @ MobiSec Lab, Kookmin University
-                    <span className="text-zinc-400"> (Sep 2024 – Present)</span>
+                    <span className="text-zinc-400"> · Seoul, South Korea (Sep 2024 – Present)</span>
                   </li>
                   <li>
                     <strong className="text-zinc-900">Software Developer</strong> @ Techflow.ai GmbH
-                    <span className="text-zinc-400"> (Aug 2024 – Present, Part-time, Remote)</span>
+                    <span className="text-zinc-400"> · Germany (Aug 2024 – Present, Part-time, Remote)</span>
                     <p className="text-zinc-500 mt-1 text-xs">
                       UI/UX design for internal software backend. Development with no-code web platform.
                     </p>
                   </li>
                   <li>
                     <strong className="text-zinc-900">Software Developer</strong> @ Mod Technologies
-                    <span className="text-zinc-400"> (May 2024 – Present, Part-time, Remote)</span>
+                    <span className="text-zinc-400"> · Denver, United States (May 2024 – Present, Part-time, Remote)</span>
                     <p className="text-zinc-500 mt-1 text-xs">
                       E-commerce store with GraphQL and Next.js. POS system with React.js and Node.js.
                     </p>
