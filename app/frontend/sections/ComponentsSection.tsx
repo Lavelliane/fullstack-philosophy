@@ -47,7 +47,7 @@ export default function ComponentsSection() {
         {/* Decorative number */}
         <span
           aria-hidden
-          className="absolute right-0 top-0 font-light text-zinc-100 dark:text-zinc-800 leading-none select-none pointer-events-none"
+          className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
           style={{ fontSize: "clamp(120px, 24vw, 200px)", lineHeight: 1 }}
         >
           02
@@ -57,11 +57,11 @@ export default function ComponentsSection() {
 
           {/* Left: concept & discussion */}
           <div className="min-w-0">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-2 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-2 font-mono">
               Section 02 · 5 min
             </p>
             <h2
-              className="font-light leading-[1.05] tracking-tight text-zinc-900 dark:text-zinc-100 mb-4"
+              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-4"
               style={{ fontSize: "clamp(28px, 4vw, 44px)" }}
             >
               Stop copying.
@@ -69,17 +69,17 @@ export default function ComponentsSection() {
               Start composing.
             </h2>
 
-            <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed mb-4">
-              Break UI into <strong className="text-zinc-900 dark:text-zinc-100">self-contained units</strong> — Button, UserCard, NavBar.
+            <p className="text-sm text-zinc-600 leading-relaxed mb-4">
+              Break UI into <strong className="text-zinc-900">self-contained units</strong> — Button, UserCard, NavBar.
             </p>
 
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <span className="font-mono text-xs bg-zinc-900 dark:bg-zinc-700 text-white px-2 py-1 shrink-0 tracking-widest mt-0.5">
+                <span className="font-mono text-xs bg-zinc-900 text-white px-2 py-1 shrink-0 tracking-widest mt-0.5">
                   Component
                 </span>
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  <strong className="text-zinc-900 dark:text-zinc-100">Reusability.</strong> One definition, many uses. Change once → updates everywhere.
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  <strong className="text-zinc-900">Reusability.</strong> One definition, many uses. Change once → updates everywhere.
                 </p>
               </div>
 
@@ -87,8 +87,8 @@ export default function ComponentsSection() {
                 <span className="font-mono text-xs bg-zinc-500 text-white px-2 py-1 shrink-0 tracking-widest mt-0.5">
                   Props
                 </span>
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  <strong className="text-zinc-900 dark:text-zinc-100">Parent passes data down.</strong> Child receives, renders. Props come from parent&apos;s state, fetch, or its props.
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  <strong className="text-zinc-900">Parent passes data down.</strong> Child receives, renders. Props come from parent&apos;s state, fetch, or its props.
                 </p>
               </div>
 
@@ -96,8 +96,8 @@ export default function ComponentsSection() {
                 <span className="font-mono text-xs bg-zinc-400 text-white px-2 py-1 shrink-0 tracking-widest mt-0.5">
                   Children
                 </span>
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  Content between tags. <strong className="text-zinc-900 dark:text-zinc-100">&lt;Card&gt;...&lt;/Card&gt;</strong> — whatever goes inside becomes the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  Content between tags. <strong className="text-zinc-900">&lt;Card&gt;...&lt;/Card&gt;</strong> — whatever goes inside becomes the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
                 </p>
               </div>
 
@@ -105,17 +105,17 @@ export default function ComponentsSection() {
                 <span className="font-mono text-xs bg-zinc-200 text-zinc-800 px-2 py-1 shrink-0 tracking-widest mt-0.5">
                   Compose
                 </span>
-                <p className="text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  Nest simple parts. <strong className="text-zinc-900 dark:text-zinc-100">Page is components all the way down.</strong>
+                <p className="text-sm text-zinc-600 leading-relaxed">
+                  Nest simple parts. <strong className="text-zinc-900">Page is components all the way down.</strong>
                 </p>
               </div>
             </div>
 
-            <div className="mt-4 border-l-2 border-zinc-900 dark:border-zinc-500 pl-4 py-0.5">
-              <p className="text-base font-light text-zinc-900 dark:text-zinc-100 leading-snug italic">
+            <div className="mt-4 border-l-2 border-zinc-900 pl-4 py-0.5">
+              <p className="text-base font-light text-zinc-900 leading-snug italic">
                 &ldquo;Change the component once. It updates everywhere.&rdquo;
               </p>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1.5 not-italic">
+              <p className="text-xs text-zinc-500 mt-1.5 not-italic">
                 Props down. State up. Re-render → new props. That&apos;s the loop.
               </p>
             </div>
@@ -123,7 +123,7 @@ export default function ComponentsSection() {
 
           {/* Right: code */}
           <div className="flex flex-col gap-2 min-w-0">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.15em]">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               In code
             </p>
             <CodeBlock code={compositionSlideCode} lang="jsx" />
@@ -139,7 +139,7 @@ export default function ComponentsSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-4 left-8 md:left-16 text-zinc-300 dark:text-zinc-600">
+        <div className="absolute bottom-4 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
           </span>
@@ -149,14 +149,14 @@ export default function ComponentsSection() {
       {/* ── Workshop ──────────────────────────────────────────────────── */}
       <div className="flex flex-col">
         <div
-          className="bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800 px-8 py-12 flex items-center justify-center"
+          className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
           <div className="max-w-2xl text-center">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-3 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges — Section 02
             </p>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-[1.85]">
+            <p className="text-sm text-zinc-500 leading-[1.85]">
               Copy-paste vs reuse. Where props come from. The flow loop. Same ideas, hands-on.
             </p>
           </div>
@@ -190,7 +190,7 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>The props flow loop</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 dark:text-zinc-100 mb-4 border-l-2 border-zinc-300 dark:border-zinc-600 pl-4">
+          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Parent owns data</strong> → passes props → <strong>child renders</strong>. State change → re-render → new props.
           </p>
           <CodeBlock code={propsFlowLoopCode} lang="jsx" />
@@ -198,7 +198,7 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Where do props come from?</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 dark:text-zinc-100 mb-4 border-l-2 border-zinc-300 dark:border-zinc-600 pl-4">
+          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Always the parent.</strong> From state, fetch, or pass-through.
           </p>
           <CodeBlock code={propsSourcesCode} lang="jsx" />
@@ -206,7 +206,7 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Children: content between tags</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 dark:text-zinc-100 mb-4 border-l-2 border-zinc-300 dark:border-zinc-600 pl-4">
+          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Whatever goes inside the tags</strong> is passed as the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
           </p>
           <CodeBlock code={childrenCode} lang="jsx" />
@@ -236,7 +236,7 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Compose: putting it together</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 dark:text-zinc-100 mb-4 border-l-2 border-zinc-300 dark:border-zinc-600 pl-4">
+          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
             <strong>Nest components.</strong> A page is Layout with NavBar, content, and Footer inside. Components all the way down.
           </p>
           <CodeBlock code={compositionSlideCode} lang="jsx" />

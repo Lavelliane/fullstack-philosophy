@@ -26,14 +26,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem('theme');var d=document.documentElement;if(t==='dark'){d.classList.add('dark');}else if(t==='light'){d.classList.remove('dark');}else if(window.matchMedia('(prefers-color-scheme: dark)').matches){d.classList.add('dark');}}catch(e){}})();`,
-          }}
-        />
-      </head>
+    <html lang="en">
       <body
         suppressHydrationWarning
         className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} antialiased`}

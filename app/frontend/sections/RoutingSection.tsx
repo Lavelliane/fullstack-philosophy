@@ -31,7 +31,7 @@ export default function RoutingSection() {
         {/* Decorative number */}
         <span
           aria-hidden
-          className="absolute right-0 top-0 font-light text-zinc-100 dark:text-zinc-800 leading-none select-none pointer-events-none"
+          className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
           style={{ fontSize: "clamp(140px, 28vw, 260px)", lineHeight: 1 }}
         >
           05
@@ -41,11 +41,11 @@ export default function RoutingSection() {
 
           {/* Left: concept */}
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-6 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">
               Section 05 · 5 min
             </p>
             <h2
-              className="font-light leading-[1.05] tracking-tight text-zinc-900 dark:text-zinc-100 mb-10"
+              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-10"
               style={{ fontSize: "clamp(36px, 5vw, 60px)" }}
             >
               Pages are
@@ -58,9 +58,9 @@ export default function RoutingSection() {
                 <span className="font-mono text-xs bg-zinc-900 text-white px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   SPA
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                <p className="text-base text-zinc-600 leading-relaxed">
                   One HTML file. JavaScript intercepts link clicks,{" "}
-                  <strong className="text-zinc-900 dark:text-zinc-100">swaps components</strong>{" "}
+                  <strong className="text-zinc-900">swaps components</strong>{" "}
                   based on the URL — no full page reload.
                 </p>
               </div>
@@ -69,9 +69,9 @@ export default function RoutingSection() {
                 <span className="font-mono text-xs bg-zinc-500 text-white px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   URL = State
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                <p className="text-base text-zinc-600 leading-relaxed">
                   The URL is{" "}
-                  <strong className="text-zinc-900 dark:text-zinc-100">
+                  <strong className="text-zinc-900">
                     the only state that survives a reload.
                   </strong>{" "}
                   A user can share it, bookmark it, or hit back — and land
@@ -83,15 +83,15 @@ export default function RoutingSection() {
                 <span className="font-mono text-xs bg-zinc-200 text-zinc-800 px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   Declare
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                <p className="text-base text-zinc-600 leading-relaxed">
                   Map URLs to components. The router handles the rest —
                   active link styling, param parsing, navigation history.
                 </p>
               </div>
             </div>
 
-            <div className="mt-10 border-l-2 border-zinc-900 dark:border-zinc-500 pl-6 py-1">
-              <p className="text-lg font-light text-zinc-900 dark:text-zinc-100 leading-snug italic">
+            <div className="mt-10 border-l-2 border-zinc-900 pl-6 py-1">
+              <p className="text-lg font-light text-zinc-900 leading-snug italic">
                 &ldquo;The browser back button must always work. Don&apos;t
                 break the web&apos;s fundamental navigation model.&rdquo;
               </p>
@@ -100,7 +100,7 @@ export default function RoutingSection() {
 
           {/* Right: code (desktop only) */}
           <div className="hidden lg:flex flex-col gap-3">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.15em]">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Declarative routing
             </p>
             <CodeBlock code={routingSlideCode} lang="jsx" />
@@ -108,7 +108,7 @@ export default function RoutingSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300 dark:text-zinc-600">
+        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
           </span>
@@ -118,14 +118,14 @@ export default function RoutingSection() {
       {/* ── Workshop ──────────────────────────────────────────────────── */}
       <div className="flex flex-col">
         <div
-          className="bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800 px-8 py-12 flex items-center justify-center"
+          className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
           <div className="max-w-2xl text-center">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-3 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges — Section 05
             </p>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-[1.85]">
+            <p className="text-sm text-zinc-500 leading-[1.85]">
               If something in your app can be shared or linked to, it belongs
               in the URL. The current tab, the selected filter, the open modal
               — anything that represents a meaningful &ldquo;place.&rdquo;

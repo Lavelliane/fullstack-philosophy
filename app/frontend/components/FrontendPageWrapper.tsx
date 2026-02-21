@@ -45,7 +45,7 @@ export default function FrontendPageWrapper({
   }, [hideNav]);
 
   return (
-    <div className="h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 flex flex-col overflow-hidden">
+    <div className="h-screen bg-white text-zinc-900 flex flex-col overflow-hidden">
       <header
         className={`shrink-0 overflow-hidden transition-all duration-300 ${
           hideNav ? "h-0 border-b-0" : ""

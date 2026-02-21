@@ -6,7 +6,7 @@ export default function BackendHero() {
     >
       <span
         aria-hidden
-        className="absolute right-0 top-0 font-light text-zinc-100 dark:text-zinc-800 leading-none select-none pointer-events-none"
+        className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
         style={{ fontSize: "clamp(120px, 22vw, 220px)", lineHeight: 1 }}
       >
         00
@@ -18,18 +18,18 @@ export default function BackendHero() {
           </span>
         </div>
         <h1
-          className="font-light leading-[0.9] tracking-tight text-zinc-900 dark:text-zinc-100 mb-6"
+          className="font-light leading-[0.9] tracking-tight text-zinc-900 mb-6"
           style={{ fontSize: "clamp(44px, 7vw, 96px)" }}
         >
           The Quiet Side
           <br />
           of Software
         </h1>
-        <p className="text-sm text-zinc-400 dark:text-zinc-500 leading-relaxed max-w-lg mb-12">
+        <p className="text-sm text-zinc-400 leading-relaxed max-w-lg mb-12">
           30 minutes. Six concepts. No syntax. By the end you&apos;ll see every
           API, every service, and every failure mode differently.
         </p>
-        <div className="flex items-center gap-6 text-xs font-mono text-zinc-300 dark:text-zinc-600">
+        <div className="flex items-center gap-6 text-xs font-mono text-zinc-300">
           <span>6 sections</span>
           <span>·</span>
           <span>12 interactions</span>
@@ -37,7 +37,7 @@ export default function BackendHero() {
           <span>30–35 min</span>
         </div>
       </div>
-      <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300 dark:text-zinc-600">
+      <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
         <span className="text-xs font-mono uppercase tracking-[0.15em]">
           Begin ↓
         </span>

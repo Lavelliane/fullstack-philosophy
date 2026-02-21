@@ -1,21 +1,17 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import ThemeToggle from "./components/ThemeToggle";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-zinc-900">
+    <div className="min-h-screen bg-white text-[#0f0f0f]">
       {/* Navigation */}
       <nav className="flex items-center justify-between px-8 py-5 border-b border-zinc-100">
         <span className="text-sm font-medium tracking-tight">The Human Behind the Endpoint</span>
-        <div className="flex items-center gap-4 text-sm text-zinc-500">
-          <div className="flex items-center gap-8">
-            <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
-            <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
-            <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
-            <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
-          </div>
-          <ThemeToggle />
+        <div className="flex items-center gap-8 text-sm text-zinc-500">
+          <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+          <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
+          <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
+          <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
         </div>
       </nav>
 

@@ -43,7 +43,7 @@ export default function FetchingSection() {
         {/* Decorative number */}
         <span
           aria-hidden
-          className="absolute right-0 top-0 font-light text-zinc-100 dark:text-zinc-800 leading-none select-none pointer-events-none"
+          className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
           style={{ fontSize: "clamp(140px, 28vw, 260px)", lineHeight: 1 }}
         >
           04
@@ -53,11 +53,11 @@ export default function FetchingSection() {
 
           {/* Left: concept */}
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-6 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">
               Section 04 · 7 min
             </p>
             <h2
-              className="font-light leading-[1.05] tracking-tight text-zinc-900 dark:text-zinc-100 mb-8"
+              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-8"
               style={{ fontSize: "clamp(36px, 5vw, 60px)" }}
             >
               Every fetch has
@@ -67,33 +67,33 @@ export default function FetchingSection() {
 
             {/* Three state cards */}
             <div className="space-y-3 mb-8">
-              <div className="flex items-start gap-4 border border-amber-200 dark:border-amber-900/50 bg-amber-50 dark:bg-amber-950/30 px-4 py-3">
+              <div className="flex items-start gap-4 border border-amber-200 bg-amber-50 px-4 py-3">
                 <span className="font-mono text-xs text-amber-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
                   Loading
                 </span>
-                <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+                <p className="text-sm text-amber-800 leading-relaxed">
                   Data is in transit.{" "}
                   <strong>Show a skeleton or spinner.</strong> Never leave the
                   user staring at blank space.
                 </p>
               </div>
 
-              <div className="flex items-start gap-4 border border-emerald-200 dark:border-emerald-900/50 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3">
+              <div className="flex items-start gap-4 border border-emerald-200 bg-emerald-50 px-4 py-3">
                 <span className="font-mono text-xs text-emerald-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
                   Success
                 </span>
-                <p className="text-sm text-emerald-800 dark:text-emerald-300 leading-relaxed">
+                <p className="text-sm text-emerald-800 leading-relaxed">
                   Data arrived.{" "}
                   <strong>Render the real content.</strong> Pass data down as
                   props.
                 </p>
               </div>
 
-              <div className="flex items-start gap-4 border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-950/30 px-4 py-3">
+              <div className="flex items-start gap-4 border border-red-200 bg-red-50 px-4 py-3">
                 <span className="font-mono text-xs text-red-700 font-medium shrink-0 mt-0.5 uppercase tracking-wider">
                   Error
                 </span>
-                <p className="text-sm text-red-800 dark:text-red-300 leading-relaxed">
+                <p className="text-sm text-red-800 leading-relaxed">
                   Something failed.{" "}
                   <strong>Show a clear message and a retry option.</strong>{" "}
                   Never fail silently.
@@ -101,8 +101,8 @@ export default function FetchingSection() {
               </div>
             </div>
 
-            <div className="border-l-2 border-zinc-900 dark:border-zinc-500 pl-6 py-1">
-              <p className="text-lg font-light text-zinc-900 dark:text-zinc-100 leading-snug italic">
+            <div className="border-l-2 border-zinc-900 pl-6 py-1">
+              <p className="text-lg font-light text-zinc-900 leading-snug italic">
                 &ldquo;The blank screen is never acceptable. Design for all
                 three states — not just the happy path.&rdquo;
               </p>
@@ -111,7 +111,7 @@ export default function FetchingSection() {
 
           {/* Right: code (desktop only) */}
           <div className="hidden lg:flex flex-col gap-3">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.15em]">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Modelling all three states
             </p>
             <CodeBlock code={fetchSlideCode} lang="jsx" />
@@ -119,7 +119,7 @@ export default function FetchingSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300 dark:text-zinc-600">
+        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
           </span>
@@ -129,14 +129,14 @@ export default function FetchingSection() {
       {/* ── Workshop ──────────────────────────────────────────────────── */}
       <div className="flex flex-col">
         <div
-          className="bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800 px-8 py-12 flex items-center justify-center"
+          className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
           <div className="max-w-2xl text-center">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-3 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges — Section 04
             </p>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-[1.85]">
+            <p className="text-sm text-zinc-500 leading-[1.85]">
               Fetching is async. The app keeps rendering while the network
               request travels. Every state between &ldquo;sent&rdquo; and
               &ldquo;received&rdquo; is your responsibility to handle.

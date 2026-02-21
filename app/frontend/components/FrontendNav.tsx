@@ -1,5 +1,3 @@
-import ThemeToggle from "../../components/ThemeToggle";
-
 export default function FrontendNav() {
   return (
     <nav className="flex items-center justify-between px-8 py-5 border-b border-zinc-100">
@@ -9,14 +7,11 @@ export default function FrontendNav() {
       >
         The Human Behind the Endpoint
       </a>
-      <div className="flex items-center gap-4 text-sm text-zinc-500">
-        <div className="flex items-center gap-6">
-          <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
-          <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
-          <span className="text-zinc-900 font-medium">Frontend</span>
-          <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
-        </div>
-        <ThemeToggle />
+      <div className="flex items-center gap-6 text-sm text-zinc-500">
+        <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+        <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
+        <span className="text-zinc-900 font-medium">Frontend</span>
+        <a href="/about" className="hover:text-zinc-900 transition-colors duration-200">About</a>
       </div>
     </nav>
   );

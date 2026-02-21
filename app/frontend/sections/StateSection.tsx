@@ -44,7 +44,7 @@ export default function StateSection() {
         {/* Decorative number */}
         <span
           aria-hidden
-          className="absolute right-0 top-0 font-light text-zinc-100 dark:text-zinc-800 leading-none select-none pointer-events-none"
+          className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
           style={{ fontSize: "clamp(140px, 28vw, 260px)", lineHeight: 1 }}
         >
           03
@@ -54,11 +54,11 @@ export default function StateSection() {
 
           {/* Left: concept */}
           <div>
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-6 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">
               Section 03 · 8 min
             </p>
             <h2
-              className="font-light leading-[1.05] tracking-tight text-zinc-900 dark:text-zinc-100 mb-8"
+              className="font-light leading-[1.05] tracking-tight text-zinc-900 mb-8"
               style={{ fontSize: "clamp(36px, 5vw, 60px)" }}
             >
               What the app
@@ -69,11 +69,11 @@ export default function StateSection() {
             {/* The core loop — visual emphasis */}
             <div className="flex items-center gap-2 mb-8 flex-wrap">
               {[
-                { label: "User acts", color: "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700" },
-                { label: "→", color: "text-zinc-300 dark:text-zinc-600" },
-                { label: "State changes", color: "bg-zinc-900 dark:bg-zinc-700 text-white" },
-                { label: "→", color: "text-zinc-300 dark:text-zinc-600" },
-                { label: "UI re-renders", color: "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700" },
+                { label: "User acts", color: "bg-zinc-100 text-zinc-700 border border-zinc-200" },
+                { label: "→", color: "text-zinc-300" },
+                { label: "State changes", color: "bg-zinc-900 text-white" },
+                { label: "→", color: "text-zinc-300" },
+                { label: "UI re-renders", color: "bg-zinc-100 text-zinc-700 border border-zinc-200" },
               ].map((item, i) =>
                 item.label === "→" ? (
                   <span key={i} className={`font-mono text-lg ${item.color}`}>
@@ -95,8 +95,8 @@ export default function StateSection() {
                 <span className="font-mono text-xs bg-zinc-900 text-white px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   Local
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  <strong className="text-zinc-900 dark:text-zinc-100">Owned by one component.</strong>{" "}
+                <p className="text-base text-zinc-600 leading-relaxed">
+                  <strong className="text-zinc-900">Owned by one component.</strong>{" "}
                   A dropdown open/closed. A form field. Only that component
                   needs to know.
                 </p>
@@ -106,8 +106,8 @@ export default function StateSection() {
                 <span className="font-mono text-xs bg-zinc-500 text-white px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   Global
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  <strong className="text-zinc-900 dark:text-zinc-100">Shared across the app.</strong>{" "}
+                <p className="text-base text-zinc-600 leading-relaxed">
+                  <strong className="text-zinc-900">Shared across the app.</strong>{" "}
                   Who&apos;s logged in. A shopping cart. Multiple components
                   need the same data.
                 </p>
@@ -117,15 +117,15 @@ export default function StateSection() {
                 <span className="font-mono text-xs bg-zinc-200 text-zinc-800 px-2.5 py-1.5 shrink-0 tracking-widest mt-0.5">
                   Derived
                 </span>
-                <p className="text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-                  <strong className="text-zinc-900 dark:text-zinc-100">Computed from existing state.</strong>{" "}
+                <p className="text-base text-zinc-600 leading-relaxed">
+                  <strong className="text-zinc-900">Computed from existing state.</strong>{" "}
                   Never store what you can calculate — it drifts out of sync.
                 </p>
               </div>
             </div>
 
-            <div className="mt-10 border-l-2 border-zinc-900 dark:border-zinc-500 pl-6 py-1">
-              <p className="text-lg font-light text-zinc-900 dark:text-zinc-100 leading-snug italic">
+            <div className="mt-10 border-l-2 border-zinc-900 pl-6 py-1">
+              <p className="text-lg font-light text-zinc-900 leading-snug italic">
                 &ldquo;Keep state as close to where it&apos;s used as possible.
                 Lift it up only when you have to.&rdquo;
               </p>
@@ -134,7 +134,7 @@ export default function StateSection() {
 
           {/* Right: code (desktop only) */}
           <div className="hidden lg:flex flex-col gap-3">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.15em]">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               The core loop in code
             </p>
             <CodeBlock code={stateSlideCode} lang="jsx" />
@@ -142,7 +142,7 @@ export default function StateSection() {
         </div>
 
         {/* Scroll indicator */}
-        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300 dark:text-zinc-600">
+        <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
           </span>
@@ -152,14 +152,14 @@ export default function StateSection() {
       {/* ── Workshop ──────────────────────────────────────────────────── */}
       <div className="flex flex-col">
         <div
-          className="bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-100 dark:border-zinc-800 px-8 py-12 flex items-center justify-center"
+          className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
           <div className="max-w-2xl text-center">
-            <p className="text-xs text-zinc-400 dark:text-zinc-500 uppercase tracking-[0.18em] mb-3 font-mono">
+            <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges — Section 03
             </p>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400 leading-[1.85]">
+            <p className="text-sm text-zinc-500 leading-[1.85]">
               State is what makes a UI dynamic. Without state, your app is a
               static page. With state, every click, keystroke, and fetch has a
               place to land.
