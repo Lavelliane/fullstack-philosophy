@@ -202,6 +202,317 @@ export const gatekeepersQuiz = {
     "401 means 'I don't know who you are' (identity problem). 403 means 'I know who you are, but you can't do this' (permission problem). The distinction matters: 401 should prompt a login, 403 should not.",
 };
 
+// ─── Section 2 Extended: Auth Deep Dive ──────────────────────────────────────
+
+export const passwordHashingCode = `import bcrypt from "bcrypt";
+
+// Registration: hash before saving — never store plaintext
+async function registerUser(email, password) {
+  const saltRounds = 12;            // work factor — higher = slower = safer
+  const hash = await bcrypt.hash(password, saltRounds);
+  // bcrypt automatically generates and embeds a unique salt
+  await db.users.create({ email, passwordHash: hash });
+  return { message: "User created" };
+}
+
+// Login: compare plaintext against stored hash
+async function loginUser(email, password) {
+  const user = await db.users.findOne({ email });
+  if (!user) return null;           // never reveal which part failed
+
+  const match = await bcrypt.compare(password, user.passwordHash);
+  if (!match) return null;
+
+  return user;
+}`;
+
+export const jwtSignCode = `import jwt from "jsonwebtoken";
+
+// On successful login — sign a token with the user's identity
+async function login(req, res) {
+  const user = await loginUser(req.body.email, req.body.password);
+  if (!user) return res.status(401).json({ error: "Invalid credentials" });
+
+  const payload = { userId: user.id, email: user.email, role: user.role };
+  const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  // Option A: httpOnly cookie (browser clients — XSS-resistant)
+  res.cookie("token", token, { httpOnly: true, secure: true, sameSite: "strict" });
+
+  // Option B: send in body (mobile/SPA — client stores in memory, not localStorage)
+  return res.status(200).json({ token });
+}`;
+
+export const jwtMiddlewareCode = `import jwt from "jsonwebtoken";
+
+// Auth middleware — runs before every protected route
+function authenticate(req, res, next) {
+  // Extract from cookie OR Authorization: Bearer <token> header
+  const token =
+    req.cookies?.token ??
+    req.headers.authorization?.split(" ")[1];
+
+  if (!token) return res.status(401).json({ error: "No token provided" });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;   // { userId, email, role } — available to all downstream handlers
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Token invalid or expired" });
+  }
+}
+
+// Usage — middleware chain from Section 1
+app.get("/dashboard", authenticate, (req, res) => {
+  res.json({ welcome: req.user.email });
+});`;
+
+export const roleMiddlewareCode = `// Authorization middleware factory — runs after authenticate
+function requireRole(...roles) {
+  return (req, res, next) => {
+    if (!req.user) return res.status(401).json({ error: "Not authenticated" });
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: "Insufficient permissions" });
+    }
+    next();
+  };
+}
+
+// Chain: authenticate first, then authorize — three questions in order
+app.delete(
+  "/admin/users/:id",
+  authenticate,              // 1. Who are you?     → attaches req.user
+  requireRole("admin"),      // 2. Are you allowed?  → checks req.user.role
+  async (req, res) => {      // 3. What do you want? → your logic
+    await userService.delete(req.params.id);
+    return res.status(204).send();
+  }
+);`;
+
+export const jwtExampleToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQyLCJlbWFpbCI6ImFkYUBzY2hvb2wuZWR1Iiwicm9sZSI6InN0dWRlbnQiLCJpYXQiOjE3MDk5MDQwMDAsImV4cCI6MTcwOTkwNzYwMH0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+
+export const jwtParts = {
+  header: {
+    label: "Header",
+    segment: 0,
+    decoded: { alg: "HS256", typ: "JWT" },
+    explanation:
+      "Declares the token type and signing algorithm. Base64-encoded — not encrypted. Anyone can decode it. It tells the receiver how to verify the signature.",
+  },
+  payload: {
+    label: "Payload",
+    segment: 1,
+    decoded: {
+      userId: 42,
+      email: "ada@school.edu",
+      role: "student",
+      iat: 1709904000,
+      exp: 1709907600,
+    },
+    explanation:
+      "The claims: who the user is, their role, when the token was issued (iat) and when it expires (exp). Also Base64-encoded — readable by anyone. Never put passwords or secrets here.",
+  },
+  signature: {
+    label: "Signature",
+    segment: 2,
+    decoded: null,
+    explanation:
+      "HMAC-SHA256 of header + payload + your server's JWT_SECRET. If anyone tampers with the payload, the signature won't match and jwt.verify() will throw. This is what makes the token trustworthy.",
+  },
+};
+
+export type AuthSimScenario = {
+  id: string;
+  label: string;
+  description: string;
+  failsAt: "auth" | "authz" | null;
+  statusCode: 200 | 401 | 403;
+  errorMessage?: string;
+};
+
+export const authSimScenarios: AuthSimScenario[] = [
+  {
+    id: "valid",
+    label: "Valid JWT (admin)",
+    description: 'Token present, valid, not expired. role = "admin".',
+    failsAt: null,
+    statusCode: 200,
+  },
+  {
+    id: "missing",
+    label: "No token",
+    description: "Request has no Authorization header and no cookie.",
+    failsAt: "auth",
+    statusCode: 401,
+    errorMessage: "No token provided",
+  },
+  {
+    id: "expired",
+    label: "Expired JWT",
+    description: "Token was valid but the exp timestamp has passed.",
+    failsAt: "auth",
+    statusCode: 401,
+    errorMessage: "Token expired",
+  },
+  {
+    id: "wrong_role",
+    label: "Valid JWT (student)",
+    description: 'Token is valid, but role = "student". Route requires "admin".',
+    failsAt: "authz",
+    statusCode: 403,
+    errorMessage: "Insufficient permissions",
+  },
+];
+
+export const gatekeepersDragItemsV2 = [
+  { id: "extract", label: "Extract token from cookie or Authorization header" },
+  { id: "verify", label: "jwt.verify(token, secret) — validate & decode" },
+  { id: "authz", label: "requireRole() — check req.user.role" },
+  { id: "validation", label: "Validate request body with Zod schema" },
+  { id: "handler", label: "Controller: run the business logic" },
+];
+
+export const gatekeepersCorrectOrderV2 = [
+  "extract",
+  "verify",
+  "authz",
+  "validation",
+  "handler",
+];
+
+export const authMatchPairs = [
+  {
+    left: "bcrypt.hash()",
+    right: "One-way transform of a password before storing",
+  },
+  {
+    left: "salt",
+    right: "Random value that ensures identical passwords produce different hashes",
+  },
+  {
+    left: "jwt.sign()",
+    right: "Creates a signed token the server can later verify",
+  },
+  {
+    left: "httpOnly cookie",
+    right: "Prevents JavaScript from reading the token (XSS protection)",
+  },
+  {
+    left: "jwt.verify()",
+    right: "Confirms the token wasn't tampered with and isn't expired",
+  },
+  {
+    left: "req.user",
+    right: "Identity attached to the request after auth middleware passes",
+  },
+];
+
+export const jwtSecretQuiz = {
+  question: "Where should your JWT_SECRET be stored?",
+  options: [
+    { id: "a", label: 'Hardcoded in source: const SECRET = "my-super-secret"' },
+    { id: "b", label: "In the database, fetched at startup" },
+    { id: "c", label: "In an environment variable: process.env.JWT_SECRET" },
+    { id: "d", label: "In a comment so the team can find it easily" },
+  ],
+  correctId: "c",
+  explanation:
+    "Environment variables keep secrets out of source code and version control. Hardcoding exposes it to anyone who reads the repo — ever. Fetching from DB adds a dependency before auth even works, and introduces a chicken-and-egg problem. Never put secrets in comments.",
+};
+
+export type AuthFlowStep = {
+  id: string;
+  label: string;
+  sublabel: string;
+  code: string;
+  note: string;
+};
+
+export const registerFlowSteps: AuthFlowStep[] = [
+  {
+    id: "form",
+    label: "Client",
+    sublabel: "User fills registration form",
+    code: "POST /register  { email, password }",
+    note: "Plaintext password leaves the browser. HTTPS encrypts it in transit — but the server still receives it as plaintext.",
+  },
+  {
+    id: "dto",
+    label: "Controller",
+    sublabel: "Validate the DTO",
+    code: "const parsed = schema.safeParse(req.body)\nif (!parsed.success) return res.status(400)...",
+    note: "Zod rejects malformed input before it touches auth logic. Same pattern as Section 1 — the contract is enforced at the boundary.",
+  },
+  {
+    id: "hash",
+    label: "Service",
+    sublabel: "Hash the password",
+    code: "const hash = await bcrypt.hash(password, 12)\n// saltRounds=12 → ~250ms — deliberately slow",
+    note: "bcrypt auto-generates a unique salt and embeds it in the output hash. The original password is gone — not stored anywhere, not even temporarily.",
+  },
+  {
+    id: "db",
+    label: "Repository",
+    sublabel: "Persist the hash",
+    code: "await db.users.create({ email, passwordHash: hash })",
+    note: "Only the hash reaches the database. If the DB is breached, attackers get hashes — not passwords. bcrypt's slowness makes brute-forcing those hashes impractical.",
+  },
+  {
+    id: "done",
+    label: "Response",
+    sublabel: "201 Created",
+    code: 'res.status(201).json({ message: "User created" })',
+    note: "User is registered but not yet authenticated. No token issued — that happens at login.",
+  },
+];
+
+export const loginFlowSteps: AuthFlowStep[] = [
+  {
+    id: "form",
+    label: "Client",
+    sublabel: "User submits login",
+    code: "POST /login  { email, password }",
+    note: "Same shape as register — different intent. We're verifying an existing identity, not creating one.",
+  },
+  {
+    id: "lookup",
+    label: "Repository",
+    sublabel: "Find the user",
+    code: "const user = await db.users.findOne({ email })",
+    note: "If the email doesn't exist, return null — don't reveal whether it was the email or the password that was wrong. That detail helps attackers enumerate valid accounts.",
+  },
+  {
+    id: "compare",
+    label: "Service",
+    sublabel: "Compare passwords",
+    code: "const match = await bcrypt.compare(password, user.passwordHash)\n// re-hashes input with stored salt, then compares",
+    note: "bcrypt re-hashes the submitted password using the salt embedded in the stored hash, then compares. This takes ~250ms deliberately — slowing brute-force attacks.",
+  },
+  {
+    id: "sign",
+    label: "Service",
+    sublabel: "Issue a JWT",
+    code: "jwt.sign({ userId, email, role }, process.env.JWT_SECRET, { expiresIn: '1h' })",
+    note: "The payload is identity data the server trusts. The secret signs it — anyone who modifies the payload invalidates the signature. Store the secret in env vars, never in code.",
+  },
+  {
+    id: "cookie",
+    label: "Controller",
+    sublabel: "Set secure cookie",
+    code: 'res.cookie("token", jwt, { httpOnly: true, secure: true, sameSite: "strict" })',
+    note: "httpOnly: JS can't read it (XSS-safe). secure: HTTPS only. sameSite strict: won't be sent on cross-site requests (CSRF protection). Three lines, three attack vectors closed.",
+  },
+  {
+    id: "done",
+    label: "Response",
+    sublabel: "200 OK",
+    code: 'res.status(200).json({ user: { email, role } })',
+    note: "Client is authenticated. Every subsequent request will include the cookie automatically. The server reads it, verifies the JWT, and knows who's asking.",
+  },
+];
+
 // ─── Section 3: The Request Lifecycle ────────────────────────────────────────
 
 export const lifecycleLayerComparison = [
