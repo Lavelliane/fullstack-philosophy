@@ -5,6 +5,7 @@ import MatchPairs from "../../components/MatchPairs";
 import AuthFlowDiagram from "../../components/AuthFlowDiagram";
 import JwtInspector from "../../components/JwtInspector";
 import AuthSim from "../../components/AuthSim";
+import JwtSignVerifyDiagram from "../../components/JwtSignVerifyDiagram";
 import SectionHeader from "../components/SectionHeader";
 import Prose from "../components/Prose";
 import ChallengeLabel from "../components/ChallengeLabel";
@@ -163,7 +164,8 @@ export default function GatekeepersSection() {
       {/* ── JWT sign + verify ───────────────────────────────────────────── */}
       <BackendChallengeSection wide>
         <ChallengeLabel>Signing and verifying JWTs</ChallengeLabel>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <JwtSignVerifyDiagram />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div>
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em] mb-3">
               Signing a token on login
