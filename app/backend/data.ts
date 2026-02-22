@@ -891,6 +891,74 @@ export const errorMatchPairs = [
   },
 ];
 
+// ─── Section 4b: Memory & Failure ────────────────────────────────────────────
+
+export const memoryFailureCode = `class CircuitBreaker {
+  constructor(fn, { threshold = 3, cooldown = 10000 } = {}) {
+    this.fn = fn;
+    this.threshold = threshold; // failures before tripping
+    this.cooldown = cooldown;   // ms to wait before probing
+    this.failures = 0;
+    this.state = "closed";      // closed = normal, open = tripped
+    this.nextAttempt = null;
+  }
+
+  async call(...args) {
+    if (this.state === "open") {
+      if (Date.now() < this.nextAttempt) {
+        throw new Error("Circuit open — failing fast");
+      }
+      this.state = "half-open"; // cooldown elapsed, probe once
+    }
+
+    try {
+      const result = await this.fn(...args);
+      this.failures = 0;
+      this.state = "closed";    // success: reset
+      return result;
+    } catch (err) {
+      this.failures++;
+      if (this.failures >= this.threshold) {
+        this.state = "open";
+        this.nextAttempt = Date.now() + this.cooldown;
+      }
+      throw err;
+    }
+  }
+}
+
+// Usage: wrap the unstable dependency
+const breaker = new CircuitBreaker(() => paymentAPI.charge(dto));
+await breaker.call();`;
+
+export const memoryFailureBucketItems = [
+  { id: "type_error", label: "TypeError in calculateTotal()" },
+  { id: "missing_field", label: 'Missing required field: "email"' },
+  { id: "stripe_503", label: "Stripe API returned 503" },
+  { id: "malformed_json", label: "Malformed JSON in request body" },
+  { id: "db_disk_full", label: "Database disk full" },
+  { id: "infinite_loop", label: "Infinite loop in order processor" },
+  { id: "gateway_timeout", label: "Payment gateway timeout" },
+  { id: "oversized_body", label: "Request body exceeds size limit" },
+];
+
+export const memoryFailureBucketBuckets = [
+  { id: "you", label: "You broke it" },
+  { id: "they", label: "They sent garbage" },
+  { id: "nobody", label: "Nobody controls it" },
+];
+
+export const memoryFailureBucketMapping: Record<string, string> = {
+  type_error: "you",
+  missing_field: "they",
+  stripe_503: "nobody",
+  malformed_json: "they",
+  db_disk_full: "nobody",
+  infinite_loop: "you",
+  gateway_timeout: "nobody",
+  oversized_body: "they",
+};
+
 // ─── Section 5: Letting Go of Control ───────────────────────────────────────
 
 export const lettingGoCodeBad = `class OrderService {
