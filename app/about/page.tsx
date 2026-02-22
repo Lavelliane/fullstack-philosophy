@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import { Github, Linkedin, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About | The Human Behind the Endpoint",
@@ -99,14 +99,9 @@ export default function AboutPage() {
                 icon: <ExternalLink className="w-3.5 h-3.5" />,
               },
               {
-                href: "https://linkedin.com/in/jhury-kevin-lastre",
+                href: "https://www.linkedin.com/in/jhury-kevin-lastre-3bb6541aa/",
                 label: "LinkedIn",
                 icon: <Linkedin className="w-4 h-4" />,
-              },
-              {
-                href: "mailto:jhurykev.lastre@gmail.com",
-                label: "Email",
-                icon: <Mail className="w-4 h-4" />,
               },
             ]}
           >
@@ -186,11 +181,6 @@ export default function AboutPage() {
                 href: "https://www.linkedin.com/in/vinch05/",
                 label: "LinkedIn",
                 icon: <Linkedin className="w-4 h-4" />,
-              },
-              {
-                href: "mailto:vinceabella05@gmail.com",
-                label: "Email",
-                icon: <Mail className="w-4 h-4" />,
               },
             ]}
           >
