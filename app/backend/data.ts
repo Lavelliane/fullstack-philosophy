@@ -2,7 +2,7 @@ export const NAV_SECTIONS = [
   { id: "s1", label: "The Contract", number: "01" },
   { id: "s2", label: "The Gatekeepers", number: "02" },
   { id: "s3", label: "Request Lifecycle", number: "03" },
-  { id: "s4", label: "Memory & Failure", number: "04" },
+  { id: "s4", label: "Errors as Data", number: "04" },
   { id: "s5", label: "Letting Go", number: "05" },
   { id: "s6", label: "The Checklist", number: "06" },
 ];
@@ -698,54 +698,198 @@ export const lifecycleFillSegments = [
   `, result);\n}`,
 ];
 
-// ─── Section 4: Memory and Failure ───────────────────────────────────────────
+// ─── Section 4: Errors as Data ───────────────────────────────────────────────
 
-export const memoryFailureCode = `CircuitBreaker {
-  state:        CLOSED        // normal: requests pass through
-  failureCount: 0
-  threshold:    3
+export const errorPrinciples = [
+  {
+    id: 1,
+    title: "Fail loudly in development, gracefully in production",
+    description:
+      "In dev, you want things to explode visibly so you can fix them. In production, you want to contain the blast and recover. Beginners treat these the same. Seniors treat them as completely different environments with completely different contracts.",
+  },
+  {
+    id: 2,
+    title: "Errors should be specific enough to act on",
+    description:
+      '"Something went wrong" is not an error message — it\'s an apology. A good error tells you what failed, where, and ideally why. The test: can someone who wasn\'t there fix this from the log alone?',
+  },
+  {
+    id: 3,
+    title: "Every function has two possible outcomes — model both",
+    description:
+      "Happy path and unhappy path are equal citizens. The moment you write a function that can fail and don't account for it, you've created a time bomb. This is why languages like Rust and Go force you to handle errors explicitly — it's a philosophical stance baked into syntax.",
+  },
+  {
+    id: 4,
+    title: "Idempotency — make operations safe to repeat",
+    description:
+      'If something fails halfway through, can it be retried without making things worse? This matters in payments, emails, database writes. The question to always ask: "What happens if this runs twice?" If the answer is bad, redesign it.',
+  },
+  {
+    id: 5,
+    title: "Don't fail silently",
+    description:
+      "Silent failures are the most dangerous kind. An error that gets swallowed — caught and ignored — looks like success. It corrupts your understanding of the system's health. A crash you can see is always better than a corruption you can't.",
+  },
+  {
+    id: 6,
+    title: "Distinguish between errors you recover from and errors you report",
+    description:
+      "Some failures are expected and recoverable — a user submits a duplicate email, a request times out. Others are symptoms of something broken — a database is unreachable, a config is missing. Treat them differently. One needs a user-friendly message; the other needs an alert to a human.",
+  },
+];
 
-  call(dependency) {
-    if state == OPEN
-      → return fallback()     // fail fast, don't even try
-
-    try {
-      result = dependency.call()
-      failureCount = 0        // success resets the counter
-      return result
-    } catch {
-      failureCount++
-      if failureCount >= threshold
-        → state = OPEN
-        → start cooldown(30s)
-        → after cooldown: state = HALF_OPEN
-    }
+export const errorHandlingBad = `// ❌ BAD: Silent failure
+async function createOrder(dto) {
+  try {
+    const order = await db.orders.create(dto);
+    return order;
+  } catch (err) {
+    // Swallowed! Caller thinks it succeeded.
+    console.log("oops");
+    return null;
   }
+}
+
+// ❌ BAD: Vague error
+throw new Error("Something went wrong");
+
+// ❌ BAD: Not idempotent
+async function sendWelcomeEmail(userId) {
+  const user = await db.users.findOne(userId);
+  await emailService.send(user.email, "Welcome!");
+  // If this runs twice, user gets 2 emails
 }`;
 
-export const memoryFailureBucketItems = [
-  { id: "f1", label: "Your handler throws a NullPointerException" },
-  { id: "f2", label: "Client sends a missing required field" },
-  { id: "f3", label: "The payment API is down" },
-  { id: "f4", label: "You forgot to handle a negative qty" },
-  { id: "f5", label: "Client sends malformed JSON" },
-  { id: "f6", label: "A cloud region has an outage" },
+export const errorHandlingGood = `// ✅ GOOD: Explicit error propagation
+async function createOrder(dto) {
+  try {
+    const order = await db.orders.create(dto);
+    return { success: true, data: order };
+  } catch (err) {
+    logger.error("Order creation failed", { dto, error: err.message });
+    return { success: false, error: "Could not create order" };
+  }
+}
+
+// ✅ GOOD: Specific, actionable error
+if (!dto.email) {
+  throw new ValidationError("Missing required field: email", { field: "email" });
+}
+
+// ✅ GOOD: Idempotent with guard
+async function sendWelcomeEmail(userId) {
+  const user = await db.users.findOne(userId);
+  if (user.welcomeEmailSent) return; // Guard: safe to retry
+
+  await emailService.send(user.email, "Welcome!");
+  await db.users.update(userId, { welcomeEmailSent: true });
+}`;
+
+export const errorDevVsProd = `// Development: fail loud
+if (process.env.NODE_ENV === "development") {
+  throw new Error(\`Database connection failed: \${err.message}\nStack: \${err.stack}\`);
+}
+
+// Production: fail graceful
+if (process.env.NODE_ENV === "production") {
+  logger.error("Database connection failed", { error: err.message });
+  return res.status(503).json({
+    error: "Service temporarily unavailable. Please try again later."
+  });
+}`;
+
+export const errorTypesCode = `// Recoverable errors → return to caller
+class ValidationError extends Error {
+  constructor(message, public field: string) {
+    super(message);
+  }
+}
+
+// Unrecoverable errors → alert and fail
+class DatabaseConnectionError extends Error {
+  constructor(message) {
+    super(message);
+    // Alert ops team, trigger monitoring
+    logger.critical("Database unreachable", { error: message });
+  }
+}
+
+// Usage
+try {
+  const order = await createOrder(dto);
+} catch (err) {
+  if (err instanceof ValidationError) {
+    return res.status(400).json({ error: err.message, field: err.field });
+  }
+  if (err instanceof DatabaseConnectionError) {
+    return res.status(503).json({ error: "Service unavailable" });
+  }
+  throw err; // Unknown error — crash and investigate
+}`;
+
+export const errorBucketItems = [
+  { id: "e1", label: "User submits duplicate email" },
+  { id: "e2", label: "Database is unreachable" },
+  { id: "e3", label: "Request times out after 30s" },
+  { id: "e4", label: "Config file is missing" },
+  { id: "e5", label: "User password is too short" },
+  { id: "e6", label: "Payment gateway returns 500" },
 ];
 
-export const memoryFailureBucketBuckets = [
-  { id: "you", label: "You broke it" },
-  { id: "them", label: "They sent garbage" },
-  { id: "nobody", label: "Nobody controls it" },
+export const errorBucketBuckets = [
+  { id: "recover", label: "Recoverable (return to user)" },
+  { id: "report", label: "Unrecoverable (alert ops)" },
 ];
 
-export const memoryFailureBucketMapping: Record<string, string> = {
-  f1: "you",
-  f2: "them",
-  f3: "nobody",
-  f4: "you",
-  f5: "them",
-  f6: "nobody",
+export const errorBucketMapping: Record<string, string> = {
+  e1: "recover",
+  e2: "report",
+  e3: "recover",
+  e4: "report",
+  e5: "recover",
+  e6: "report",
 };
+
+export const idempotencyQuiz = {
+  question: "Which operation is idempotent (safe to run multiple times)?",
+  options: [
+    { id: "a", label: "await emailService.send(user.email, 'Welcome!')" },
+    { id: "b", label: "await db.orders.create({ userId, total })" },
+    { id: "c", label: "await db.users.update(userId, { lastLogin: Date.now() })" },
+    { id: "d", label: "await analytics.track('page_view')" },
+  ],
+  correctId: "c",
+  explanation:
+    "UPDATE with a fixed value is idempotent — running it 5 times produces the same result as running it once. CREATE adds a new row each time. Sending emails or tracking events multiplies side effects. Idempotent operations are safe to retry.",
+};
+
+export const errorMatchPairs = [
+  {
+    left: "Silent failure",
+    right: "Error is caught and ignored — looks like success",
+  },
+  {
+    left: "Idempotent",
+    right: "Operation can be retried safely without multiplying effects",
+  },
+  {
+    left: "Fail loud (dev)",
+    right: "Show full stack trace and context to help debugging",
+  },
+  {
+    left: "Fail graceful (prod)",
+    right: "Log internally, return user-friendly message",
+  },
+  {
+    left: "Recoverable error",
+    right: "Expected failure — return to caller (400, 404, 409)",
+  },
+  {
+    left: "Unrecoverable error",
+    right: "System broken — alert ops, return 500/503",
+  },
+];
 
 // ─── Section 5: Letting Go of Control ───────────────────────────────────────
 
