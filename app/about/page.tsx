@@ -168,7 +168,7 @@ export default function AboutPage() {
 
           {/* Vince Abella  - Frontend*/}
           <PersonCard
-            name="Vince Abella"
+            name="Vincent Abella"
             title="Creator"
             bio="Software Engineer, Web Developer & Cybersecurity Specialist. OWASP Cebu Co-Lead with a Master's in Cybersecurity. Research focus: fake base station detection, Markov chains, federated learning, and specification-based IDS. Also working on Machine Learning for Dynamic Shortest Path Finding. Full-stack developer with Python, PHP, React, and Tailwind."
             links={[
