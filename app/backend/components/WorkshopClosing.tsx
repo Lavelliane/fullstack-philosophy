@@ -26,7 +26,7 @@ export default function WorkshopClosing() {
           href="/frontend"
           className="text-sm font-medium text-zinc-900 underline underline-offset-4 decoration-zinc-300 hover:decoration-zinc-900 transition-all duration-200"
         >
-          Next: Think Like a Frontend Developer →
+          Next: The Surface That Speaks →
         </a>
       </div>
     </div>
