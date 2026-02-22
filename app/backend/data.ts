@@ -1162,20 +1162,16 @@ export const finalQuizzes = [
   },
   {
     question:
-      "Your service calls an external shipping API. It fails 3 times in a row. What pattern should you apply?",
+      "Which of these is a recoverable error that should be returned to the user?",
     options: [
-      { id: "a", label: "Retry immediately, as fast as possible" },
-      { id: "b", label: "Return 500 and stop" },
-      {
-        id: "c",
-        label:
-          "Circuit Breaker: open the circuit, fail fast, retry after cooldown",
-      },
-      { id: "d", label: "Cache the last good response forever" },
+      { id: "a", label: "Database is unreachable" },
+      { id: "b", label: "User submits duplicate email" },
+      { id: "c", label: "Config file is missing" },
+      { id: "d", label: "Payment gateway returns 500" },
     ],
-    correctId: "c",
+    correctId: "b",
     explanation:
-      "Circuit Breaker. Retrying immediately floods a struggling service. 500s without a recovery strategy leave you stuck. Caching stale data is dangerous. Open the circuit, fail fast, probe after cooldown.",
+      "Duplicate email is recoverable — expected, user-fixable. Return 409 Conflict with a clear message. Database down, missing config, and upstream 500s are unrecoverable: alert ops, return 503, don't pretend the user can fix it.",
   },
   {
     question:

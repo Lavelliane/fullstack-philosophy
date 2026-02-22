@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useScoreStore } from "../store/scoreStore";
 
 type Option = {
   id: string;
@@ -13,6 +14,7 @@ type QuizProps = {
   correctId: string;
   explanation: string;
   type?: "multiple-choice" | "true-false";
+  scoreId?: string;
 };
 
 export default function Quiz({
@@ -20,6 +22,7 @@ export default function Quiz({
   options,
   correctId,
   explanation,
+  scoreId,
 }: QuizProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const revealed = selected !== null;
@@ -27,6 +30,10 @@ export default function Quiz({
   function handleSelect(id: string) {
     if (revealed) return;
     setSelected(id);
+    if (scoreId) {
+      const isCorrect = id === correctId;
+      useScoreStore.getState().recordAnswer(scoreId, isCorrect);
+    }
   }
 
   return (

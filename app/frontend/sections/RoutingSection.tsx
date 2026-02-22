@@ -224,7 +224,7 @@ export default function RoutingSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge A: the refresh problem</ChallengeLabel>
-          <Quiz {...routingQuiz} />
+          <Quiz {...routingQuiz} scoreId="frontend:s5:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -232,6 +232,7 @@ export default function RoutingSection() {
           <MatchPairs
             pairs={routingMatchPairs}
             prompt="Match each routing concept to what it does."
+            scoreId="frontend:s5:match"
           />
         </ChallengeSection>
       </div>

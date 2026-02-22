@@ -208,6 +208,7 @@ if (process.env.NODE_ENV === "production") {
               buckets={errorBucketBuckets}
               correctMapping={errorBucketMapping}
               prompt="Each error belongs to one category. Recoverable errors get handled and returned to the user. Unrecoverable errors get logged and trigger alerts."
+              scoreId="backend:s4:bucket"
             />
           </div>
           <div>
@@ -217,6 +218,7 @@ if (process.env.NODE_ENV === "production") {
               options={idempotencyQuiz.options}
               correctId={idempotencyQuiz.correctId}
               explanation={idempotencyQuiz.explanation}
+              scoreId="backend:s4:quiz"
             />
           </div>
         </div>
@@ -229,7 +231,7 @@ if (process.env.NODE_ENV === "production") {
           Match each error handling concept to its definition. These are the terms
           you&apos;ll use when discussing system reliability with your team.
         </Prose>
-        <MatchPairs pairs={errorMatchPairs} prompt="Match each concept to its definition." />
+        <MatchPairs pairs={errorMatchPairs} prompt="Match each concept to its definition." scoreId="backend:s4:match" />
       </BackendChallengeSection>
 
     </section>

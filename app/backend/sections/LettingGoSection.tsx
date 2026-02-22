@@ -113,7 +113,7 @@ export default function LettingGoSection() {
       {/* ── Challenge A: spot the coupling ───────────────────────────────── */}
       <BackendChallengeSection wide>
         <ChallengeLabel>Challenge A: spot the coupling</ChallengeLabel>
-        <CodeQuiz {...diSpotCouplingQuiz} />
+        <CodeQuiz {...diSpotCouplingQuiz} scoreId="backend:s5:codequiz" />
       </BackendChallengeSection>
 
       {/* ── Challenge B: fill in the blanks ──────────────────────────────── */}
@@ -122,6 +122,7 @@ export default function LettingGoSection() {
         <FillBlank
           segments={diFillSegments}
           prompt="Fill in the blanks to convert this class to use Dependency Injection."
+          scoreId="backend:s5:fill"
         />
       </BackendChallengeSection>
 
@@ -130,7 +131,7 @@ export default function LettingGoSection() {
         <ChallengeLabel>Challenge C: true or false?</ChallengeLabel>
         <div className="flex flex-col gap-4">
           {diTrueFalseQuizzes.map((q, i) => (
-            <Quiz key={i} {...q} />
+            <Quiz key={i} {...q} scoreId={`backend:s5:quiz-${i}`} />
           ))}
         </div>
       </BackendChallengeSection>

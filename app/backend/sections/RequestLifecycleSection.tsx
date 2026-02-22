@@ -108,6 +108,7 @@ export default function RequestLifecycleSection() {
           buckets={lifecycleBucketBuckets}
           correctMapping={lifecycleBucketMapping}
           prompt="Each description belongs to exactly one layer. Drag each into the correct bucket."
+          scoreId="backend:s3:bucket"
         />
       </BackendChallengeSection>
 
@@ -117,6 +118,7 @@ export default function RequestLifecycleSection() {
         <FillBlank
           segments={lifecycleFillSegments}
           prompt="A controller function with two gaps. Select the correct value for each blank."
+          scoreId="backend:s3:fill"
         />
       </BackendChallengeSection>
 

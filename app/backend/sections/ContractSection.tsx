@@ -114,7 +114,7 @@ export default function ContractSection() {
       {/* ── Challenge A ─────────────────────────────────────────────────── */}
       <BackendChallengeSection>
         <ChallengeLabel>Challenge A: design the endpoint</ChallengeLabel>
-        <Quiz {...contractQuiz} />
+        <Quiz {...contractQuiz} scoreId="backend:s1:quiz" />
       </BackendChallengeSection>
 
       {/* ── Challenge B ─────────────────────────────────────────────────── */}
@@ -125,6 +125,7 @@ export default function ContractSection() {
           buckets={contractBucketBuckets}
           correctMapping={contractBucketMapping}
           prompt="Which student fields belong in the API response? Drag each field into the correct bucket."
+          scoreId="backend:s1:bucket"
         />
       </BackendChallengeSection>
 
@@ -135,6 +136,7 @@ export default function ContractSection() {
           items={contractDragSortItems}
           correctOrder={contractDragSortCorrectOrder}
           prompt="Drag the code pieces into the correct order for a Zod-validated POST route."
+          scoreId="backend:s1:sort"
         />
       </BackendChallengeSection>
 

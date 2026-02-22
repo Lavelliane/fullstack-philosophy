@@ -227,7 +227,7 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge A: reuse in action</ChallengeLabel>
-          <Quiz {...componentQuiz} />
+          <Quiz {...componentQuiz} scoreId="frontend:s2:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -235,6 +235,7 @@ export default function ComponentsSection() {
           <MatchPairs
             pairs={propsMatchPairs}
             prompt="Match each term to its correct definition."
+            scoreId="frontend:s2:match"
           />
         </ChallengeSection>
 
@@ -244,6 +245,7 @@ export default function ComponentsSection() {
             items={componentDragSortItems}
             correctOrder={componentDragSortCorrectOrder}
             prompt="Drag the steps into the correct order for creating and using a React component."
+            scoreId="frontend:s2:sort"
           />
         </ChallengeSection>
 

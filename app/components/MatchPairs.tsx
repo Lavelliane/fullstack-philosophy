@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useScoreStore } from "../store/scoreStore";
 
 type Pair = {
   left: string;
@@ -10,9 +11,10 @@ type Pair = {
 type MatchPairsProps = {
   pairs: Pair[];
   prompt: string;
+  scoreId?: string;
 };
 
-export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
+export default function MatchPairs({ pairs, prompt, scoreId }: MatchPairsProps) {
   const leftItems = useMemo(() => pairs.map((p) => p.left), [pairs]);
 
   // Start unshuffled (matches server render), shuffle after mount to avoid hydration mismatch
@@ -60,7 +62,15 @@ export default function MatchPairs({ pairs, prompt }: MatchPairsProps) {
   }
 
   function handleCheck() {
+    const isCorrect = [...connectedLeft].every((l) => {
+      const matchedRight = connections[l];
+      const correctRight = pairs.find((p) => p.left === l)?.right;
+      return matchedRight === correctRight;
+    });
     setChecked(true);
+    if (scoreId) {
+      useScoreStore.getState().recordAnswer(scoreId, isCorrect);
+    }
   }
 
   function handleReset() {

@@ -228,11 +228,12 @@ export default function GatekeepersSection() {
               items={gatekeepersDragItemsV2}
               correctOrder={gatekeepersCorrectOrderV2}
               prompt="Drag the steps into the correct order for a JWT-authenticated route."
+              scoreId="backend:s2:sort"
             />
           </div>
           <div>
             <ChallengeLabel>Challenge C: 401 vs 403</ChallengeLabel>
-            <Quiz {...gatekeepersQuiz} />
+            <Quiz {...gatekeepersQuiz} scoreId="backend:s2:quiz-1" />
           </div>
         </div>
       </BackendChallengeSection>
@@ -243,13 +244,14 @@ export default function GatekeepersSection() {
         <MatchPairs
           pairs={authMatchPairs}
           prompt="Match each auth concept to what it actually does."
+          scoreId="backend:s2:match"
         />
       </BackendChallengeSection>
 
       {/* ── Challenge E ─────────────────────────────────────────────────── */}
       <BackendChallengeSection>
         <ChallengeLabel>Challenge E: where does the secret go?</ChallengeLabel>
-        <Quiz {...jwtSecretQuiz} />
+        <Quiz {...jwtSecretQuiz} scoreId="backend:s2:quiz-2" />
       </BackendChallengeSection>
 
     </section>

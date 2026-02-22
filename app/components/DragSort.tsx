@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { useScoreStore } from "../store/scoreStore";
 
 type Item = {
   id: string;
@@ -11,6 +12,7 @@ type DragSortProps = {
   items: Item[];
   correctOrder: string[];
   prompt: string;
+  scoreId?: string;
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -22,7 +24,7 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export default function DragSort({ items, correctOrder, prompt }: DragSortProps) {
+export default function DragSort({ items, correctOrder, prompt, scoreId }: DragSortProps) {
   const [order, setOrder] = useState<Item[]>(() => [...items]);
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState(false);
@@ -57,6 +59,9 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
     const isCorrect = order.map((i) => i.id).join(",") === correctOrder.join(",");
     setCorrect(isCorrect);
     setChecked(true);
+    if (scoreId) {
+      useScoreStore.getState().recordAnswer(scoreId, isCorrect);
+    }
   }
 
   function handleReset() {
