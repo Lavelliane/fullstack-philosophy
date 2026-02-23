@@ -665,7 +665,7 @@ export const lifecycleBucketItems = [
   { id: "b5", label: "Enforces 'user can only order 10 items'" },
   { id: "b6", label: "Calls db.findOne({ id: orderId })" },
   { id: "b7", label: "Reads req.body and calls a service" },
-  { id: "b8", label: "Validates that required fields exist" },
+  { id: "b8", label: "Validates DTO fields with schema (Zod)" },
 ];
 
 export const lifecycleBucketBuckets = [
@@ -683,7 +683,7 @@ export const lifecycleBucketMapping: Record<string, string> = {
   b5: "service",
   b6: "repository",
   b7: "controller",
-  b8: "middleware",
+  b8: "controller",
 };
 
 export const lifecycleFillSegments = [
