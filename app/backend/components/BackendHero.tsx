@@ -26,8 +26,9 @@ export default function BackendHero() {
           of Software
         </h1>
         <p className="text-sm text-zinc-400 leading-relaxed max-w-lg mb-12">
-          30 minutes. Six concepts. No syntax. By the end you&apos;ll see every
-          API, every service, and every failure mode differently.
+          Most of what software does happens out of sight. No interface, no
+          user, no applause. Just data moving through systems, decisions made in
+          milliseconds, and failures handled before anyone notices.
         </p>
         <div className="flex items-center gap-6 text-xs font-mono text-zinc-300">
           <span>6 sections</span>
