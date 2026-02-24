@@ -157,7 +157,7 @@ export default function CircuitSim() {
           <p className="text-sm font-medium text-zinc-900">Circuit Breaker Simulator</p>
         </div>
         <p className="text-xs text-zinc-400 mt-1">
-          Hit "Send Request" repeatedly. Fail {FAILURE_THRESHOLD}× in a row and
+          Hit &quot;Send Request&quot; repeatedly. Fail {FAILURE_THRESHOLD}× in a row and
           watch the circuit open. Wait for cooldown, then try again.
         </p>
       </div>

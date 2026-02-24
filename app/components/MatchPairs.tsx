@@ -28,7 +28,8 @@ export default function MatchPairs({ pairs, prompt, scoreId }: MatchPairsProps) 
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
-    setRightItems(a);
+    const id = setTimeout(() => setRightItems(a), 0);
+    return () => clearTimeout(id);
   }, [pairs]);
 
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null);
@@ -108,10 +109,6 @@ export default function MatchPairs({ pairs, prompt, scoreId }: MatchPairsProps) 
     "bg-orange-500",
     "bg-teal-500",
   ];
-
-  function getRightPairIndex(right: string): number {
-    return pairs.findIndex((p) => p.right === right);
-  }
 
   function itemClasses(status: string, isActive: boolean) {
     const base = "px-4 py-3 text-xs border text-left transition-all duration-150 w-full";

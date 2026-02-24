@@ -183,7 +183,7 @@ export default function StateSection() {
         </ChallengeSection>
 
         {/* Lifting state: code + ownership diagram */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Lifting state up</ChallengeLabel>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <CodeWithDiagram

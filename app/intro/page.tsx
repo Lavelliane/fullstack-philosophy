@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -34,12 +35,12 @@ export default function IntroPage() {
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <nav className="flex items-center justify-between px-8 py-5 border-b border-zinc-100">
-        <a
+        <Link
           href="/"
           className="text-sm font-medium tracking-tight text-zinc-900 hover:text-zinc-500 transition-colors"
         >
           The Human Behind the Endpoint
-        </a>
+        </Link>
         <div className="flex items-center gap-8 text-sm text-zinc-500">
           <span className="text-zinc-900 font-medium">Intro</span>
           <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
@@ -190,17 +191,17 @@ export default function IntroPage() {
             <div className="border border-red-100 bg-red-50/50 p-4">
               <p className="text-xs text-red-400 uppercase tracking-[0.15em] mb-3">Trap</p>
               <ul className="space-y-2 text-xs text-zinc-600">
-                <li>"I just implement what&apos;s in the ticket."</li>
-                <li>"The PM decides what we build."</li>
-                <li>"My job is to code, not design."</li>
+                <li>&ldquo;I just implement what&apos;s in the ticket.&rdquo;</li>
+                <li>&ldquo;The PM decides what we build.&rdquo;</li>
+                <li>&ldquo;My job is to code, not design.&rdquo;</li>
               </ul>
             </div>
             <div className="border border-emerald-100 bg-emerald-50/50 p-4">
               <p className="text-xs text-emerald-600 uppercase tracking-[0.15em] mb-3">Mindset</p>
               <ul className="space-y-2 text-xs text-zinc-600">
-                <li>"Why does this ticket exist?"</li>
-                <li>"What outcome does this create?"</li>
-                <li>"How do we make this feel right?"</li>
+                <li>&ldquo;Why does this ticket exist?&rdquo;</li>
+                <li>&ldquo;What outcome does this create?&rdquo;</li>
+                <li>&ldquo;How do we make this feel right?&rdquo;</li>
               </ul>
             </div>
           </div>

@@ -75,7 +75,7 @@ export default async function ThreeRolesSection() {
           </div>
         </div>
 
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Code comparison: separated vs. mixed</ChallengeLabel>
           <div className="space-y-10">
             <CodeWithDiagram

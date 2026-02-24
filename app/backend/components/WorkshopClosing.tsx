@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function WorkshopClosing() {
   return (
     <div className="mt-16 border-t border-zinc-100 pt-10">
@@ -16,12 +18,12 @@ export default function WorkshopClosing() {
         The best infrastructure is invisible. Nobody praises the plumbing until it breaks. Build something so reliable it earns the right to be ignored.
       </p>
       <div className="mt-10 flex items-center gap-6">
-        <a
+        <Link
           href="/"
           className="text-sm text-zinc-400 hover:text-zinc-900 transition-colors duration-200"
         >
           ← Back to workshop
-        </a>
+        </Link>
         <a
           href="/frontend"
           className="text-sm font-medium text-zinc-900 underline underline-offset-4 decoration-zinc-300 hover:decoration-zinc-900 transition-all duration-200"

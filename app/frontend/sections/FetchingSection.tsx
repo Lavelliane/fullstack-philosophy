@@ -155,7 +155,7 @@ export default function FetchingSection() {
           </div>
         </div>
 
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>The happy path trap</ChallengeLabel>
           <div className="flex gap-4">
             <CodeWithDiagram
@@ -175,7 +175,7 @@ export default function FetchingSection() {
           </div>
         </ChallengeSection>
 
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Full fetch component</ChallengeLabel>
           <CodeWithDiagram
             code={fetchComponentCode}

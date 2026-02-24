@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Globe, Server, FileText, Key, CheckCircle2 } from "lucide-react";
+import { Globe, FileText, Key, CheckCircle2 } from "lucide-react";
 
 type Part = "method" | "url" | "headers" | "body" | "all";
 
@@ -162,7 +162,7 @@ function AllPartsExplanation() {
           <Globe className="w-4 h-4 text-violet-600 shrink-0 mt-0.5" />
           <div>
             <p className="text-xs font-medium text-violet-900">URL</p>
-            <p className="text-xs text-violet-700">The noun. The resource you're targeting. /students means the students collection.</p>
+            <p className="text-xs text-violet-700">The noun. The resource you&apos;re targeting. /students means the students collection.</p>
           </div>
         </div>
         <div className="flex items-start gap-3 p-3 bg-amber-50 border border-amber-200">
@@ -176,7 +176,7 @@ function AllPartsExplanation() {
           <FileText className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
           <div>
             <p className="text-xs font-medium text-emerald-900">Body</p>
-            <p className="text-xs text-emerald-700">The payload. JSON, form data, files. This is what you're sending to create or update.</p>
+            <p className="text-xs text-emerald-700">The payload. JSON, form data, files. This is what you&apos;re sending to create or update.</p>
           </div>
         </div>
       </div>
@@ -219,7 +219,7 @@ function MethodExplanation() {
         </div>
       </div>
       <p className="text-xs text-zinc-400 leading-relaxed">
-        The method determines which handler function runs on the server. <code className="font-mono bg-zinc-100 px-0.5">app.post('/students', ...)</code> only runs for POST requests.
+        The method determines which handler function runs on the server. <code className="font-mono bg-zinc-100 px-0.5">app.post(&apos;/students&apos;, ...)</code> only runs for POST requests.
       </p>
     </div>
   );
@@ -233,7 +233,7 @@ function UrlExplanation() {
         <div>
           <p className="text-sm font-medium text-zinc-900 mb-2">The URL (Resource Path)</p>
           <p className="text-sm text-zinc-600 leading-relaxed mb-3">
-            The URL is the noun. It identifies which resource you're acting on. REST APIs use nouns, not verbs.
+            The URL is the noun. It identifies which resource you&apos;re acting on. REST APIs use nouns, not verbs.
           </p>
         </div>
       </div>
@@ -254,7 +254,7 @@ function UrlExplanation() {
       <div className="bg-red-50 border border-red-200 p-3">
         <p className="text-xs font-medium text-red-900 mb-1">Bad URL design</p>
         <code className="font-mono text-xs text-red-600">/api/createStudent</code>
-        <p className="text-xs text-red-700 mt-1">Don't put verbs in URLs. The method is the verb. The URL is the noun.</p>
+        <p className="text-xs text-red-700 mt-1">Don&apos;t put verbs in URLs. The method is the verb. The URL is the noun.</p>
       </div>
     </div>
   );
@@ -287,7 +287,7 @@ function HeadersExplanation() {
         </div>
         <div>
           <code className="font-mono text-xs text-amber-600 font-medium">Host</code>
-          <p className="text-xs text-zinc-600 mt-1">The domain you're sending the request to. Required in HTTP/1.1.</p>
+          <p className="text-xs text-zinc-600 mt-1">The domain you&apos;re sending the request to. Required in HTTP/1.1.</p>
         </div>
       </div>
       <p className="text-xs text-zinc-400 leading-relaxed">
@@ -305,7 +305,7 @@ function BodyExplanation() {
         <div>
           <p className="text-sm font-medium text-zinc-900 mb-2">The Request Body</p>
           <p className="text-sm text-zinc-600 leading-relaxed mb-3">
-            The body carries the actual data you're sending. For POST and PUT, this is the resource you want to create or update.
+            The body carries the actual data you&apos;re sending. For POST and PUT, this is the resource you want to create or update.
           </p>
         </div>
       </div>
@@ -329,7 +329,7 @@ function BodyExplanation() {
       <div className="bg-blue-50 border border-blue-200 p-3">
         <p className="text-xs font-medium text-blue-900 mb-1">This is what DTOs validate</p>
         <p className="text-xs text-blue-700 leading-relaxed">
-          The body is untrusted input from the client. Your DTO schema (Zod, class-validator, etc.) validates the shape and types before your business logic runs. If it doesn't match, reject it with 400 Bad Request.
+          The body is untrusted input from the client. Your DTO schema (Zod, class-validator, etc.) validates the shape and types before your business logic runs. If it doesn&apos;t match, reject it with 400 Bad Request.
         </p>
       </div>
     </div>

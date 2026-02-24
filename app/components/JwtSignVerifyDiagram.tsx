@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
-import { Lock, Key, CheckCircle2, XCircle, User, Shield, Clock, FileText } from "lucide-react";
+import { Lock, Key, User, Shield, FileText } from "lucide-react";
 
 type Tab = "sign" | "verify";
 
@@ -68,11 +69,11 @@ function SigningDiagram() {
           <div className="flex-1">
             <p className="text-sm font-medium text-zinc-900 mb-1">1. User logs in successfully</p>
             <div className="bg-zinc-50 border border-zinc-200 p-3 font-mono text-xs">
-              <div className="text-zinc-500">// User data from database</div>
+              <div className="text-zinc-500">{"// User data from database"}</div>
               <div className="text-violet-600">const user = &#123;</div>
               <div className="pl-4 text-zinc-700">id: 42,</div>
-              <div className="pl-4 text-zinc-700">email: "ada@school.edu",</div>
-              <div className="pl-4 text-zinc-700">role: "student"</div>
+              <div className="pl-4 text-zinc-700">email: &quot;ada@school.edu&quot;,</div>
+              <div className="pl-4 text-zinc-700">role: &quot;student&quot;</div>
               <div className="text-violet-600">&#125;</div>
             </div>
           </div>
@@ -117,10 +118,10 @@ function SigningDiagram() {
               <div className="text-zinc-700">const token = jwt.sign(</div>
               <div className="pl-4 text-violet-600">payload,</div>
               <div className="pl-4 text-amber-600">process.env.JWT_SECRET,</div>
-              <div className="pl-4 text-zinc-500">&#123; expiresIn: "1h" &#125;</div>
+              <div className="pl-4 text-zinc-500">&#123; expiresIn: &quot;1h&quot; &#125;</div>
               <div className="text-zinc-700">)</div>
             </div>
-            <p className="text-xs text-zinc-400 mt-2">The secret creates a signature that can't be faked without knowing the secret</p>
+            <p className="text-xs text-zinc-400 mt-2">The secret creates a signature that can&apos;t be faked without knowing the secret</p>
           </div>
         </div>
 
@@ -162,7 +163,7 @@ function SigningDiagram() {
           <div>
             <p className="text-sm font-medium text-blue-900 mb-1">Why signing matters</p>
             <p className="text-xs text-blue-700 leading-relaxed">
-              Anyone can read the payload (it's just Base64), but they can't change it without invalidating the signature. If someone changes "student" to "admin", jwt.verify() will reject it because the signature won't match.
+              Anyone can read the payload (it&apos;s just Base64), but they can&apos;t change it without invalidating the signature. If someone changes &quot;student&quot; to &quot;admin&quot;, jwt.verify() will reject it because the signature won&apos;t match.
             </p>
           </div>
         </div>
@@ -407,9 +408,11 @@ function ChatBubble({ msg, index }: { msg: Message; index: number }) {
     >
       {/* Avatar */}
       <div className="shrink-0 flex flex-col items-center gap-1">
-        <img
+        <Image
           src={isHimmel ? HIMMEL_IMG : FRIEREN_IMG}
           alt={isHimmel ? "Himmel" : "Frieren"}
+          width={48}
+          height={48}
           className="w-12 h-12 object-cover object-top rounded-full border-2 border-zinc-200 bg-zinc-100"
         />
         <span className="text-[9px] text-zinc-400 font-mono">
@@ -480,12 +483,12 @@ function VerifyingDiagram() {
       <div className="border border-zinc-200 bg-zinc-50 p-6">
         <div className="flex items-center justify-between mb-5 pb-3 border-b border-zinc-200">
           <div className="flex items-center gap-3">
-            <img src={HIMMEL_IMG} alt="Himmel" className="w-8 h-8 object-cover object-top rounded-full border border-zinc-200" />
+            <Image src={HIMMEL_IMG} alt="Himmel" width={32} height={32} className="w-8 h-8 object-cover object-top rounded-full border border-zinc-200" />
             <span className="text-xs font-mono text-zinc-500">Himmel <span className="text-zinc-300">— HTTP Request</span></span>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs font-mono text-zinc-500"><span className="text-zinc-300">authenticate() —</span> Frieren</span>
-            <img src={FRIEREN_IMG} alt="Frieren" className="w-8 h-8 object-cover object-top rounded-full border border-zinc-200" />
+            <Image src={FRIEREN_IMG} alt="Frieren" width={32} height={32} className="w-8 h-8 object-cover object-top rounded-full border border-zinc-200" />
           </div>
         </div>
 
@@ -511,7 +514,7 @@ function VerifyingDiagram() {
         <div className="grid md:grid-cols-3 gap-3">
           <div className="bg-white border border-zinc-200 p-3">
             <p className="text-xs font-medium text-zinc-900 mb-1">1. Recomputes the signature</p>
-            <p className="text-xs text-zinc-500 leading-relaxed">Takes the header + payload from your token, hashes them with the secret. If it doesn't match the signature you sent, rejected.</p>
+            <p className="text-xs text-zinc-500 leading-relaxed">Takes the header + payload from your token, hashes them with the secret. If it doesn&apos;t match the signature you sent, rejected.</p>
           </div>
           <div className="bg-white border border-zinc-200 p-3">
             <p className="text-xs font-medium text-zinc-900 mb-1">2. Checks expiry</p>
@@ -519,7 +522,7 @@ function VerifyingDiagram() {
           </div>
           <div className="bg-white border border-zinc-200 p-3">
             <p className="text-xs font-medium text-zinc-900 mb-1">3. Returns decoded payload</p>
-            <p className="text-xs text-zinc-500 leading-relaxed">If both pass, returns the decoded payload object. You attach it to <code className="font-mono bg-zinc-100 px-0.5">req.user</code> so downstream handlers know who's asking.</p>
+            <p className="text-xs text-zinc-500 leading-relaxed">If both pass, returns the decoded payload object. You attach it to <code className="font-mono bg-zinc-100 px-0.5">req.user</code> so downstream handlers know who&apos;s asking.</p>
           </div>
         </div>
       </div>

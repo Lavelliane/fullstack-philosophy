@@ -1,12 +1,14 @@
+import Link from "next/link";
+
 export default function FrontendNav() {
   return (
     <nav className="flex items-center justify-between px-8 py-5 border-b border-zinc-100">
-      <a
+      <Link
         href="/"
         className="text-sm font-medium tracking-tight text-zinc-900 hover:text-zinc-500 transition-colors"
       >
         The Human Behind the Endpoint
-      </a>
+      </Link>
       <div className="flex items-center gap-6 text-sm text-zinc-500">
         <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
         <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>

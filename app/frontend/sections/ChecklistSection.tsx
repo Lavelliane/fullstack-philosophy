@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Quiz from "../../components/Quiz";
 import RevealStepper from "../../components/RevealStepper";
 import ScoreTracker from "../../components/ScoreTracker";
@@ -168,7 +169,7 @@ export default async function ChecklistSection() {
           </div>
         </div>
 
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Walkthrough: Step through the lifecycle</ChallengeLabel>
           <p className="text-xs text-zinc-500 mb-4">
             Use <strong className="text-zinc-700">Next step</strong> to reveal each phase. See the code and what the UI looks like at that moment.
@@ -220,12 +221,12 @@ export default async function ChecklistSection() {
               >
                 ← Backend
               </a>
-              <a
+              <Link
                 href="/"
                 className="text-sm font-medium text-zinc-900 underline underline-offset-4 decoration-zinc-300 hover:decoration-zinc-900 transition-all duration-200"
               >
                 Back to workshop →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

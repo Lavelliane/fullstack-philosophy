@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Github, Linkedin, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -59,12 +60,12 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-white text-zinc-900">
       <nav className="flex items-center justify-between px-8 py-5 border-b border-zinc-100">
-        <a
+        <Link
           href="/"
           className="text-sm font-medium tracking-tight text-zinc-900 hover:text-zinc-500 transition-colors"
         >
           The Human Behind the Endpoint
-        </a>
+        </Link>
         <div className="flex items-center gap-8 text-sm text-zinc-500">
           <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
           <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
@@ -226,12 +227,12 @@ export default function AboutPage() {
         </div>
 
         <div className="mt-16">
-          <a
+          <Link
             href="/"
             className="text-sm text-zinc-400 hover:text-zinc-900 transition-colors duration-200"
           >
             ← Back to workshop
-          </a>
+          </Link>
         </div>
       </div>
     </div>

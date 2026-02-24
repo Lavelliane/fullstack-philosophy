@@ -120,7 +120,7 @@ export default function RoutingSection() {
       </div>
 
       {/* Traditional vs SPA comparison */}
-      <ChallengeSection wide>
+      <ChallengeSection>
         <ChallengeLabel>Traditional pages vs SPA</ChallengeLabel>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-7xl">
           <div className="border border-zinc-200 rounded-lg p-6 bg-white">
@@ -198,7 +198,7 @@ export default function RoutingSection() {
         </div>
 
         {/* Route definitions + interactive preview */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Route definitions</ChallengeLabel>
           <CodeWithDiagram
             label="Map URLs to components"
@@ -211,7 +211,7 @@ export default function RoutingSection() {
         </ChallengeSection>
 
         {/* URL as state */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>URL as state</ChallengeLabel>
           <CodeWithDiagram
             label="Params and search in the URL"

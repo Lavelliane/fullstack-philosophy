@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MousePointerClick, ArrowRight, ArrowDown, ArrowUp, Send } from "lucide-react";
+import { ArrowRight, ArrowDown, ArrowUp, Send } from "lucide-react";
 import StepBrowserFrame from "./StepBrowserFrame";
 
 /**

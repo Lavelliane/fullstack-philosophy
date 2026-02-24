@@ -160,36 +160,6 @@ function DatabasePanel() {
   );
 }
 
-function ResponsePanel() {
-  const lines = [
-    { key: "status",     val: "201",                    color: "text-emerald-400", delay: 0 },
-    { key: "id",         val: "4",                      color: "text-zinc-300",    delay: 0.1 },
-    { key: "studentId",  val: "42",                     color: "text-zinc-300",    delay: 0.18 },
-    { key: "courseId",   val: '"cs-101"',               color: "text-zinc-300",    delay: 0.26 },
-    { key: "semester",   val: '"Fall 2026"',             color: "text-zinc-300",    delay: 0.34 },
-    { key: "enrolledAt", val: '"2026-01-15T09:00:00Z"', color: "text-zinc-400",    delay: 0.42 },
-  ];
-  return (
-    <div className="bg-zinc-950 font-mono text-xs p-5 h-full overflow-auto">
-      <p className="text-zinc-500 text-[10px] uppercase tracking-widest mb-3">Response payload</p>
-      <p className="text-zinc-400 mb-1">{"{"}</p>
-      {lines.map(({ key, val, color, delay }) => (
-        <motion.p key={key} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay, duration: 0.2 }} className="pl-4">
-          <span className="text-violet-400">&quot;{key}&quot;</span>
-          <span className="text-zinc-500">: </span>
-          <span className={color}>{val}</span>
-          <span className="text-zinc-600">,</span>
-        </motion.p>
-      ))}
-      <p className="text-zinc-400 mt-1">{"}"}</p>
-      <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }} className="mt-4 border border-emerald-700 bg-emerald-950/40 px-3 py-2">
-        <p className="text-[10px] text-emerald-400 uppercase tracking-wider mb-1">Frontend receives 201</p>
-        <p className="text-[11px] text-emerald-300">Button turns green. Confirmation appears. Loop complete.</p>
-      </motion.div>
-    </div>
-  );
-}
-
 function EnrolledBrowserPanel() {
   return (
     <BrowserChrome>

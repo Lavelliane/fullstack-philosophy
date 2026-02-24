@@ -268,7 +268,7 @@ const SIM_STEPS: SimStep[] = [
         ],
       };
     },
-    getNote: (s) => ({
+    getNote: () => ({
       text: `To add a HolidayPricing next month: create one new file, register it in the registry. OrderService stays completely untouched.`,
       color: "text-zinc-300",
       border: "border-zinc-700",

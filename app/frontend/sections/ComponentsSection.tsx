@@ -165,7 +165,7 @@ export default function ComponentsSection() {
         </div>
 
         {/* 1. Copy-paste vs reuse — two CodeWithDiagram, each with its own diagram */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Copy-paste vs. reuse</ChallengeLabel>
           <div className="space-y-10">
             <CodeWithDiagram
@@ -187,7 +187,7 @@ export default function ComponentsSection() {
         </ChallengeSection>
 
         {/* 2. Props: linear flow in one section */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Props: definition → flow → callbacks → children</ChallengeLabel>
           <p className="text-sm text-zinc-600 mb-6 border-l-2 border-zinc-300 pl-4">
             Props are inputs a parent passes to a child. One-way flow: parent → child. Child communicates up via callbacks. Follow the flow below.
@@ -255,7 +255,7 @@ export default function ComponentsSection() {
         </ChallengeSection>
 
         {/* 3. Compose — before challenges */}
-        <ChallengeSection wide>
+        <ChallengeSection>
           <ChallengeLabel>Compose: putting it together</ChallengeLabel>
           <CodeWithDiagram
             label="Nest components"
