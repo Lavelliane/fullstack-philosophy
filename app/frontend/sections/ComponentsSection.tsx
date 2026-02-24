@@ -167,7 +167,7 @@ export default function ComponentsSection() {
         {/* 1. Copy-paste vs reuse — two CodeWithDiagram, each with its own diagram */}
         <ChallengeSection>
           <ChallengeLabel>Copy-paste vs. reuse</ChallengeLabel>
-          <div className="space-y-10">
+          <div className="space-y-10 flex gap-4">
             <CodeWithDiagram
               label="Bad: 12 copies"
               description="Copy the same card 12 times. Change the design? Update 12 places."
