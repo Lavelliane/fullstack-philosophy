@@ -29,7 +29,7 @@ export default async function CodeBlock({
 }: CodeBlockProps) {
   if (mode === "split" && splitCode) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-lg min-w-0">
         <div>
           <span className="inline-block text-xs text-red-400 uppercase tracking-[0.15em] mb-2">
             {labels[0]}

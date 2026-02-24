@@ -102,7 +102,7 @@ export default async function ChecklistSection() {
               <br />
               the full lifecycle.
             </h2>
-            <p className="text-base text-zinc-600 leading-relaxed mb-10 max-w-lg">
+            <p className="text-base text-zinc-600 leading-relaxed mb-10 max-w-7xl">
               When a user visits <code className="px-1 py-0.5 rounded bg-zinc-100 font-mono text-zinc-700">/students/42</code>, this is what happens: route mounts → fetch fires → loading skeleton → success or error → edit GPA → save. Before you ship, answer: <em>What shows while loading? What if it fails? Does the back button work?</em>
             </p>
 
@@ -157,7 +157,7 @@ export default async function ChecklistSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex flex-col items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-3xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Walkthrough + Final Quiz: Section 06
             </p>
@@ -192,7 +192,7 @@ export default async function ChecklistSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-16 flex items-center justify-center min-h-[50vh]"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl">
+          <div className="max-w-7xl">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-4">
               Why we do this
             </p>
@@ -204,7 +204,7 @@ export default async function ChecklistSection() {
               <br />
               is always the answer.
             </blockquote>
-            <p className="mt-6 text-sm text-zinc-500 max-w-xl">
+            <p className="mt-6 text-sm text-zinc-500 max-w-7xl">
               Frameworks will come and go. Components, state, and data flow
               won&apos;t.
             </p>

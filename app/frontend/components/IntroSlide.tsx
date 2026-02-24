@@ -48,7 +48,7 @@ export default function IntroSlide() {
       >
         {/* Step content — one focal idea per view (click to advance) */}
         <div
-          className="max-w-2xl cursor-pointer"
+          className="max-w-7xl cursor-pointer"
           onClick={(e) => {
             if ((e.target as HTMLElement).closest("button")) return;
             if (isDone) handleStart();
@@ -168,7 +168,7 @@ export default function IntroSlide() {
                   <br />
                   Every error message is a conversation.
                 </p>
-                <p className="mt-8 text-sm text-zinc-500 max-w-md">
+                <p className="mt-8 text-sm text-zinc-500 max-w-7xl">
                   In the next 30 minutes we&apos;ll unpack how frontends build that
                   connection: structure, state, and data flow. No framework
                   required.

@@ -11,6 +11,10 @@ type DragSortProps = {
   items: Item[];
   correctOrder: string[];
   prompt: string;
+  /** Custom message when correct. Default varies by context. */
+  successMessage?: string;
+  /** Custom message when incorrect. */
+  failureMessage?: string;
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -22,7 +26,13 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
-export default function DragSort({ items, correctOrder, prompt }: DragSortProps) {
+export default function DragSort({
+  items,
+  correctOrder,
+  prompt,
+  successMessage = "Correct!",
+  failureMessage = "Not quite: drag to reorder and try again.",
+}: DragSortProps) {
   const [order, setOrder] = useState<Item[]>(() => [...items]);
   const [checked, setChecked] = useState(false);
   const [correct, setCorrect] = useState(false);
@@ -66,8 +76,8 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
   }
 
   return (
-    <div className="border border-zinc-200 p-6 flex flex-col gap-5">
-      <p className="text-sm font-medium text-zinc-900">{prompt}</p>
+    <div className="border border-zinc-200 rounded-lg p-6 flex flex-col gap-5 bg-white">
+      <p className="text-base font-medium text-zinc-900">{prompt}</p>
 
       <div className="flex flex-col gap-2">
         {order.map((item, index) => {
@@ -80,7 +90,7 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
               ? " border-emerald-500 bg-emerald-50 text-emerald-700"
               : " border-red-400 bg-red-50 text-red-600";
           } else {
-            itemClass += " border-zinc-200 text-zinc-700 hover:border-zinc-400 bg-white";
+            itemClass += " border-zinc-200 text-zinc-700 hover:border-zinc-400 bg-zinc-50/50 rounded-md";
           }
 
           return (
@@ -95,8 +105,8 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
               <span className="font-mono text-xs text-zinc-300 w-4 text-center select-none">
                 ⠿
               </span>
-              <span className="font-mono text-xs text-zinc-400 w-4">{index + 1}.</span>
-              {item.label}
+              <span className="font-mono text-sm text-zinc-400 w-6 shrink-0">{index + 1}.</span>
+              <span className="text-sm">{item.label}</span>
             </div>
           );
         })}
@@ -104,10 +114,8 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
 
       {checked && (
         <div className={`border-l-2 pl-4 ${correct ? "border-emerald-500" : "border-red-400"}`}>
-          <p className={`text-xs leading-relaxed ${correct ? "text-emerald-600" : "text-red-500"}`}>
-            {correct
-              ? "Correct. That's the exact order requests flow through a backend."
-              : "Not quite: drag to reorder and try again."}
+          <p className={`text-sm leading-relaxed ${correct ? "text-emerald-600" : "text-red-500"}`}>
+            {correct ? successMessage : failureMessage}
           </p>
         </div>
       )}
@@ -115,15 +123,15 @@ export default function DragSort({ items, correctOrder, prompt }: DragSortProps)
       <div className="flex items-center gap-3">
         <button
           onClick={handleCheck}
-          className="text-xs font-medium border border-zinc-900 px-4 py-2 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors duration-200"
+          className="text-sm font-medium border border-zinc-900 px-4 py-2.5 text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors duration-200 rounded"
         >
           Check order
         </button>
         <button
           onClick={handleReset}
-          className="text-xs text-zinc-400 hover:text-zinc-700 transition-colors duration-200"
+          className="text-sm text-zinc-500 hover:text-zinc-700 transition-colors duration-200"
         >
-          Reset
+          Shuffle & try again
         </button>
       </div>
     </div>

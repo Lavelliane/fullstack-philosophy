@@ -21,8 +21,8 @@ type ChildNodeType = Node<{ label: string; subtitle: string }, "child">;
 function ParentNode({ data }: NodeProps<ParentNodeType>) {
   return (
     <div className="rounded border-2 border-zinc-900 bg-zinc-900 px-4 py-2.5 text-white shadow relative">
-      <p className="text-xs font-mono font-medium">{data.label}</p>
-      <p className="text-[10px] text-zinc-400 mt-0.5">{data.subtitle}</p>
+      <p className="text-base font-mono font-medium">{data.label}</p>
+      <p className="text-base text-zinc-400 mt-0.5">{data.subtitle}</p>
       <Handle type="source" id="left" position={Position.Bottom} className="!left-[25%] !-translate-x-1/2 -bottom-1!" />
       <Handle type="source" id="center" position={Position.Bottom} className="!left-1/2 !-translate-x-1/2 -bottom-1!" />
       <Handle type="source" id="right" position={Position.Bottom} className="!left-[75%] !-translate-x-1/2 -bottom-1!" />
@@ -34,8 +34,8 @@ function ChildNode({ data }: NodeProps<ChildNodeType>) {
   return (
     <div className="rounded border border-zinc-300 bg-white px-3 py-2 shadow-sm">
       <Handle type="target" position={Position.Top} className="-top-1!" />
-      <p className="text-xs font-mono font-medium text-zinc-700">{data.label}</p>
-      <p className="text-[9px] text-zinc-400 mt-0.5">{data.subtitle}</p>
+      <p className="text-base font-mono font-medium text-zinc-700">{data.label}</p>
+      <p className="text-base text-zinc-400 mt-0.5">{data.subtitle}</p>
     </div>
   );
 }

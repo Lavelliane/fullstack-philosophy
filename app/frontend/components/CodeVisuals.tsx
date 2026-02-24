@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MousePointerClick, ArrowRight, Send } from "lucide-react";
+import { MousePointerClick, ArrowRight, ArrowDown, ArrowUp, Send } from "lucide-react";
 import StepBrowserFrame from "./StepBrowserFrame";
 
 /**
@@ -20,11 +20,10 @@ export function ThreeRolesButtonVisual() {
       <button
         type="button"
         onClick={() => setEnrolled(true)}
-        className={`px-4 py-2 rounded text-sm font-medium cursor-pointer transition-colors ${
-          enrolled
-            ? "bg-emerald-600 text-white cursor-default"
-            : "bg-[#0f172a] text-white hover:bg-zinc-800"
-        }`}
+        className={`px-4 py-2 rounded text-sm font-medium cursor-pointer transition-colors ${enrolled
+          ? "bg-emerald-600 text-white cursor-default"
+          : "bg-[#0f172a] text-white hover:bg-zinc-800"
+          }`}
         disabled={enrolled}
       >
         {enrolled ? "Enrolled ✓" : "Enroll in Course"}
@@ -33,7 +32,7 @@ export function ThreeRolesButtonVisual() {
         <button
           type="button"
           onClick={() => setEnrolled(false)}
-          className="text-[10px] text-zinc-400 hover:text-zinc-600"
+          className="text-base text-zinc-400 hover:text-zinc-600"
         >
           Reset
         </button>
@@ -69,11 +68,11 @@ function StudentCardPreview({ name, year, gpa, initial }: { name: string; year: 
   return (
     <div className="flex items-center gap-2 border border-zinc-200 rounded-lg p-2 bg-white">
       <div className="w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center shrink-0">
-        <span className="text-xs font-mono font-semibold text-zinc-500">{initial}</span>
+        <span className="text-base font-mono font-semibold text-zinc-500">{initial}</span>
       </div>
       <div>
-        <p className="text-sm font-semibold text-zinc-800">{name}</p>
-        <p className="text-xs text-zinc-500">Year {year} · GPA {gpa}</p>
+        <p className="text-base font-semibold text-zinc-800">{name}</p>
+        <p className="text-base text-zinc-500">Year {year} · GPA {gpa}</p>
       </div>
     </div>
   );
@@ -89,55 +88,43 @@ export function ComponentCardsVisual() {
   );
 }
 
-const comparisonContainer = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.35, delayChildren: 0.2 },
-  },
-};
-
-const comparisonItem = {
-  hidden: { opacity: 0, x: -12 },
-  visible: { opacity: 1, x: 0 },
-};
+/** Visual for bad copy-paste: 12 duplicated blocks, change 12 places */
+export function ComponentComparisonBadVisual() {
+  return (
+    <div>
+      <div className="flex items-start gap-2">
+        <div className="flex flex-wrap gap-1.5 justify-start">
+          {STUDENTS_COMPARISON.slice(0, 5).map((s) => (
+            <StudentCardPreview key={s.name} {...s} />
+          ))}
+          <p className="text-base text-nowrap text-zinc-500 text-center h-20 w-40 items-center justify-center flex">
+            ... + 7 more
+          </p>
+        </div>
+      </div>
+      <p className="text-base text-red-600 font-medium">
+        Change design? Update 12 places.
+      </p>
+    </div>
+  );
+}
 
 /** Visual for copy-paste vs reuse: click to reveal, animates from 1 to many actual cards */
 export function ComponentComparisonVisual() {
-  const [revealed, setRevealed] = useState(false);
-
   return (
-    <div className="space-y-3">
-      <AnimatePresence mode="wait">
-        {revealed ? (
-          <motion.div
-            key="cards"
-            className="flex flex-wrap gap-2 items-start justify-center"
-            variants={comparisonContainer}
-            initial="hidden"
-            animate="visible"
-            exit={{ opacity: 0 }}
-          >
-            {STUDENTS_COMPARISON.map((s) => (
-              <motion.div key={s.name} variants={comparisonItem}>
-                <StudentCardPreview {...s} />
-              </motion.div>
-            ))}
-          </motion.div>
-        ) : (
-          <motion.button
-            key="trigger"
-            type="button"
-            onClick={() => setRevealed(true)}
-            className="w-full flex flex-col items-center justify-center gap-2 py-8 border-2 border-dashed border-zinc-300 rounded-lg bg-zinc-50 hover:bg-zinc-100 hover:border-zinc-400 transition-colors cursor-pointer"
-            exit={{ opacity: 0 }}
-          >
-            <MousePointerClick className="w-5 h-5 text-zinc-400" />
-            <span className="text-[10px] text-zinc-500">Click to show</span>
-          </motion.button>
-        )}
-      </AnimatePresence>
-      <p className="text-[10px] text-zinc-500 border-l-2 border-zinc-200 pl-2 w-full">
-        Copy-paste = change every block. One component = change once, renders everywhere.
+    <div>
+      <div className="flex items-start gap-2">
+        <div className="flex flex-wrap gap-1.5 justify-start">
+          {STUDENTS_COMPARISON.slice(0, 5).map((s) => (
+            <StudentCardPreview key={s.name} {...s} />
+          ))}
+          <p className="text-base text-nowrap text-zinc-500 text-center h-20 w-40 items-center justify-center flex">
+            ... + 7 more
+          </p>
+        </div>
+      </div>
+      <p className="text-base text-green-600 font-medium">
+        One component, students.map(...). Change the card? Change it once.
       </p>
     </div>
   );
@@ -152,27 +139,27 @@ export function PropsButtonsVisual() {
         <button
           type="button"
           onClick={() => setLastAction("Saved!")}
-          className="px-3 py-1.5 rounded text-xs font-medium bg-zinc-900 text-white cursor-pointer hover:bg-zinc-800 transition-colors"
+          className="px-3 py-1.5 rounded text-base font-medium bg-zinc-900 text-white cursor-pointer hover:bg-zinc-800 transition-colors"
         >
           Save
         </button>
         <button
           type="button"
           onClick={() => setLastAction("Cancelled")}
-          className="px-3 py-1.5 rounded text-xs font-medium bg-zinc-200 text-zinc-800 cursor-pointer hover:bg-zinc-300 transition-colors"
+          className="px-3 py-1.5 rounded text-base font-medium bg-zinc-200 text-zinc-800 cursor-pointer hover:bg-zinc-300 transition-colors"
         >
           Cancel
         </button>
         <button
           type="button"
           onClick={() => setLastAction("Deleted")}
-          className="px-3 py-1.5 rounded text-xs font-medium bg-red-100 text-red-800 cursor-pointer hover:bg-red-200 transition-colors"
+          className="px-3 py-1.5 rounded text-base font-medium bg-red-100 text-red-800 cursor-pointer hover:bg-red-200 transition-colors"
         >
           Delete
         </button>
       </div>
       {lastAction && (
-        <p className="text-[10px] text-zinc-500 font-mono">
+        <p className="text-base text-zinc-500 font-mono">
           onClick → {lastAction}
         </p>
       )}
@@ -183,8 +170,71 @@ export function PropsButtonsVisual() {
 export function PropsFlowVisual() {
   return (
     <div className="border border-zinc-200 rounded-lg p-3 bg-zinc-50 flex flex-col items-center">
-      <p className="text-[10px] text-zinc-400 uppercase tracking-wider mb-2">StudentCard receives student prop</p>
+      <p className="text-base text-zinc-400 uppercase tracking-wider mb-2">StudentCard receives student prop</p>
       <StudentCardPreview name="Ana Reyes" year={3} gpa={3.9} initial="A" />
+    </div>
+  );
+}
+
+/** Diagram: child-to-parent callback flow for beginners */
+const COURSES_DEMO = [
+  { id: 1, name: "CS 101" },
+  { id: 2, name: "Math 201" },
+];
+
+export function ChildToParentFlowVisual() {
+  const [selectedCourse, setSelectedCourse] = useState<{ id: number; name: string } | null>(null);
+
+  return (
+    <div className="border border-zinc-200 rounded-lg p-4 bg-white">
+      <p className="text-base text-zinc-400 uppercase tracking-wider mb-3 text-center font-mono">
+        How callbacks flow: parent → child → parent
+      </p>
+      <div className="flex flex-col items-center gap-2">
+        {/* Parent box */}
+        <div className="w-full max-w-sm rounded-lg border-2 border-blue-200 bg-blue-50/50 px-3 py-2">
+          <p className="text-base font-semibold text-blue-800 uppercase tracking-wider">Parent</p>
+          <p className="text-base text-zinc-600 mt-0.5 font-mono">
+            selectedCourse = {selectedCourse ? `"${selectedCourse.name}"` : "null"}
+          </p>
+          <p className="text-base text-zinc-500 mt-1">passes onSelect down ↓</p>
+        </div>
+
+        <div className="flex flex-col items-center text-zinc-400">
+          <ArrowDown className="w-4 h-4" />
+          <span className="text-base font-mono">onSelect prop</span>
+        </div>
+
+        {/* Child box */}
+        <div className="w-full max-w-sm rounded-lg border-2 border-amber-200 bg-amber-50/50 px-3 py-2">
+          <p className="text-base font-semibold text-amber-800 uppercase tracking-wider">Child (CourseList)</p>
+          <div className="flex flex-wrap gap-1 mt-2">
+            {COURSES_DEMO.map((c) => (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => setSelectedCourse(c)}
+                className={`px-2 py-1 rounded text-base font-medium transition-colors ${selectedCourse?.id === c.id
+                  ? "bg-amber-600 text-white ring-2 ring-amber-400"
+                  : "bg-white border border-amber-200 text-amber-800 hover:bg-amber-100"
+                  }`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
+          <p className="text-base text-zinc-500 mt-2">click → calls onSelect(course) ↑</p>
+        </div>
+
+        <div className="flex flex-col items-center text-zinc-400">
+          <ArrowUp className="w-4 h-4" />
+          <span className="text-base font-mono">data flows up</span>
+        </div>
+
+        <p className="text-base text-zinc-500 text-center mt-1">
+          Parent&apos;s handler runs → setState → re-render. Child never &quot;sends props&quot; — it invokes the callback.
+        </p>
+      </div>
     </div>
   );
 }
@@ -192,7 +242,7 @@ export function PropsFlowVisual() {
 export function ChildrenBadgeVisual() {
   return (
     <div className="flex justify-center">
-      <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-800 border border-amber-200">
+      <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1.5 text-base font-medium text-amber-800 border border-amber-200">
         Dean&apos;s List
       </span>
     </div>
@@ -201,7 +251,7 @@ export function ChildrenBadgeVisual() {
 
 export function ChildrenBadgeStrongVisual() {
   return (
-    <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1.5 text-xs font-medium text-amber-800 border border-amber-200">
+    <span className="inline-flex items-center rounded-full bg-amber-100 px-3 py-1.5 text-base font-medium text-amber-800 border border-amber-200">
       <strong>Honor Roll</strong>
     </span>
   );
@@ -209,9 +259,9 @@ export function ChildrenBadgeStrongVisual() {
 
 export function ComposeLayoutVisual() {
   return (
-    <div className="border border-zinc-300 rounded-lg overflow-hidden text-xs">
+    <div className="border border-zinc-300 rounded-lg overflow-hidden text-base">
       <div className="h-6 bg-zinc-800 flex items-center justify-between px-2">
-        <span className="font-mono text-zinc-300">NavBar</span>
+        <span className="font-mono text-base text-zinc-300">NavBar</span>
         <span className="w-3 h-3 rounded-full bg-zinc-500" />
       </div>
       <div className="p-2 space-y-2 bg-white flex flex-col items-center">
@@ -223,7 +273,7 @@ export function ComposeLayoutVisual() {
         <ChildrenBadgeVisual />
       </div>
       <div className="h-5 bg-zinc-100 flex items-center justify-start px-2 border-t border-zinc-200">
-        <span className="font-mono text-zinc-600">Footer</span>
+        <span className="font-mono text-base text-zinc-600">Footer</span>
       </div>
     </div>
   );
@@ -233,18 +283,18 @@ export function ComposeLayoutVisual() {
 
 export function LiftStateVisual() {
   return (
-    <div className="space-y-2 text-xs flex flex-col items-center">
+    <div className="space-y-2 text-base flex flex-col items-center">
       <div className="border border-zinc-200 rounded p-2">
-        <p className="text-zinc-400 mb-1">CourseList</p>
-        <p className="text-zinc-600">Enroll → adds to enrolled[]</p>
+        <p className="text-base text-zinc-400 mb-1">CourseList</p>
+        <p className="text-base text-zinc-600">Enroll → adds to enrolled[]</p>
       </div>
       <div className="border border-zinc-200 rounded p-2">
-        <p className="text-zinc-400 mb-1">EnrolledSummary</p>
-        <p className="text-zinc-600">Shows enrolled count</p>
+        <p className="text-base text-zinc-400 mb-1">EnrolledSummary</p>
+        <p className="text-base text-zinc-600">Shows enrolled count</p>
       </div>
       <button
         type="button"
-        className="px-2 py-1 rounded border border-zinc-300 text-zinc-500 bg-zinc-50"
+        className="px-2 py-1 rounded border border-zinc-300 text-base text-zinc-500 bg-zinc-50"
         style={{ cursor: "default" }}
       >
         Submit (disabled when empty)
@@ -284,46 +334,45 @@ export function InteractiveLiftStateVisual() {
   }
 
   return (
-    <div className="flex flex-col gap-3 items-start w-fit">
-      <div className="flex flex-row flex-wrap items-center gap-4">
+    <div className="flex flex-col gap-3 items-start w-full">
+      <div className="flex flex-row flex-wrap items-center gap-4 w-full">
         {/* CourseList - course cards */}
         <motion.div
-          className="border border-zinc-200 rounded-lg p-2.5 bg-white shrink-0 w-[160px] h-[88px] flex flex-col"
+          className="border border-zinc-200 rounded-lg p-2.5 bg-white shrink-0 w-[220px] h-[112px] flex flex-col"
           animate={{ backgroundColor: pulsing ? "rgb(254 249 195)" : "transparent" }}
           transition={{ duration: 0.35 }}
         >
-          <p className="text-[10px] text-zinc-400 uppercase tracking-wider mb-2">Available courses</p>
+          <p className="text-base text-zinc-400 uppercase tracking-wider mb-2">Available courses</p>
           <motion.button
             type="button"
             onClick={handleEnroll}
             disabled={enrolled.includes(SAMPLE_COURSE.id) || submitted}
-            className={`w-full flex items-center justify-between px-2 py-1.5 rounded text-left text-xs transition-colors ${
-              enrolled.includes(SAMPLE_COURSE.id)
-                ? "bg-zinc-100 text-zinc-400 cursor-default"
-                : "bg-zinc-50 hover:bg-emerald-50 text-zinc-700 cursor-pointer border border-zinc-200"
-            }`}
+            className={`w-full flex items-center justify-between px-2 py-1.5 rounded text-left text-base transition-colors ${enrolled.includes(SAMPLE_COURSE.id)
+              ? "bg-zinc-100 text-zinc-400 cursor-default"
+              : "bg-zinc-50 hover:bg-emerald-50 text-zinc-700 cursor-pointer border border-zinc-200"
+              }`}
             whileTap={enrolled.includes(SAMPLE_COURSE.id) ? {} : { scale: 0.98 }}
           >
             <span className="font-medium">{SAMPLE_COURSE.name}</span>
-            <span className="text-[10px] text-zinc-500">{SAMPLE_COURSE.credits} cr</span>
+            <span className="text-base text-zinc-500">{SAMPLE_COURSE.credits} cr</span>
           </motion.button>
         </motion.div>
 
         {/* EnrolledSummary - enrolled chips */}
         <motion.div
-          className="border border-zinc-200 rounded-lg p-2.5 bg-white shrink-0 w-[160px] h-[88px] flex flex-col"
+          className="border border-zinc-200 rounded-lg p-2.5 bg-white shrink-0 w-[220px] h-[112px] flex flex-col"
           animate={{ backgroundColor: pulsing ? "rgb(254 249 195)" : "transparent" }}
           transition={{ duration: 0.35 }}
         >
-          <p className="text-[10px] text-zinc-400 uppercase tracking-wider mb-2">Enrolled</p>
+          <p className="text-base text-zinc-400 uppercase tracking-wider mb-2">Enrolled</p>
           <div className="flex flex-wrap gap-1.5 min-h-[24px]">
             {enrolled.length === 0 ? (
-              <span className="text-[11px] text-zinc-400 italic">None yet</span>
+              <span className="text-base text-zinc-400 italic">None yet</span>
             ) : (
               enrolled.map((id) => (
                 <span
                   key={id}
-                  className="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-medium text-emerald-800"
+                  className="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-base font-medium text-emerald-800"
                 >
                   {id === SAMPLE_COURSE.id ? SAMPLE_COURSE.name : id}
                 </span>
@@ -335,11 +384,11 @@ export function InteractiveLiftStateVisual() {
         {/* Submit */}
         {submitted ? (
           <div className="flex flex-col gap-1.5 shrink-0 items-start">
-            <span className="text-xs text-emerald-600 font-medium">Submitted ✓</span>
+            <span className="text-base text-emerald-600 font-medium">Submitted ✓</span>
             <button
               type="button"
               onClick={handleReset}
-              className="text-[11px] text-zinc-500 hover:text-zinc-700 underline underline-offset-1"
+              className="text-base text-zinc-500 hover:text-zinc-700 underline underline-offset-1"
             >
               Try again
             </button>
@@ -348,11 +397,10 @@ export function InteractiveLiftStateVisual() {
           <motion.button
             type="button"
             onClick={handleSubmit}
-            className={`shrink-0 py-2 px-4 rounded-md text-xs font-medium transition-colors ${
-              enrolled.length > 0
-                ? "bg-zinc-900 text-white hover:bg-zinc-800 cursor-pointer"
-                : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
-            }`}
+            className={`shrink-0 py-2 px-4 rounded-md text-base font-medium transition-colors ${enrolled.length > 0
+              ? "bg-zinc-900 text-white hover:bg-zinc-800 cursor-pointer"
+              : "bg-zinc-100 text-zinc-400 cursor-not-allowed"
+              }`}
             disabled={enrolled.length === 0}
             whileTap={enrolled.length > 0 ? { scale: 0.98 } : {}}
           >
@@ -360,7 +408,7 @@ export function InteractiveLiftStateVisual() {
           </motion.button>
         )}
       </div>
-      <p className="text-[10px] text-zinc-400">Click course → state updates → all re-render</p>
+      <p className="text-base text-zinc-400">Click course → state updates → all re-render</p>
     </div>
   );
 }
@@ -369,10 +417,10 @@ export function InteractiveLiftStateVisual() {
 export function CounterVisual({ count = 0 }: { count?: number }) {
   return (
     <div className="flex flex-col gap-2 items-center">
-      <p className="text-sm text-zinc-700">Count: {count}</p>
+      <p className="text-base text-zinc-700">Count: {count}</p>
       <button
         type="button"
-        className="w-fit px-3 py-1.5 rounded text-xs font-medium bg-zinc-900 text-white"
+        className="w-fit px-3 py-1.5 rounded text-base font-medium bg-zinc-900 text-white"
         style={{ cursor: "default" }}
       >
         +1
@@ -396,7 +444,7 @@ export function InteractiveCounterVisual() {
           animate={{ backgroundColor: "transparent" }}
           transition={{ duration: 0.45 }}
         >
-          <span className="text-[10px] text-zinc-400 uppercase tracking-wider font-mono">Count</span>
+          <span className="text-base text-zinc-400 uppercase tracking-wider font-mono">Count</span>
           <motion.span
             key={count}
             className="text-2xl font-mono font-semibold tabular-nums text-zinc-900"
@@ -419,7 +467,7 @@ export function InteractiveCounterVisual() {
           </motion.button>
         </motion.div>
       </div>
-      <p className="text-[10px] text-zinc-400">Click to see state → re-render</p>
+      <p className="text-base text-zinc-400">Click to see state → re-render</p>
     </div>
   );
 }
@@ -437,7 +485,7 @@ export function FetchInFlightVisual() {
         <Send className="w-5 h-5 text-zinc-500 shrink-0" />
         <ArrowRight className="w-4 h-4 text-zinc-400 shrink-0" />
       </motion.div>
-      <p className="text-xs font-mono text-zinc-500">Request sent — fetch() in flight</p>
+      <p className="text-base font-mono text-zinc-500">Request sent — fetch() in flight</p>
     </div>
   );
 }
@@ -458,12 +506,24 @@ export function FetchStudentCardVisual() {
   return (
     <div className="flex items-center gap-2 w-fit">
       <div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center shrink-0">
-        <span className="text-[10px] font-mono font-semibold text-emerald-600">A</span>
+        <span className="text-base font-mono font-semibold text-emerald-600">A</span>
       </div>
       <div>
-        <p className="text-xs font-semibold text-zinc-800">Ana Reyes</p>
-        <p className="text-[10px] text-zinc-500">Year 3 · GPA 3.9 · Enrolled</p>
+        <p className="text-base font-semibold text-zinc-800">Ana Reyes</p>
+        <p className="text-base text-zinc-500">Year 3 · GPA 3.9 · Enrolled</p>
       </div>
+    </div>
+  );
+}
+
+/** Visual for bad fetch: only success handled — loading/error show nothing or crash */
+export function FetchStateBadVisual() {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <FetchStudentCardVisual />
+      <p className="text-base text-amber-600 font-medium text-center max-w-[180px]">
+        Success only. Loading? Blank. Error? Crash.
+      </p>
     </div>
   );
 }
@@ -471,8 +531,8 @@ export function FetchStudentCardVisual() {
 export function FetchErrorVisual() {
   return (
     <div className="flex items-center justify-between gap-2 w-fit">
-      <p className="text-xs text-red-600">Student profile unavailable.</p>
-      <span className="text-[10px] border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
+      <p className="text-base text-red-600">Student profile unavailable.</p>
+      <span className="text-base border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
         Retry
       </span>
     </div>
@@ -514,32 +574,31 @@ export function FetchStatesFlowVisual() {
   }
 
   return (
-    <div className="flex flex-col gap-3 w-fit max-w-full">
+    <div className="flex flex-col gap-3 w-full max-w-xl min-w-0">
       {/* 3 buttons: Loading | Success | Error */}
-      <div className="flex gap-1.5 flex-wrap">
+      <div className="flex gap-1.5 flex-wrap w-full">
         {(["loading", "success", "error"] as const).map((s) => (
           <button
             key={s}
             type="button"
             onClick={() => runToState(s)}
             disabled={isRunning}
-            className={`px-3 py-1.5 rounded text-[10px] font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shrink-0 ${
-              activeIndex === (s === "loading" ? 1 : s === "success" ? 2 : 3)
-                ? s === "loading"
-                  ? "bg-amber-200 text-amber-900"
-                  : s === "success"
-                    ? "bg-emerald-200 text-emerald-900"
-                    : "bg-red-200 text-red-900"
-                : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-            }`}
+            className={`px-3 py-1.5 rounded text-base font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shrink-0 ${activeIndex === (s === "loading" ? 1 : s === "success" ? 2 : 3)
+              ? s === "loading"
+                ? "bg-amber-200 text-amber-900"
+                : s === "success"
+                  ? "bg-emerald-200 text-emerald-900"
+                  : "bg-red-200 text-red-900"
+              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+              }`}
           >
-            {s}
+            <span className="whitespace-nowrap text-nowrap">{s}</span>
           </button>
         ))}
       </div>
 
       {/* Pipeline + Result: pipeline on top, result below (matches ChecklistFlowVisual) */}
-      <div className="flex flex-col items-start gap-3 min-w-0">
+      <div className="flex flex-col items-start gap-3 min-w-0 w-full">
         {/* Pipeline: fetch → Loading → Success | Error */}
         <div className="overflow-hidden shrink-0 p-1">
           <div className="flex items-center gap-0">
@@ -556,25 +615,24 @@ export function FetchStatesFlowVisual() {
 
               if (isHidden) return null;
 
-              const nodeClass = `relative flex flex-col items-center justify-center w-[84px] min-h-[52px] px-2 py-2 border rounded transition-all duration-300 shrink-0 ${
-                isActive
+              const nodeClass = `relative flex flex-col items-center justify-center w-[84px] min-h-[52px] px-2 py-2 border rounded transition-all duration-300 shrink-0 ${isActive
+                ? isErrorNode
+                  ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
+                  : "border-amber-400 bg-amber-50 ring-2 ring-amber-200 ring-offset-1 shadow-sm"
+                : isPassed
                   ? isErrorNode
-                    ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
-                    : "border-amber-400 bg-amber-50 ring-2 ring-amber-200 ring-offset-1 shadow-sm"
-                  : isPassed
-                    ? isErrorNode
-                      ? "border-red-200 bg-red-50/50"
-                      : "border-emerald-200 bg-emerald-50/50"
-                    : "border-zinc-200 bg-zinc-50/50"
-              }`;
+                    ? "border-red-200 bg-red-50/50"
+                    : "border-emerald-200 bg-emerald-50/50"
+                  : "border-zinc-200 bg-zinc-50/50"
+                }`;
 
               return (
                 <div key={node.id} className="flex items-center shrink-0">
                   <motion.div className={nodeClass} layout>
-                    <span className="text-[10px] font-mono text-zinc-700 font-medium">
+                    <span className="text-base font-mono text-zinc-700 font-medium">
                       {node.label}
                     </span>
-                    <span className="text-[9px] text-zinc-400 mt-0.5">{node.sublabel}</span>
+                    <span className="text-sm text-zinc-400 mt-0.5">{node.sublabel}</span>
                   </motion.div>
                   {i < 2 && (
                     <ArrowRight className="w-3.5 h-3.5 shrink-0 mx-1 text-zinc-300" />
@@ -589,54 +647,54 @@ export function FetchStatesFlowVisual() {
         {activeIndex >= 0 && (
           <div className="flex-none w-fit min-w-[140px] min-h-[120px] border border-zinc-200 rounded-md bg-white p-4 flex flex-col items-center justify-center">
             <AnimatePresence mode="wait">
-            {activeIndex === 0 && (
-              <motion.div
-                key="fetch"
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center w-fit"
-              >
-                <FetchInFlightVisual />
-              </motion.div>
-            )}
-            {activeIndex === 1 && (
-              <motion.div
-                key="loading"
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center w-fit"
-              >
-                <FetchSkeletonVisual />
-              </motion.div>
-            )}
-            {activeIndex === 2 && outcome === "success" && (
-              <motion.div
-                key="success"
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center w-fit"
-              >
-                <FetchStudentCardVisual />
-              </motion.div>
-            )}
-            {activeIndex === 3 && outcome === "error" && (
-              <motion.div
-                key="error"
-                initial={{ opacity: 0, x: 8 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -8 }}
-                transition={{ duration: 0.35 }}
-                className="flex flex-col items-center w-fit"
-              >
-                <FetchErrorVisual />
-              </motion.div>
-            )}
+              {activeIndex === 0 && (
+                <motion.div
+                  key="fetch"
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.35 }}
+                  className="flex flex-col items-center w-fit"
+                >
+                  <FetchInFlightVisual />
+                </motion.div>
+              )}
+              {activeIndex === 1 && (
+                <motion.div
+                  key="loading"
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.35 }}
+                  className="flex flex-col items-center w-fit"
+                >
+                  <FetchSkeletonVisual />
+                </motion.div>
+              )}
+              {activeIndex === 2 && outcome === "success" && (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.35 }}
+                  className="flex flex-col items-center w-fit"
+                >
+                  <FetchStudentCardVisual />
+                </motion.div>
+              )}
+              {activeIndex === 3 && outcome === "error" && (
+                <motion.div
+                  key="error"
+                  initial={{ opacity: 0, x: 8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -8 }}
+                  transition={{ duration: 0.35 }}
+                  className="flex flex-col items-center w-fit"
+                >
+                  <FetchErrorVisual />
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         )}
@@ -657,15 +715,14 @@ export function FetchStatesVisual() {
             key={s}
             type="button"
             onClick={() => setState(s)}
-            className={`px-3 py-1.5 rounded text-[10px] font-mono uppercase tracking-wider transition-colors cursor-pointer shrink-0 ${
-              state === s
-                ? s === "loading"
-                  ? "bg-amber-200 text-amber-900"
-                  : s === "success"
-                    ? "bg-emerald-200 text-emerald-900"
-                    : "bg-red-200 text-red-900"
-                : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
-            }`}
+            className={`px-3 py-1.5 rounded text-base font-mono uppercase tracking-wider transition-colors cursor-pointer shrink-0 ${state === s
+              ? s === "loading"
+                ? "bg-amber-200 text-amber-900"
+                : s === "success"
+                  ? "bg-emerald-200 text-emerald-900"
+                  : "bg-red-200 text-red-900"
+              : "bg-zinc-100 text-zinc-500 hover:bg-zinc-200"
+              }`}
           >
             {s}
           </button>
@@ -728,7 +785,7 @@ const ROUTE_ITEMS = [
 
 export function RoutesVisual() {
   return (
-    <div className="space-y-1.5 text-xs font-mono flex flex-col items-center">
+    <div className="space-y-1.5 text-base font-mono flex flex-col items-center">
       {ROUTE_ITEMS.map(({ path, component }) => (
         <div key={path} className="flex items-center gap-2 text-zinc-700">
           <span className="text-zinc-400 w-28 shrink-0">{path}</span>
@@ -742,7 +799,7 @@ export function RoutesVisual() {
 
 export function UrlParamsVisual() {
   return (
-    <div className="space-y-2 text-xs font-mono flex flex-col items-center">
+    <div className="space-y-2 text-base font-mono flex flex-col items-center">
       <div className="flex items-center gap-2">
         <span className="text-zinc-400">/students/42</span>
         <span>→</span>
@@ -797,11 +854,10 @@ export function ChecklistFlowVisual() {
           type="button"
           onClick={() => runToState("success")}
           disabled={isRunning}
-          className={`px-3 py-1.5 rounded text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${
-            activeIndex >= 3 && outcome === "success"
-              ? "bg-emerald-200 text-emerald-900"
-              : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-          }`}
+          className={`px-3 py-1.5 rounded text-base font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${activeIndex >= 3 && outcome === "success"
+            ? "bg-emerald-200 text-emerald-900"
+            : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+            }`}
         >
           Run (happy path)
         </button>
@@ -809,9 +865,8 @@ export function ChecklistFlowVisual() {
           type="button"
           onClick={() => runToState("error")}
           disabled={isRunning}
-          className={`px-3 py-1.5 rounded text-xs font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${
-            activeIndex === 4 ? "bg-red-200 text-red-900" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
-          }`}
+          className={`px-3 py-1.5 rounded text-base font-mono uppercase tracking-wider transition-colors cursor-pointer disabled:opacity-60 shrink-0 ${activeIndex === 4 ? "bg-red-200 text-red-900" : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
+            }`}
         >
           Error path
         </button>
@@ -845,23 +900,22 @@ export function ChecklistFlowVisual() {
               const isActive = activeIndex === i;
               const isPassed = activeIndex > i;
 
-              const nodeClass = `relative flex flex-col items-center justify-center w-[72px] min-h-[48px] px-2 py-2 border rounded text-center transition-all duration-300 shrink-0 ${
-                isActive
-                  ? isErrorNode
-                    ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
-                    : "border-emerald-400 bg-emerald-50 ring-2 ring-emerald-200 ring-offset-1 shadow-sm"
-                  : isPassed
-                    ? "border-emerald-200 bg-emerald-50/50"
-                    : "border-zinc-200 bg-zinc-50/50"
-              }`;
+              const nodeClass = `relative flex flex-col items-center justify-center w-[72px] min-h-[48px] px-2 py-2 border rounded text-center transition-all duration-300 shrink-0 ${isActive
+                ? isErrorNode
+                  ? "border-red-300 bg-red-50 ring-2 ring-red-200 ring-offset-1 shadow-sm"
+                  : "border-emerald-400 bg-emerald-50 ring-2 ring-emerald-200 ring-offset-1 shadow-sm"
+                : isPassed
+                  ? "border-emerald-200 bg-emerald-50/50"
+                  : "border-zinc-200 bg-zinc-50/50"
+                }`;
 
               return (
                 <div key={node.id} className="flex items-center shrink-0">
                   <motion.div className={nodeClass} layout>
-                    <span className="text-[10px] font-mono text-zinc-700 font-medium block truncate w-full px-0.5">
+                    <span className="text-base font-mono text-zinc-700 font-medium block truncate w-full px-0.5">
                       {node.label}
                     </span>
-                    <span className="text-[9px] text-zinc-400 block">{node.sublabel}</span>
+                    <span className="text-base text-zinc-400 block">{node.sublabel}</span>
                   </motion.div>
                   {hasNext && <ArrowRight className="w-3 h-3 shrink-0 mx-0.5 text-zinc-300" />}
                 </div>
@@ -968,7 +1022,7 @@ export function ChecklistStudentCardVisual() {
   return (
     <div className="space-y-2 flex flex-col w-full">
       <StudentCardPreview name="Ana Reyes" year={3} gpa={3.9} initial="A" />
-      <p className="text-xs text-zinc-400">+ CourseList</p>
+      <p className="text-base text-zinc-400">+ CourseList</p>
     </div>
   );
 }
@@ -976,8 +1030,8 @@ export function ChecklistStudentCardVisual() {
 export function ChecklistErrorVisual() {
   return (
     <div className="flex flex-col gap-2 w-full min-h-[60px] py-2">
-      <p className="text-sm text-red-600">Couldn&apos;t load this student&apos;s profile.</p>
-      <span className="text-xs w-fit border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
+      <p className="text-base text-red-600">Couldn&apos;t load this student&apos;s profile.</p>
+      <span className="text-base w-fit border border-red-200 px-2 py-0.5 text-red-500 font-mono rounded">
         Retry
       </span>
     </div>
@@ -988,13 +1042,13 @@ export function ChecklistEditToggleVisual({ mode }: { mode: "view" | "edit" }) {
   return mode === "view" ? (
     <div className="space-y-2 flex flex-col w-full">
       <StudentCardPreview name="Ana Reyes" year={3} gpa={3.9} initial="A" />
-      <button type="button" className="text-xs text-zinc-500 underline w-fit" style={{ cursor: "default" }}>
+      <button type="button" className="text-base text-zinc-500 underline w-fit" style={{ cursor: "default" }}>
         Edit GPA
       </button>
     </div>
   ) : (
     <div className="border border-zinc-200 rounded-lg p-3 flex flex-col gap-2 w-full">
-      <p className="text-xs text-zinc-500 font-mono">GPA</p>
+      <p className="text-base text-zinc-500 font-mono">GPA</p>
       <div className="flex items-center gap-2">
         <input
           type="text"
@@ -1004,7 +1058,7 @@ export function ChecklistEditToggleVisual({ mode }: { mode: "view" | "edit" }) {
         />
         <button
           type="button"
-          className="shrink-0 px-3 py-1.5 text-xs font-medium border border-zinc-300 bg-zinc-100 text-zinc-700 rounded transition-colors"
+          className="shrink-0 px-3 py-1.5 text-base font-medium border border-zinc-300 bg-zinc-100 text-zinc-700 rounded transition-colors"
           style={{ cursor: "default" }}
         >
           Save

@@ -29,7 +29,7 @@ export default function UrlParamsDemo() {
           <span className="w-2.5 h-2.5 rounded-full bg-amber-200" />
           <span className="w-2.5 h-2.5 rounded-full bg-emerald-200" />
         </div>
-        <div className="flex-1 mx-2 px-3 py-1.5 bg-white rounded border border-zinc-200 text-xs font-mono text-zinc-500 truncate">
+        <div className="flex-1 mx-2 px-3 py-1.5 bg-white rounded border border-zinc-200 text-base font-mono text-zinc-500 truncate">
           {url}
         </div>
       </div>
@@ -37,19 +37,19 @@ export default function UrlParamsDemo() {
       {/* Page content: student profile + tab content */}
       <div className="p-4 space-y-4 shrink-0">
         <div>
-          <p className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-2">
+          <p className="text-base font-mono uppercase tracking-wider text-zinc-400 mb-2">
             Change URL → component re-renders with new params
           </p>
           <div className="flex flex-wrap gap-2 mb-4">
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] text-zinc-400 font-mono">Student ID</span>
+              <span className="text-base text-zinc-400 font-mono">Student ID</span>
               <div className="flex gap-1">
                 {STUDENTS.map((s) => (
                   <button
                     key={s.id}
                     type="button"
                     onClick={() => setId(s.id)}
-                    className={`px-2.5 py-1.5 rounded text-xs font-mono transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1.5 rounded text-base font-mono transition-colors cursor-pointer ${
                       id === s.id
                         ? "bg-zinc-900 text-white"
                         : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -61,14 +61,14 @@ export default function UrlParamsDemo() {
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] text-zinc-400 font-mono">Tab (?tab=)</span>
+              <span className="text-base text-zinc-400 font-mono">Tab (?tab=)</span>
               <div className="flex gap-1">
                 {TABS.map((t) => (
                   <button
                     key={t.id}
                     type="button"
                     onClick={() => setTab(t.id)}
-                    className={`px-2.5 py-1.5 rounded text-xs font-mono transition-colors cursor-pointer ${
+                    className={`px-2.5 py-1.5 rounded text-base font-mono transition-colors cursor-pointer ${
                       tab === t.id
                         ? "bg-zinc-900 text-white"
                         : "bg-zinc-100 text-zinc-600 hover:bg-zinc-200"
@@ -92,7 +92,7 @@ export default function UrlParamsDemo() {
               <p className="text-sm font-semibold text-zinc-800">
                 {STUDENTS.find((s) => s.id === id)?.name ?? `Student #${id}`}
               </p>
-              <p className="text-xs text-zinc-500">Refresh, share, or go back — URL preserves this.</p>
+              <p className="text-base text-zinc-500">Refresh, share, or go back — URL preserves this.</p>
             </div>
           </div>
           <AnimatePresence mode="wait">
@@ -102,7 +102,7 @@ export default function UrlParamsDemo() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.15 }}
-              className="text-xs text-zinc-600 space-y-1"
+              className="text-base text-zinc-600 space-y-1"
             >
               {tab === "grades" && (
                 <>

@@ -67,11 +67,11 @@ function StudentCardMini({
     >
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 rounded-full bg-zinc-200 shrink-0 flex items-center justify-center">
-          <span className="text-[10px] font-mono font-semibold text-zinc-500">{name[0]}</span>
+          <span className="text-base font-mono font-semibold text-zinc-500">{name[0]}</span>
         </div>
         <div>
-          <div className="text-xs font-semibold text-zinc-800">{name}</div>
-          <div className="text-[10px] text-zinc-500">Year {year} · GPA {gpa}</div>
+          <div className="text-base font-semibold text-zinc-800">{name}</div>
+          <div className="text-base text-zinc-500">Year {year} · GPA {gpa}</div>
         </div>
       </div>
     </motion.div>
@@ -99,7 +99,7 @@ function CardTrigger({
       style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
       onClick={!revealed ? onReveal : undefined}
     >
-      <span className={`inline-block font-mono text-xs px-2 py-0.5 tracking-widest mb-1.5 uppercase ${revealed ? (label === "Component" ? "bg-zinc-900 text-white" : label === "Props" ? "bg-zinc-500 text-white" : label === "Children" ? "bg-zinc-400 text-white" : "bg-zinc-200 text-zinc-800") : "bg-zinc-300 text-zinc-600"}`}>
+      <span className={`inline-block font-mono text-base px-2 py-0.5 tracking-widest mb-1.5 uppercase ${revealed ? (label === "Component" ? "bg-zinc-900 text-white" : label === "Props" ? "bg-zinc-500 text-white" : label === "Children" ? "bg-zinc-400 text-white" : "bg-zinc-200 text-zinc-800") : "bg-zinc-300 text-zinc-600"}`}>
         {label}
       </span>
       <AnimatePresence mode="wait">
@@ -123,7 +123,7 @@ function CardTrigger({
             exit={{ opacity: 0 }}
           >
             <MousePointerClick className="w-5 h-5 text-zinc-400" />
-            <span className="text-[10px] text-zinc-500">Click to show</span>
+            <span className="text-base text-zinc-500">Click to show</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -153,7 +153,7 @@ export default function ComponentsVisual() {
     <div className="relative">
       <motion.button
         onClick={reset}
-        className="absolute top-0 right-0 flex items-center gap-1.5 text-[10px] text-zinc-400 hover:text-zinc-600 transition-colors z-20"
+        className="absolute top-0 right-0 flex items-center gap-1.5 text-base text-zinc-400 hover:text-zinc-600 transition-colors z-20"
         aria-label="Reset and replay"
       >
         <RotateCcw className="w-3 h-3" />
@@ -177,7 +177,7 @@ export default function ComponentsVisual() {
         <div className="flex flex-row gap-1.5 flex-nowrap justify-center">
           <CardSkeleton />
         </div>
-        <p className="text-[10px] text-zinc-500 mt-1.5">StudentCard (1 definition)</p>
+        <p className="text-base text-zinc-500 mt-1.5">StudentCard (1 definition)</p>
       </CardTrigger>
       </motion.div>
 
@@ -202,7 +202,7 @@ export default function ComponentsVisual() {
             <StudentCardMini key={s.name} name={s.name} year={s.year} gpa={s.gpa} i={i} />
           ))}
         </div>
-        <p className="text-[10px] text-zinc-500 mt-1.5">+ 2 data → 2 cards</p>
+        <p className="text-base text-zinc-500 mt-1.5">+ 2 data → 2 cards</p>
       </CardTrigger>
       </motion.div>
 
@@ -229,10 +229,10 @@ export default function ComponentsVisual() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 15 }}
           >
-            <span className="text-[10px] font-medium text-amber-800">Dean&apos;s List</span>
+            <span className="text-base font-medium text-amber-800">Dean&apos;s List</span>
           </motion.div>
         </div>
-        <p className="text-[10px] text-zinc-500 mt-1.5">content between tags</p>
+        <p className="text-base text-zinc-500 mt-1.5">content between tags</p>
       </CardTrigger>
       </motion.div>
 
@@ -264,7 +264,7 @@ export default function ComponentsVisual() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.25 }}
           >
-            <span className="text-[9px] font-mono font-medium text-zinc-300">NavBar</span>
+            <span className="text-base font-mono font-medium text-zinc-300">NavBar</span>
             <span className="w-4 h-4 rounded-full bg-zinc-500 border border-zinc-400" />
           </motion.div>
           <div className="p-1.5 flex flex-col gap-1 items-center">
@@ -279,7 +279,7 @@ export default function ComponentsVisual() {
               ))}
             </motion.div>
             <motion.span
-              className="rounded-full bg-amber-100 px-2 py-0.5 inline-flex w-fit text-[9px] font-medium text-amber-800 border border-amber-200"
+              className="rounded-full bg-amber-100 px-2 py-0.5 inline-flex w-fit text-base font-medium text-amber-800 border border-amber-200"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 1.1, type: "spring", stiffness: 200 }}
@@ -293,10 +293,10 @@ export default function ComponentsVisual() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
           >
-            <span className="text-[9px] font-mono font-medium text-zinc-600">Footer</span>
+            <span className="text-base font-mono font-medium text-zinc-600">Footer</span>
           </motion.div>
         </motion.div>
-        <p className="text-[10px] text-zinc-500 mt-1.5">Layout + NavBar + StudentCard×2 + Badge + Footer</p>
+        <p className="text-base text-zinc-500 mt-1.5">Layout + NavBar + StudentCard×2 + Badge + Footer</p>
       </CardTrigger>
       </motion.div>
     </motion.div>

@@ -1,6 +1,6 @@
 export default function FrontendHero() {
   return (
-    <div className="max-w-screen-lg mx-auto px-8 pt-16 pb-4">
+    <div className="max-w-7xl mx-auto px-8 pt-16 pb-4">
       <div className="mb-2 flex items-center gap-3">
         <span className="text-xs text-zinc-400 uppercase tracking-[0.18em]">
           Workshop: Part 2
@@ -17,7 +17,7 @@ export default function FrontendHero() {
         <br />
         of Software
       </h1>
-      <p className="text-sm text-zinc-500 leading-relaxed max-w-lg mb-4">
+      <p className="text-sm text-zinc-500 leading-relaxed max-w-7xl mb-4">
         The backend handles logic. The frontend handles humans. Structure,
         appearance, behavior: components, state, and data flow. This is
         where everything becomes visible.

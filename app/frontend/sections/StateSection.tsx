@@ -1,5 +1,4 @@
-import CodeBlock from "../components/CodeBlock";
-import CodeVisual from "../components/CodeVisual";
+import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import DragSort from "../../components/DragSort";
@@ -136,14 +135,15 @@ export default function StateSection() {
           </div>
 
           {/* Right: code (desktop only) */}
-          <div className="hidden lg:flex flex-col gap-3">
+          <div className="hidden lg:flex flex-col gap-3 min-w-0 max-w-lg">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               The core loop in code
             </p>
-            <div className="flex flex-col gap-4">
-              <CodeBlock code={stateSlideCode} lang="jsx" />
-              <CodeVisual><InteractiveCounterVisual /></CodeVisual>
-            </div>
+            <CodeWithDiagram
+              code={stateSlideCode}
+              diagram={<InteractiveCounterVisual />}
+              orientation="vertical"
+            />
           </div>
         </div>
 
@@ -161,7 +161,7 @@ export default function StateSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-7xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges: Section 03
             </p>
@@ -175,20 +175,22 @@ export default function StateSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Local state</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={localStateCode} lang="jsx" />
-            <CodeVisual><InteractiveCounterVisual /></CodeVisual>
-          </div>
+          <CodeWithDiagram
+            code={localStateCode}
+            diagram={<InteractiveCounterVisual />}
+            orientation="horizontal"
+          />
         </ChallengeSection>
 
         {/* Lifting state: code + ownership diagram */}
         <ChallengeSection wide>
           <ChallengeLabel>Lifting state up</ChallengeLabel>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="flex flex-col gap-4">
-              <CodeBlock code={liftStateCode} lang="jsx" />
-              <CodeVisual><InteractiveLiftStateVisual /></CodeVisual>
-            </div>
+            <CodeWithDiagram
+              code={liftStateCode}
+              diagram={<InteractiveLiftStateVisual />}
+              orientation="vertical"
+            />
 
             {/* State ownership diagram */}
             <div className="flex flex-col justify-center">

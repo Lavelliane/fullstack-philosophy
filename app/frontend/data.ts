@@ -190,56 +190,76 @@ function StudentDashboard() {
 // Each component owns its own markup, style, and behavior
 // Swap or reorder them without touching the others`;
 
-export const propsCode = `// Props = inputs. Same component, different props.
-function Button({ label, variant = "primary", onClick }) {
-  return <button className={\`btn btn-\${variant}\`} onClick={onClick}>{label}</button>;
+/** Intro: what props are and what they can be */
+export const propsIntroCode = `// Props = inputs parent passes to child (like function args)
+
+// Types: data, functions (callbacks), or children
+<StudentCard name="Ana" year={3} gpa={3.9} />   // data
+<Button onClick={handleSave} />                 // callback
+<Card><Badge>Dean's List</Badge></Card>         // children
+
+// Read-only. Child cannot modify them.`;
+
+export const propsCode = `// Same component, different props → different output
+function Button({ label, variant, onClick }) {
+  return <button onClick={onClick}>{label}</button>;
 }
 
 <Button label="Save" variant="primary" onClick={handleSave} />
-<Button label="Cancel" variant="secondary" onClick={handleCancel} />
-<Button label="Delete" variant="danger" onClick={handleDelete} />`;
+<Button label="Cancel" variant="secondary" onClick={handleCancel} />`;
 
-export const propsFlowLoopCode = `// 1. Parent owns data
+export const propsFlowLoopCode = `// Parent owns state → passes props → child renders
 function Parent() {
   const [student, setStudent] = useState(null);
-  useEffect(() => { fetch('/api/students/42').then(r => r.json()).then(setStudent); }, []);
-  return <StudentCard student={student} />;  // 2. Pass as props
+  return <StudentCard student={student} />;
 }
 
-function StudentCard({ student }) {  // 3. Child receives, renders
+function StudentCard({ student }) {
   return <div>{student?.fullName}, GPA: {student?.gpa}</div>;
 }
-// Loop: state change → re-render → new props down`;
+// State change → re-render → new props flow down`;
 
-export const propsSourcesCode = `// Props always come from the parent
+export const propsSourcesCode = `// Where do props come from? Always the parent.
 
-// 1. Parent state
+// State, pass-through, fetched, derived, or hardcoded
 const [students, setStudents] = useState([]);
 <StudentList students={students} />
 
-// 2. Pass-through (parent's props)
 function Layout({ student }) {
-  return <Header student={student} />;
+  return <Header student={student} />;  // pass-through
+}`;
+
+/** Child to parent: pass callbacks as props. Child invokes the callback with data. */
+export const childToParentCode = `// Pass function as prop. Child calls it with data.
+function Parent() {
+  const [selected, setSelected] = useState(null);
+  return (
+    <CourseList
+      courses={courses}
+      onSelect={(c) => setSelected(c)}
+    />
+  );
 }
 
-// 3. Fetched (parent fetches, passes down)
-const [courses, setCourses] = useState([]);
-useEffect(() => fetch('/api/students/42/courses').then(r => r.json()).then(setCourses), []);
-<CourseList courses={courses} />
+function CourseList({ courses, onSelect }) {
+  return (
+    <ul>
+      {courses.map((c) => (
+        <li key={c.id}>
+          <button onClick={() => onSelect(c)}>{c.name}</button>
+        </li>
+      ))}
+    </ul>
+  );
+}`;
 
-// 4. Derived
-<StudentCard name={student.firstName + ' ' + student.lastName} />
-
-// 5. Hardcoded
-<Button label="Enroll" variant="primary" />`;
-
-export const childrenCode = `// children = content between the tags (passed as children prop)
+export const childrenCode = `// children = content between tags
 function Badge({ children }) {
   return <span className="badge">{children}</span>;
 }
 
-<Badge>Dean's List</Badge>           // children is "Dean's List"
-<Badge><strong>Honor Roll</strong></Badge>  // children is <strong>Honor Roll</strong>`;
+<Badge>Dean's List</Badge>
+<Badge><strong>Honor Roll</strong></Badge>`;
 
 export const componentQuiz = {
   question:
@@ -256,8 +276,8 @@ export const componentQuiz = {
 };
 
 export const componentDragSortItems = [
-  { id: "define", label: "Define the component: function StudentCard({ name, year, gpa })" },
-  { id: "markup", label: "Return JSX: <div><h3>{name}</h3><p>Year {year} · GPA {gpa}</p></div>" },
+  { id: "define", label: "Define the function: function StudentCard({ name, year, gpa })" },
+  { id: "markup", label: "Return JSX with the markup: <div><h3>{name}</h3><p>Year {year} · GPA {gpa}</p></div>" },
   { id: "export", label: "Export the component: export default StudentCard" },
   { id: "import", label: "Import it where needed: import StudentCard from './StudentCard'" },
   { id: "use", label: "Use it with props: <StudentCard name='Ana Reyes' year={3} gpa={3.9} />" },
@@ -274,7 +294,7 @@ export const componentDragSortCorrectOrder = [
 export const propsMatchPairs = [
   {
     left: "Props",
-    right: "Inputs a parent passes to a child (e.g. name, avatar, onClick). The child receives and uses them.",
+    right: "Inputs a parent passes to a child. Can be data, callbacks (onClick, onSelect), or children. Read-only — the child cannot modify them.",
   },
   {
     left: "Component",
@@ -282,15 +302,19 @@ export const propsMatchPairs = [
   },
   {
     left: "One-way flow",
-    right: "Data flows only parent → child. Children never pass data back up to parents.",
+    right: "Props flow parent → child. State change → re-render → new props flow down. Child communicates up by calling callback props the parent passed down.",
   },
   {
     left: "Composition",
-    right: "Putting smaller components inside larger ones. A page is Layout with NavBar, content, and Footer nested inside.",
+    right: "Nesting smaller components inside larger ones. A page is Layout with NavBar, content, and Footer. Components all the way down.",
   },
   {
     left: "Children",
-    right: "The JSX content between a component's tags. Whatever goes inside <Card>...</Card>.",
+    right: "The content between a component's tags. Whatever goes inside <Card>...</Card> becomes the children prop.",
+  },
+  {
+    left: "Callback props",
+    right: "Pass a function as a prop (onSelect, onChange). Child calls it with data when something happens. Parent's handler updates state.",
   },
 ];
 

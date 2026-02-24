@@ -1,5 +1,4 @@
-import CodeBlock from "../components/CodeBlock";
-import CodeVisual from "../components/CodeVisual";
+import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import MatchPairs from "../../components/MatchPairs";
@@ -64,7 +63,7 @@ export default async function ThreeRolesSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-7xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges: Section 01
             </p>
@@ -78,14 +77,23 @@ export default async function ThreeRolesSection() {
 
         <ChallengeSection wide>
           <ChallengeLabel>Code comparison: separated vs. mixed</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock
-              mode="split"
+          <div className="space-y-10">
+            <CodeWithDiagram
+              label="Bad: mixed concerns"
+              description="Inline styles + onclick. HTML, CSS, and JS all in one."
               code={threeRolesBadCode}
-              splitCode={threeRolesGoodCode}
-              labels={["Bad: mixed concerns", "Good: each role in its file"]}
+              lang="html"
+              diagram={<ThreeRolesButtonVisual />}
+              orientation="vertical"
             />
-            <CodeVisual><ThreeRolesButtonVisual /></CodeVisual>
+            <CodeWithDiagram
+              label="Good: each role in its file"
+              description="Structure in HTML. Appearance in CSS. Behavior in JS."
+              code={threeRolesGoodCode}
+              lang="html"
+              diagram={<ThreeRolesButtonVisual />}
+              orientation="vertical"
+            />
           </div>
         </ChallengeSection>
 

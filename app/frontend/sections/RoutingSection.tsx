@@ -1,4 +1,5 @@
 import CodeBlock from "../components/CodeBlock";
+import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import MatchPairs from "../../components/MatchPairs";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
@@ -121,7 +122,7 @@ export default function RoutingSection() {
       {/* Traditional vs SPA comparison */}
       <ChallengeSection wide>
         <ChallengeLabel>Traditional pages vs SPA</ChallengeLabel>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-7xl">
           <div className="border border-zinc-200 rounded-lg p-6 bg-white">
             <p className="text-xs font-mono uppercase tracking-wider text-zinc-500 mb-3">Traditional (multi-page)</p>
             <ul className="space-y-2 text-sm text-zinc-600">
@@ -184,7 +185,7 @@ export default function RoutingSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-7xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges: Section 05
             </p>
@@ -199,27 +200,27 @@ export default function RoutingSection() {
         {/* Route definitions + interactive preview */}
         <ChallengeSection wide>
           <ChallengeLabel>Route definitions</ChallengeLabel>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl items-start">
-            <div className="flex flex-col">
-              <CodeBlock code={routingCode} lang="jsx" />
-            </div>
-            <div className="flex flex-col w-full">
-              <RoutePreviewDemo layout="stacked" />
-            </div>
-          </div>
+          <CodeWithDiagram
+            label="Map URLs to components"
+            description="Declare routes once. The router handles param parsing, active links, and navigation."
+            code={routingCode}
+            lang="jsx"
+            diagram={<RoutePreviewDemo layout="stacked" />}
+            orientation="horizontal"
+          />
         </ChallengeSection>
 
         {/* URL as state */}
         <ChallengeSection wide>
           <ChallengeLabel>URL as state</ChallengeLabel>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full max-w-6xl items-start">
-            <div className="flex flex-col">
-              <CodeBlock code={urlStateCode} lang="jsx" />
-            </div>
-            <div className="flex flex-col w-full border border-zinc-200 rounded-lg overflow-hidden bg-white shadow-sm">
-              <UrlParamsDemo />
-            </div>
-          </div>
+          <CodeWithDiagram
+            label="Params and search in the URL"
+            description="useParams() and useSearchParams() read from the URL. Change the URL → component re-renders with new values."
+            code={urlStateCode}
+            lang="jsx"
+            diagram={<UrlParamsDemo />}
+            orientation="horizontal"
+          />
         </ChallengeSection>
 
         <ChallengeSection>

@@ -1,11 +1,10 @@
-import CodeBlock from "../components/CodeBlock";
-import CodeVisual from "../components/CodeVisual";
+import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import DragSort from "../../components/DragSort";
 import MatchPairs from "../../components/MatchPairs";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
-import { FetchStatesVisual, FetchStatesFlowVisual } from "../components/CodeVisuals";
+import { FetchStatesVisual, FetchStatesFlowVisual, FetchStateBadVisual } from "../components/CodeVisuals";
 import {
   fetchComponentCode,
   fetchStateBadCode,
@@ -118,14 +117,15 @@ export default function FetchingSection() {
           </div>
 
           {/* Right: code (desktop only) */}
-          <div className="hidden lg:flex flex-col gap-3 min-w-0">
+          <div className="hidden lg:flex flex-col gap-3 min-w-0 max-w-lg">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               Modelling all three states
             </p>
-            <div className="flex flex-col gap-4">
-              <CodeBlock code={fetchSlideCode} lang="jsx" />
-              <CodeVisual><FetchStatesVisual /></CodeVisual>
-            </div>
+            <CodeWithDiagram
+              code={fetchSlideCode}
+              diagram={<FetchStatesVisual />}
+              orientation="vertical"
+            />
           </div>
         </div>
 
@@ -143,7 +143,7 @@ export default function FetchingSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-7xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges: Section 04
             </p>
@@ -157,26 +157,31 @@ export default function FetchingSection() {
 
         <ChallengeSection wide>
           <ChallengeLabel>The happy path trap</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock
-              mode="split"
+          <div className="flex gap-4">
+            <CodeWithDiagram
+              label="Bad: only handles success"
+              description="No loading state. No error handling. Blank screen or crash."
               code={fetchStateBadCode}
-              splitCode={fetchStateGoodCode}
-              labels={["Bad: only handles success", "Good: handles all three states"]}
-              lang="jsx"
+              diagram={<FetchStateBadVisual />}
+              orientation="vertical"
             />
-            <CodeVisual><FetchStatesVisual /></CodeVisual>
+            <CodeWithDiagram
+              label="Good: handles all three states"
+              description="Loading, success, and error. Design for all three."
+              code={fetchStateGoodCode}
+              diagram={<FetchStatesVisual />}
+              orientation="vertical"
+            />
           </div>
         </ChallengeSection>
 
         <ChallengeSection wide>
           <ChallengeLabel>Full fetch component</ChallengeLabel>
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <CodeBlock code={fetchComponentCode} lang="jsx" />
-            </div>
-            <CodeVisual><FetchStatesFlowVisual /></CodeVisual>
-          </div>
+          <CodeWithDiagram
+            code={fetchComponentCode}
+            diagram={<FetchStatesFlowVisual />}
+            orientation="horizontal"
+          />
         </ChallengeSection>
 
         <ChallengeSection>

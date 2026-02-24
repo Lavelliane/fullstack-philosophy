@@ -1,5 +1,5 @@
 import CodeBlock from "../components/CodeBlock";
-import CodeVisual from "../components/CodeVisual";
+import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import DragSort from "../../components/DragSort";
 import MatchPairs from "../../components/MatchPairs";
@@ -8,18 +8,22 @@ import ChallengeSection from "../components/ChallengeSection";
 import ComponentsVisual from "../components/ComponentsVisual";
 import {
   ComponentCardsVisual,
+  ComponentComparisonBadVisual,
   ComponentComparisonVisual,
   PropsButtonsVisual,
   PropsFlowVisual,
+  ChildToParentFlowVisual,
   ChildrenBadgeVisual,
   ComposeLayoutVisual,
 } from "../components/CodeVisuals";
 import {
   componentComparisonBadCode,
   componentComparisonGoodCode,
+  propsIntroCode,
   propsCode,
   propsFlowLoopCode,
   propsSourcesCode,
+  childToParentCode,
   childrenCode,
   componentQuiz,
   componentDragSortItems,
@@ -30,17 +34,13 @@ import {
 const compositionSlideCode = `// Parent owns data, passes as props
 function StudentDashboard() {
   const [students, setStudents] = useState([]);
-  useEffect(() => {
-    fetch('/api/students').then(r => r.json()).then(setStudents);
-  }, []);
-
   return (
     <Layout>
       <NavBar />
       {students.map(s => (
-        <StudentCard key={s.id} student={s} />  {/* one component, many uses */}
+        <StudentCard key={s.id} student={s} />
       ))}
-      <Badge>Dean&apos;s List</Badge>   {/* children: content between tags */}
+      <Badge>Dean's List</Badge>
       <Footer />
     </Layout>
   );
@@ -51,11 +51,10 @@ export default function ComponentsSection() {
     <section id="s2" style={{ scrollSnapAlign: "start" }}>
 
       {/* ── Slide ─────────────────────────────────────────────────────── */}
-        <div
+      <div
         className="relative flex flex-col justify-center px-8 md:px-16 overflow-y-auto py-6"
         style={{ height: "calc(100vh - var(--nav-height, 61px))" }}
       >
-        {/* Decorative number */}
         <span
           aria-hidden
           className="absolute right-0 top-0 font-light text-zinc-100 leading-none select-none pointer-events-none"
@@ -65,8 +64,6 @@ export default function ComponentsSection() {
         </span>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 w-full max-w-7xl relative z-10 shrink-0">
-
-          {/* Left: concept & discussion */}
           <div className="min-w-0">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-6 font-mono">
               Section 02 · 5 min
@@ -132,8 +129,7 @@ export default function ComponentsSection() {
             </div>
           </div>
 
-          {/* Right: code (desktop only) */}
-          <div className="hidden lg:flex flex-col gap-3 min-w-0">
+          <div className="hidden lg:flex flex-col gap-3 min-w-0 max-w-lg">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.15em]">
               In code
             </p>
@@ -141,12 +137,10 @@ export default function ComponentsSection() {
           </div>
         </div>
 
-        {/* Visual: full width, directly below */}
         <div className="w-full px-0 pt-4 shrink-0">
           <ComponentsVisual />
         </div>
 
-        {/* Scroll indicator */}
         <div className="absolute bottom-6 left-8 md:left-16 text-zinc-300">
           <span className="text-xs font-mono uppercase tracking-[0.15em]">
             Practice ↓
@@ -160,71 +154,121 @@ export default function ComponentsSection() {
           className="bg-zinc-50 border-t border-zinc-100 px-8 py-12 flex items-center justify-center"
           style={{ scrollSnapAlign: "start" }}
         >
-          <div className="max-w-2xl text-center">
+          <div className="max-w-7xl text-center">
             <p className="text-xs text-zinc-400 uppercase tracking-[0.18em] mb-3 font-mono">
               Challenges: Section 02
             </p>
             <p className="text-sm text-zinc-500 leading-[1.85]">
-              Copy-paste vs reuse. Where props come from. The flow loop. Same ideas, hands-on.
+              Copy-paste vs reuse. Props flow. Child to parent. Same ideas, hands-on.
             </p>
           </div>
         </div>
 
+        {/* 1. Copy-paste vs reuse — two CodeWithDiagram, each with its own diagram */}
         <ChallengeSection wide>
-          <ChallengeLabel>Code comparison: copy-paste vs. reuse</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock
-              mode="split"
+          <ChallengeLabel>Copy-paste vs. reuse</ChallengeLabel>
+          <div className="space-y-10">
+            <CodeWithDiagram
+              label="Bad: 12 copies"
+              description="Copy the same card 12 times. Change the design? Update 12 places."
               code={componentComparisonBadCode}
-              splitCode={componentComparisonGoodCode}
-              labels={["Bad: 12 students = 12 copies", "Good: 12 students = one loop"]}
-              lang="jsx"
+              lang="html"
+              diagram={<ComponentComparisonBadVisual />}
+              orientation="vertical"
             />
-            <CodeVisual><ComponentComparisonVisual /></CodeVisual>
+            <CodeWithDiagram
+              label="Good: one loop"
+              description="One component, students.map(...). Change the card? Change it once."
+              code={componentComparisonGoodCode}
+              diagram={<ComponentComparisonVisual />}
+              orientation="vertical"
+            />
           </div>
         </ChallengeSection>
 
-        <ChallengeSection>
-          <ChallengeLabel>Props: same component, different inputs</ChallengeLabel>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={propsCode} lang="jsx" />
-            <CodeVisual><PropsButtonsVisual /></CodeVisual>
-          </div>
-        </ChallengeSection>
-
-        <ChallengeSection>
-          <ChallengeLabel>The props flow loop</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
-            <strong>Parent owns data</strong> → passes props → <strong>child renders</strong>. State change → re-render → new props.
+        {/* 2. Props: linear flow in one section */}
+        <ChallengeSection wide>
+          <ChallengeLabel>Props: definition → flow → callbacks → children</ChallengeLabel>
+          <p className="text-sm text-zinc-600 mb-6 border-l-2 border-zinc-300 pl-4">
+            Props are inputs a parent passes to a child. One-way flow: parent → child. Child communicates up via callbacks. Follow the flow below.
           </p>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={propsFlowLoopCode} lang="jsx" />
-            <CodeVisual><PropsFlowVisual /></CodeVisual>
+
+          <div className="space-y-10">
+            <CodeWithDiagram
+              label="What are props?"
+              description={
+                <p>Inputs like function arguments. Can be <strong>data</strong>, <strong>callbacks</strong> (onClick, onSelect), or <strong>children</strong>. Read-only.</p>
+              }
+              code={propsIntroCode}
+              diagram={<ComponentCardsVisual />}
+            />
+
+            <CodeWithDiagram
+              label="Same component, different inputs"
+              description={
+                <p>One definition, many uses. Pass different props → get different output. <code className="px-1 py-0.5 rounded bg-zinc-100">onClick</code> is a callback prop.</p>
+              }
+              code={propsCode}
+              diagram={<PropsButtonsVisual />}
+            />
+
+            <CodeWithDiagram
+              label="The props flow loop"
+              description={
+                <p><strong>Parent owns data</strong> → passes as props → <strong>child renders</strong>. State change → re-render → new props flow down.</p>
+              }
+              code={propsFlowLoopCode}
+              diagram={<PropsFlowVisual />}
+            />
+
+            <CodeWithDiagram
+              label="Where do props come from?"
+              description={
+                <p><strong>Always the parent.</strong> From state, pass-through, fetch, derived, or hardcoded.</p>
+              }
+              code={propsSourcesCode}
+              diagram={<ComponentCardsVisual />}
+            />
+
+            <CodeWithDiagram
+              label="Child to parent: callbacks"
+              description={
+                <p>Props flow down. To communicate up: pass a function. Child calls it with data. Parent&apos;s handler updates state.</p>
+              }
+              code={childToParentCode}
+              diagram={<ChildToParentFlowVisual />}
+              orientation="horizontal"
+              footer={
+                <p><strong className="text-zinc-700">Patterns:</strong> Callback props (onSelect), lift state up, Context for deep trees.</p>
+              }
+            />
+
+            <CodeWithDiagram
+              label="Children: content between tags"
+              description={
+                <p>Whatever goes inside <code className="px-1 py-0.5 rounded bg-zinc-100">&lt;Card&gt;...&lt;/Card&gt;</code> becomes the <code className="px-1 py-0.5 rounded bg-zinc-100">children</code> prop.</p>
+              }
+              code={childrenCode}
+              diagram={<ChildrenBadgeVisual />}
+            />
           </div>
         </ChallengeSection>
 
-        <ChallengeSection>
-          <ChallengeLabel>Where do props come from?</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
-            <strong>Always the parent.</strong> From state, fetch, or pass-through.
-          </p>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={propsSourcesCode} lang="jsx" />
-            <CodeVisual><ComponentCardsVisual /></CodeVisual>
-          </div>
+        {/* 3. Compose — before challenges */}
+        <ChallengeSection wide>
+          <ChallengeLabel>Compose: putting it together</ChallengeLabel>
+          <CodeWithDiagram
+            label="Nest components"
+            description={
+              <p>A page is Layout with NavBar, content, and Footer inside. Components all the way down.</p>
+            }
+            code={compositionSlideCode}
+            diagram={<ComposeLayoutVisual />}
+            orientation="horizontal"
+          />
         </ChallengeSection>
 
-        <ChallengeSection>
-          <ChallengeLabel>Children: content between tags</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
-            <strong>Whatever goes inside the tags</strong> is passed as the <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">children</code> prop.
-          </p>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={childrenCode} lang="jsx" />
-            <CodeVisual><ChildrenBadgeVisual /></CodeVisual>
-          </div>
-        </ChallengeSection>
-
+        {/* 4. Challenges */}
         <ChallengeSection>
           <ChallengeLabel>Challenge A: reuse in action</ChallengeLabel>
           <Quiz {...componentQuiz} />
@@ -240,24 +284,19 @@ export default function ComponentsSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge C: build a component</ChallengeLabel>
+          <p className="text-sm text-zinc-600 mb-4 leading-relaxed">
+            You create a component in one file, then use it elsewhere. Drag the steps into the order you&apos;d follow: first <strong>define and export</strong> the component, then <strong>import and use</strong> it.
+          </p>
           <DragSort
             items={componentDragSortItems}
             correctOrder={componentDragSortCorrectOrder}
-            prompt="Drag the steps into the correct order for creating and using a React component."
+            prompt="Put these steps in the right order:"
+            successMessage="Correct! Define → markup → export, then import → use. That's the flow."
+            failureMessage="Not quite. Remember: define and export first, then import and use."
           />
-        </ChallengeSection>
-
-        <ChallengeSection>
-          <ChallengeLabel>Compose: putting it together</ChallengeLabel>
-          <p className="text-base font-medium text-zinc-900 mb-4 border-l-2 border-zinc-300 pl-4">
-            <strong>Nest components.</strong> A page is Layout with NavBar, content, and Footer inside. Components all the way down.
-          </p>
-          <div className="flex flex-col gap-4">
-            <CodeBlock code={compositionSlideCode} lang="jsx" />
-            <CodeVisual><ComposeLayoutVisual /></CodeVisual>
-          </div>
         </ChallengeSection>
       </div>
     </section>
   );
 }
+
