@@ -13,7 +13,6 @@ import {
   threeRolesCssCode,
   threeRolesJsCode,
   threeRolesBadCode,
-  threeRolesGoodCode,
   threeRolesQuiz,
   rolesMatchPairs,
   rolesBucketItems,
@@ -77,7 +76,7 @@ export default async function ThreeRolesSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Code comparison: separated vs. mixed</ChallengeLabel>
-          <div className="space-y-10">
+          <div className="space-y-10 flex gap-4">
             <CodeWithDiagram
               label="Bad: mixed concerns"
               description="Inline styles + onclick. HTML, CSS, and JS all in one."
@@ -89,8 +88,11 @@ export default async function ThreeRolesSection() {
             <CodeWithDiagram
               label="Good: each role in its file"
               description="Structure in HTML. Appearance in CSS. Behavior in JS."
-              code={threeRolesGoodCode}
-              lang="html"
+              codeFiles={[
+                { label: "index.html", code: threeRolesHtmlCode, lang: "html" },
+                { label: "styles.css", code: threeRolesCssCode, lang: "css" },
+                { label: "main.js", code: threeRolesJsCode, lang: "javascript" },
+              ]}
               diagram={<ThreeRolesButtonVisual />}
               orientation="vertical"
             />

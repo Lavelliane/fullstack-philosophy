@@ -57,14 +57,6 @@ export const threeRolesBadCode = `<!-- Bad: mixing all three concerns -->
   Enroll in Course
 </button>`;
 
-export const threeRolesGoodCode = `<!-- Good: separation of concerns -->
-<button class="btn-primary" data-action="enroll">
-  Enroll in Course
-</button>
-
-<!-- Behavior is in JS, appearance is in CSS -->
-<!-- Each layer can change independently -->`;
-
 export const threeRolesQuiz = {
   question:
     "The design team wants enrolled students' names to display in green. Which file should change?",
