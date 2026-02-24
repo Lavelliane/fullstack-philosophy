@@ -271,7 +271,7 @@ export default function ComponentsSection() {
         {/* 4. Challenges */}
         <ChallengeSection>
           <ChallengeLabel>Challenge A: reuse in action</ChallengeLabel>
-          <Quiz {...componentQuiz} />
+          <Quiz {...componentQuiz} scoreId="frontend:s2:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -279,6 +279,7 @@ export default function ComponentsSection() {
           <MatchPairs
             pairs={propsMatchPairs}
             prompt="Match each term to its correct definition."
+            scoreId="frontend:s2:match"
           />
         </ChallengeSection>
 
@@ -290,9 +291,10 @@ export default function ComponentsSection() {
           <DragSort
             items={componentDragSortItems}
             correctOrder={componentDragSortCorrectOrder}
-            prompt="Put these steps in the right order:"
+            prompt="Drag the steps into the correct order for creating and using a React component."
             successMessage="Correct! Define → markup → export, then import → use. That's the flow."
             failureMessage="Not quite. Remember: define and export first, then import and use."
+            scoreId="frontend:s2:sort"
           />
         </ChallengeSection>
       </div>

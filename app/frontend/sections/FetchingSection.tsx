@@ -186,7 +186,7 @@ export default function FetchingSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge A: diagnose the crash</ChallengeLabel>
-          <Quiz {...fetchQuiz} />
+          <Quiz {...fetchQuiz} scoreId="frontend:s4:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -194,6 +194,7 @@ export default function FetchingSection() {
           <MatchPairs
             pairs={fetchStatesMatchPairs}
             prompt="Match each fetch state to the correct UI response."
+            scoreId="frontend:s4:match"
           />
         </ChallengeSection>
 
@@ -203,6 +204,7 @@ export default function FetchingSection() {
             items={fetchDragSortItems}
             correctOrder={fetchDragSortCorrectOrder}
             prompt="Put the steps of a complete fetch lifecycle in the correct order."
+            scoreId="frontend:s4:sort"
           />
         </ChallengeSection>
       </div>

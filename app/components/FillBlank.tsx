@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useScoreStore } from "../store/scoreStore";
 
 type Segment =
   | string
@@ -13,9 +14,10 @@ type Segment =
 type FillBlankProps = {
   segments: Segment[];
   prompt: string;
+  scoreId?: string;
 };
 
-export default function FillBlank({ segments, prompt }: FillBlankProps) {
+export default function FillBlank({ segments, prompt, scoreId }: FillBlankProps) {
   const blanks = segments.filter((s): s is Exclude<Segment, string> => typeof s !== "string");
 
   const [selections, setSelections] = useState<Record<string, string>>(
@@ -29,7 +31,11 @@ export default function FillBlank({ segments, prompt }: FillBlankProps) {
   }
 
   function handleCheck() {
+    const allCorrect = blanks.every((b) => selections[b.blank] === b.correct);
     setChecked(true);
+    if (scoreId) {
+      useScoreStore.getState().recordAnswer(scoreId, allCorrect);
+    }
   }
 
   function handleReset() {

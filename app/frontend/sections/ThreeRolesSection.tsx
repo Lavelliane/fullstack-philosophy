@@ -99,7 +99,7 @@ export default async function ThreeRolesSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge A: which role changes?</ChallengeLabel>
-          <Quiz {...threeRolesQuiz} />
+          <Quiz {...threeRolesQuiz} scoreId="frontend:s1:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -107,6 +107,7 @@ export default async function ThreeRolesSection() {
           <MatchPairs
             pairs={rolesMatchPairs}
             prompt="Match each technology to what it is responsible for."
+            scoreId="frontend:s1:match"
           />
         </ChallengeSection>
 
@@ -117,6 +118,7 @@ export default async function ThreeRolesSection() {
             buckets={rolesBucketBuckets}
             correctMapping={rolesBucketMapping}
             prompt="Drag each code snippet into the correct role: HTML, CSS, or JavaScript."
+            scoreId="frontend:s1:bucket"
           />
         </ChallengeSection>
       </div>

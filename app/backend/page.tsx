@@ -5,7 +5,7 @@ import BackendHero from "./components/BackendHero";
 import ContractSection from "./sections/ContractSection";
 import GatekeepersSection from "./sections/GatekeepersSection";
 import RequestLifecycleSection from "./sections/RequestLifecycleSection";
-import MemoryFailureSection from "./sections/MemoryFailureSection";
+import ErrorHandlingSection from "./sections/ErrorHandlingSection";
 import LettingGoSection from "./sections/LettingGoSection";
 import ChecklistSection from "./sections/ChecklistSection";
 import { NAV_SECTIONS } from "./data";
@@ -29,7 +29,7 @@ export default function BackendPage() {
         <ContractSection />
         <GatekeepersSection />
         <RequestLifecycleSection />
-        <MemoryFailureSection />
+        <ErrorHandlingSection />
         <LettingGoSection />
         <ChecklistSection />
       </main>

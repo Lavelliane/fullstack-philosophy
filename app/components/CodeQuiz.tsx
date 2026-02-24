@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { codeToHtml } from "shiki";
+import { useScoreStore } from "../store/scoreStore";
 
 type CodeOption = {
   id: string;
@@ -13,6 +14,7 @@ type CodeQuizProps = {
   options: CodeOption[];
   correctId: string;
   explanation: string;
+  scoreId?: string;
 };
 
 function HighlightedCode({ code }: { code: string }) {
@@ -44,6 +46,7 @@ export default function CodeQuiz({
   options,
   correctId,
   explanation,
+  scoreId,
 }: CodeQuizProps) {
   const [selected, setSelected] = useState<string | null>(null);
   const revealed = selected !== null;
@@ -51,6 +54,10 @@ export default function CodeQuiz({
   function handleSelect(id: string) {
     if (revealed) return;
     setSelected(id);
+    if (scoreId) {
+      const isCorrect = id === correctId;
+      useScoreStore.getState().recordAnswer(scoreId, isCorrect);
+    }
   }
 
   return (

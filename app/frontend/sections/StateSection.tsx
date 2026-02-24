@@ -210,7 +210,7 @@ export default function StateSection() {
 
         <ChallengeSection>
           <ChallengeLabel>Challenge A: where does state live?</ChallengeLabel>
-          <Quiz {...stateQuiz} />
+          <Quiz {...stateQuiz} scoreId="frontend:s3:quiz" />
         </ChallengeSection>
 
         <ChallengeSection>
@@ -220,6 +220,7 @@ export default function StateSection() {
             buckets={stateBucketBuckets}
             correctMapping={stateBucketMapping}
             prompt="Decide whether each piece of state belongs to one component (local) or the whole app (global)."
+            scoreId="frontend:s3:bucket"
           />
         </ChallengeSection>
 
@@ -229,6 +230,7 @@ export default function StateSection() {
             items={stateLoopDragItems}
             correctOrder={stateLoopCorrectOrder}
             prompt="Put the steps of the reactivity loop in the correct order."
+            scoreId="frontend:s3:sort"
           />
         </ChallengeSection>
       </div>

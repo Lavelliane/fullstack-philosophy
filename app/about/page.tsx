@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import { Github, Linkedin, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "About | The Human Behind the Endpoint",
@@ -66,18 +66,10 @@ export default function AboutPage() {
           The Human Behind the Endpoint
         </a>
         <div className="flex items-center gap-8 text-sm text-zinc-500">
-          <a
-            href="/backend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Backend
-          </a>
-          <a
-            href="/frontend"
-            className="hover:text-zinc-900 transition-colors duration-200"
-          >
-            Frontend
-          </a>
+          <a href="/intro" className="hover:text-zinc-900 transition-colors duration-200">Intro</a>
+          <a href="/bridge" className="hover:text-zinc-900 transition-colors duration-200">The Bridge</a>
+          <a href="/backend" className="hover:text-zinc-900 transition-colors duration-200">Backend</a>
+          <a href="/frontend" className="hover:text-zinc-900 transition-colors duration-200">Frontend</a>
           <span className="text-zinc-900 font-medium">About</span>
         </div>
       </nav>
@@ -107,14 +99,9 @@ export default function AboutPage() {
                 icon: <ExternalLink className="w-3.5 h-3.5" />,
               },
               {
-                href: "https://linkedin.com/in/jhury-kevin-lastre",
+                href: "https://www.linkedin.com/in/jhury-kevin-lastre-3bb6541aa/",
                 label: "LinkedIn",
                 icon: <Linkedin className="w-4 h-4" />,
-              },
-              {
-                href: "mailto:jhurykev.lastre@gmail.com",
-                label: "Email",
-                icon: <Mail className="w-4 h-4" />,
               },
             ]}
           >
@@ -181,7 +168,7 @@ export default function AboutPage() {
 
           {/* Vince Abella  - Frontend*/}
           <PersonCard
-            name="Vince Abella"
+            name="Vincent Abella"
             title="Creator"
             bio="Software Engineer, Web Developer & Cybersecurity Specialist. OWASP Cebu Co-Lead with a Master's in Cybersecurity. Research focus: fake base station detection, Markov chains, federated learning, and specification-based IDS. Also working on Machine Learning for Dynamic Shortest Path Finding. Full-stack developer with Python, PHP, React, and Tailwind."
             links={[
@@ -194,11 +181,6 @@ export default function AboutPage() {
                 href: "https://www.linkedin.com/in/vinch05/",
                 label: "LinkedIn",
                 icon: <Linkedin className="w-4 h-4" />,
-              },
-              {
-                href: "mailto:vinceabella05@gmail.com",
-                label: "Email",
-                icon: <Mail className="w-4 h-4" />,
               },
             ]}
           >

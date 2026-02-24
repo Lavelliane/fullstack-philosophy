@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useScoreStore } from "../store/scoreStore";
 
 type Item = {
   id: string;
@@ -17,6 +18,7 @@ type DragBucketProps = {
   buckets: Bucket[];
   correctMapping: Record<string, string>;
   prompt: string;
+  scoreId?: string;
 };
 
 type BucketState = Record<string, string[]>;
@@ -26,6 +28,7 @@ export default function DragBucket({
   buckets,
   correctMapping,
   prompt,
+  scoreId,
 }: DragBucketProps) {
   const [pool, setPool] = useState<Item[]>(items);
   const [bucketContents, setBucketContents] = useState<BucketState>(() =>
@@ -84,7 +87,13 @@ export default function DragBucket({
   }
 
   function handleCheck() {
+    const isCorrect = Object.entries(correctMapping).every(
+      ([itemId, bucketId]) => bucketContents[bucketId]?.includes(itemId)
+    );
     setChecked(true);
+    if (scoreId) {
+      useScoreStore.getState().recordAnswer(scoreId, isCorrect);
+    }
   }
 
   function handleReset() {

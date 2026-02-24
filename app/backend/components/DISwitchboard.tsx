@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import CodeBlock from "../../components/CodeBlock";
 
 type Implementation = {
   id: string;
@@ -65,6 +64,15 @@ this.store.push(order);
 return order;`,
   },
 ];
+
+// Simple client-side code display without syntax highlighting
+function SimpleCodeBlock({ code }: { code: string }) {
+  return (
+    <pre className="w-full overflow-x-auto rounded-none border-0 bg-[#f6f8fa] p-5 text-xs leading-[1.85] font-mono whitespace-pre text-zinc-700">
+      {code}
+    </pre>
+  );
+}
 
 export default function DISwitchboard() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -167,13 +175,13 @@ export default function DISwitchboard() {
                   {impl.name}.save()
                 </div>
                 <div className="border border-zinc-200">
-                  <CodeBlock code={impl.internal} />
+                  <SimpleCodeBlock code={impl.internal} />
                 </div>
               </div>
               <div className="border border-zinc-200 px-4 py-3">
                 <div className="text-[9px] text-zinc-400 uppercase tracking-[0.12em] mb-1">Response</div>
                 <div className="border border-zinc-100">
-                  <CodeBlock code={impl.result} />
+                  <SimpleCodeBlock code={impl.result} />
                 </div>
               </div>
               <div className="border-l-2 border-zinc-200 pl-3 text-zinc-400 text-[10px] leading-relaxed">

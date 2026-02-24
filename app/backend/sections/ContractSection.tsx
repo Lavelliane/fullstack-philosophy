@@ -3,6 +3,7 @@ import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
 import DragSort from "../../components/DragSort";
 import ValidatorSim from "../../components/ValidatorSim";
+import RequestAnatomy from "../../components/RequestAnatomy";
 import SectionHeader from "../components/SectionHeader";
 import Prose from "../components/Prose";
 import ChallengeLabel from "../components/ChallengeLabel";
@@ -76,6 +77,15 @@ export default function ContractSection() {
         <CodeBlock code={httpMethodsCode} lang="plaintext" />
       </BackendChallengeSection>
 
+      {/* ── Request anatomy ─────────────────────────────────────────────── */}
+      <BackendChallengeSection wide>
+        <ChallengeLabel>Anatomy of an HTTP request</ChallengeLabel>
+        <p className="text-sm text-zinc-500 leading-[1.85] max-w-2xl mb-6">
+          Every request has four parts. Click each one to see what it does and why it matters.
+        </p>
+        <RequestAnatomy />
+      </BackendChallengeSection>
+
       {/* ── DTOs: two syntaxes ──────────────────────────────────────────── */}
       <BackendChallengeSection wide>
         <ChallengeLabel>DTOs: same idea, different syntax</ChallengeLabel>
@@ -104,7 +114,7 @@ export default function ContractSection() {
       {/* ── Challenge A ─────────────────────────────────────────────────── */}
       <BackendChallengeSection>
         <ChallengeLabel>Challenge A: design the endpoint</ChallengeLabel>
-        <Quiz {...contractQuiz} />
+        <Quiz {...contractQuiz} scoreId="backend:s1:quiz" />
       </BackendChallengeSection>
 
       {/* ── Challenge B ─────────────────────────────────────────────────── */}
@@ -115,6 +125,7 @@ export default function ContractSection() {
           buckets={contractBucketBuckets}
           correctMapping={contractBucketMapping}
           prompt="Which student fields belong in the API response? Drag each field into the correct bucket."
+          scoreId="backend:s1:bucket"
         />
       </BackendChallengeSection>
 
@@ -125,6 +136,7 @@ export default function ContractSection() {
           items={contractDragSortItems}
           correctOrder={contractDragSortCorrectOrder}
           prompt="Drag the code pieces into the correct order for a Zod-validated POST route."
+          scoreId="backend:s1:sort"
         />
       </BackendChallengeSection>
 

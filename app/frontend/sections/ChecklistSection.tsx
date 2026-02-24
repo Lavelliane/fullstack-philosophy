@@ -1,5 +1,6 @@
 import Quiz from "../../components/Quiz";
 import RevealStepper from "../../components/RevealStepper";
+import ScoreTracker from "../../components/ScoreTracker";
 import ChallengeLabel from "../../backend/components/ChallengeLabel";
 import ChallengeSection from "../components/ChallengeSection";
 import {
@@ -182,9 +183,13 @@ export default async function ChecklistSection() {
           <ChallengeLabel>Final quiz: one from each section</ChallengeLabel>
           <div className="flex flex-col gap-4">
             {finalQuizzes.map((q, i) => (
-              <Quiz key={i} {...q} />
+              <Quiz key={i} {...q} scoreId={`frontend:final:quiz-${i}`} />
             ))}
           </div>
+        </ChallengeSection>
+
+        <ChallengeSection>
+          <ScoreTracker topic="frontend" />
         </ChallengeSection>
 
         {/* Closing */}
