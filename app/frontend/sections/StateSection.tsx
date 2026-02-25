@@ -1,3 +1,4 @@
+import CodeBlock from "../components/CodeBlock";
 import CodeWithDiagram from "../components/CodeWithDiagram";
 import Quiz from "../../components/Quiz";
 import DragBucket from "../../components/DragBucket";
@@ -8,6 +9,7 @@ import { InteractiveCounterVisual, InteractiveLiftStateVisual } from "../compone
 import StateOwnershipFlow from "../components/StateOwnershipFlow";
 import {
   localStateCode,
+  derivedStateCode,
   liftStateCode,
   stateQuiz,
   stateLoopDragItems,
@@ -180,6 +182,14 @@ export default function StateSection() {
             diagram={<InteractiveCounterVisual />}
             orientation="horizontal"
           />
+        </ChallengeSection>
+
+        <ChallengeSection>
+          <ChallengeLabel>Derived state</ChallengeLabel>
+          <p className="text-sm text-zinc-600 mb-4 border-l-2 border-zinc-300 pl-4">
+            Never store what you can calculate. Derived values update automatically when their source state changes — no extra <code className="text-xs bg-zinc-100 px-1 py-0.5 rounded">useState</code> calls, no risk of them drifting out of sync.
+          </p>
+          <CodeBlock code={derivedStateCode} lang="tsx" />
         </ChallengeSection>
 
         {/* Lifting state: code + ownership diagram */}

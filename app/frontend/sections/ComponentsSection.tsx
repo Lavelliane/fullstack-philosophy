@@ -31,7 +31,9 @@ import {
   propsMatchPairs,
 } from "../data";
 
-const compositionSlideCode = `// Parent owns data, passes as props
+const compositionSlideCode = `import { useState } from 'react';
+
+// Parent owns data, passes as props
 function StudentDashboard() {
   const [students, setStudents] = useState([]);
   return (

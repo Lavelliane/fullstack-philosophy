@@ -9,7 +9,7 @@ import UrlParamsDemo from "../components/UrlParamsDemo";
 import TraditionalVsSpaFlow from "../components/TraditionalVsSpaFlow";
 import { routingCode, urlStateCode, routingQuiz, routingMatchPairs } from "../data";
 
-const routingSlideCode = `// URL to Component, declared once
+const routingSlideCode = `// URL to Component, declared once (React Router v6)
 <Routes>
   <Route path="/"             element={<Home />} />
   <Route path="/students"     element={<StudentList />} />

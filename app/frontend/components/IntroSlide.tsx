@@ -10,7 +10,7 @@ export default function IntroSlide() {
   const [hoveredCard, setHoveredCard] = useState<"backend" | "frontend" | null>(
     null
   );
-  const isDone = step >= STEPS;
+  const isDone = step >= STEPS - 1;
 
   const handleNext = useCallback(() => {
     if (!isDone) setStep((s) => s + 1);
@@ -147,7 +147,7 @@ export default function IntroSlide() {
               </motion.div>
             )}
 
-            {(step === 2 || step >= STEPS) && (
+            {step >= 2 && (
               <motion.div
                 key="2"
                 initial={{ opacity: 0, y: 20 }}
@@ -170,8 +170,8 @@ export default function IntroSlide() {
                 </p>
                 <p className="mt-8 text-sm text-zinc-500 max-w-7xl">
                   In the next 30 minutes we&apos;ll unpack how frontends build that
-                  connection: structure, state, and data flow. No framework
-                  required.
+                  connection: structure, state, and data flow. No prior
+                  framework experience required.
                 </p>
               </motion.div>
             )}
@@ -208,7 +208,7 @@ export default function IntroSlide() {
             )}
           </div>
           <span className="text-[11px] text-zinc-300 font-mono">
-            {!isDone ? `${step + 1}/${STEPS} · space or →` : "or scroll"}
+            {!isDone ? `${step + 1}/${STEPS - 1} · space, enter, or →` : "or scroll"}
           </span>
         </div>
       </div>

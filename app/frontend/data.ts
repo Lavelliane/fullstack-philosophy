@@ -46,7 +46,7 @@ export const threeRolesCssCode = `/* CSS: the skin (how it looks) */
 export const threeRolesJsCode = `// JavaScript: the nervous system (what it does)
 document.getElementById('enroll-btn')
   .addEventListener('click', () => {
-    enroll(student.id, courseId);
+    enroll(student.id, courseId); // your own function, defined elsewhere
   });`;
 
 export const threeRolesBadCode = `<!-- Bad: mixing all three concerns -->
@@ -418,21 +418,6 @@ export const stateBucketMapping: Record<string, string> = {
 
 // ─── Section 4: Fetching Data ─────────────────────────────────────────────────
 
-export const fetchBasicCode = `// Every fetch has three states you must handle
-async function loadStudent(id) {
-  try {
-    const response = await fetch(\`/api/students/\${id}\`);
-
-    if (!response.ok) {
-      throw new Error(\`HTTP \${response.status}\`);
-    }
-
-    return await response.json();  // success
-  } catch (error) {
-    throw error;                   // failure
-  }
-}`;
-
 export const fetchComponentCode = `// In React: model all three states in your component
 function StudentProfile({ studentId }) {
   const [student, setStudent] = useState(null);
@@ -537,13 +522,9 @@ export const fetchDragSortCorrectOrder = [
 // ─── Section 5: Routing ───────────────────────────────────────────────────────
 
 export const routingCode = `// Declarative routing: URL → Component
-// When the URL is /dashboard, show <Dashboard />
-// When the URL is /students/:id, show <StudentProfile />
-
-// React Router example
+// React Router v6 (npm install react-router-dom)
 <Routes>
   <Route path="/"              element={<Home />} />
-  <Route path="/dashboard"     element={<Dashboard />} />
   <Route path="/students"      element={<StudentList />} />
   <Route path="/students/:id"  element={<StudentProfile />} />
   <Route path="*"              element={<NotFound />} />
@@ -591,7 +572,6 @@ export const routingBucketItems = [
   { id: "spa-nav", label: "Clicking a <Link> without page reload" },
   { id: "full-reload", label: "Pressing F5 / browser refresh" },
   { id: "back-btn", label: "Browser back button" },
-  { id: "anchor-tag", label: "Plain <a href='/students'> navigates with reload" },
   { id: "url-params", label: "Reading :id from /students/:id" },
   { id: "query-string", label: "?tab=grades in /students/42?tab=grades" },
   { id: "history-push", label: "navigate('/students') in JavaScript" },
@@ -607,7 +587,6 @@ export const routingBucketMapping: Record<string, string> = {
   "spa-nav": "spa",
   "full-reload": "url-state",
   "back-btn": "spa",
-  "anchor-tag": "spa",
   "url-params": "url-state",
   "query-string": "url-state",
   "history-push": "spa",
@@ -759,5 +738,31 @@ export const finalQuizzes = [
     correctId: "a",
     explanation:
       "The URL is the only state that survives a page reload. If the current step is encoded in the URL, a refresh restores the student to exactly where they were. localStorage also works, but the URL is the canonical answer for navigation state.",
+  },
+  {
+    question:
+      "You have a StudentCard component used in 40 places across the portal. The designer wants to add an avatar image to every card. What do you change?",
+    options: [
+      { id: "a", label: "Update all 40 usages of StudentCard individually" },
+      { id: "b", label: "Update the StudentCard component definition once" },
+      { id: "c", label: "Create a new AvatarStudentCard and replace all 40 usages" },
+      { id: "d", label: "Use CSS to inject the image without touching the component" },
+    ],
+    correctId: "b",
+    explanation:
+      "This is exactly why components exist: define once, use everywhere. Updating the component definition propagates the change to all 40 instances automatically. No find-and-replace needed.",
+  },
+  {
+    question:
+      "After a successful PATCH to /api/students/42/gpa, what should the component do next?",
+    options: [
+      { id: "a", label: "Reload the entire page to show the updated GPA" },
+      { id: "b", label: "Update local state with the response data and return to view mode" },
+      { id: "c", label: "Redirect the user to the student list" },
+      { id: "d", label: "Nothing — the server update is enough, the UI will sync on its own" },
+    ],
+    correctId: "b",
+    explanation:
+      "After a successful PATCH, update the React state with the server's response (so the UI reflects the new GPA immediately) and exit edit mode. No page reload — React re-renders only what changed. This is the full cycle: fetch → state → re-render.",
   },
 ];

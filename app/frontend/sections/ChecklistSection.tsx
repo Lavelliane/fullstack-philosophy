@@ -127,13 +127,6 @@ export default async function ChecklistSection() {
               ))}
             </div>
 
-            <div className="border-l-2 border-zinc-900 pl-6 py-1">
-              <p className="text-lg font-light text-zinc-900 leading-snug italic">
-                &ldquo;Frameworks will come and go.
-                <br />
-                Components, state, and data flow won&apos;t.&rdquo;
-              </p>
-            </div>
           </div>
 
           {/* Right: animated step flow (like Full fetch component) */}

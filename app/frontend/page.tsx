@@ -12,7 +12,7 @@ import ChecklistSection from "./sections/ChecklistSection";
 export const metadata: Metadata = {
   title: "The Face of Software | The Human Behind the Endpoint",
   description:
-    "A 30-minute interactive deep-dive into frontend development. Components, state, and data flow. No framework required.",
+    "A 30-minute interactive deep-dive into frontend development. Components, state, and data flow. No prior framework experience required.",
 };
 
 export default function FrontendPage() {
